@@ -1,8 +1,24 @@
 <html>
 <head>
-<title> </title>
+<title>Dati utente</title>
 </head>
 <body>
-  
+<h2>Inserisci i tuoi dati</h2>
+  Nome: <input type="text" id="nome"> <br><br>
+  Cognome: <input type="text" id="cognome"> <br><br>
+  Indirizzo: <input type="text" id="indirizzo"> <br><br>
+  <button onclick="mostraDati()">Mostra</button>
+  <div id="risultato" style="position:absolute; right:50px;top:50px;border:1px solid black;padding:10px;">
+  <h3>Dati inseriti:</h3>
+  </div>
+  <script>
+    Function mostraDati(){
+      Var nome = document.getElementById("nome").value;
+      Var cognome = document.getElementById("cognome").value;
+      Var indirizzo = document.getElementById("indirizzo").value;
+      document.getElementById("risultato").innerHTML= 
+        "<h3>Dati inseriti:</h3>" + "Nome:"+nome +"<br>" + "Cognome:"+cognome +"<br>"+ "Indirizzo:"+ indirizzo;
+    }
+  </script>
 </body>
 </html>
