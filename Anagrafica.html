@@ -8,17 +8,19 @@
   Cognome: <input type="text" id="cognome"> <br><br>
   Indirizzo: <input type="text" id="indirizzo"> <br><br>
   Città : <input type="text" id="città"> <br><br>
-  CAP : <input type="text" id="CAP"> <br><br>
-  Età : <input type="text" id="Età"> <br><br>
+  CAP : <input type="text" id="cap"> <br><br>
+  Età : <input type="text" id="età"> <br><br>
     <script>
-      function(){
-      Var Nome = document.getElementById("nome");
-
-
-
-        
+      function mostraDati(){
+      Var Nome = document.getElementById("nome").value;
+      Var Cognome = document.getElementById("cognome").value;
+      Var Indirizzo = document.getElementById("indirizzo").value;
+      Var Città = document.getElementById("città").value;
+      Var CAP = document.getElementById("cap").value;
+      Var Età = document.getElementById("età").value;
+      document.getElementById("ris").innerHTML=print
       }
     </script>
-    
+    <p id="ris"></p>
   </body>
 </html>
