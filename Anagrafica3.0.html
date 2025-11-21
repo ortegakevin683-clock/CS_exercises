@@ -25,7 +25,7 @@
       let citta = document.getElementById("citta").value;
       let cap = document.getElementById("cap").value;
       let data = document.getElementById("dataNascita").value;
-
+      let sesso = document.getElementById("sesso").value;
       let anno = new Date(data).getFullYear();
 
       let generazione = "";
@@ -38,6 +38,14 @@
       else if (anno >= 1997 && anno <= 2012) generazione = "Generazione Z";
       else if (anno >= 2013) generazione = "Generazione Alpha";
       else generazione = "Anno non valido";
+      for(i=0;i<document.getElementsByName("sesso").length;i++) {
+
+          if(document.getElementsByName("sesso")[i].checked){
+
+           document.getElementById("output").innerHTML = document.getElementsByName("colori")[i].value
+           }
+      }
+      
 
       document.getElementById("output").innerHTML =
         "<b>Nome:</b> " + nome + "<br>" +
@@ -46,25 +54,15 @@
         "<b>Città:</b> " + citta + "<br>" +
         "<b>CAP:</b> " + cap + "<br>" +
         "<b>Anno di nascita:</b> " + anno + "<br>" +
-        "<b>Generazione:</b> " + generazione;
-      for(i=0;i<document.getElementsByName("colori").length;i++) {
-
-          if(document.getElementsByName("colori")[i].checked){
-
-           document.getElementById("risp").innerHTML = document.getElementsByName("colori")[i].value
-           }
-      }
-    }
-  </script>
-  <div style="margin-left:100px;">
-
-        <input type="radio" name="sesso" value="rosso">Maschio<br>
+        "<b>Generazione:</b> " + generazione+"<br>"+
+        "<b>Sesso:</b>"+  sesso;
+      <input type="radio" name="sesso" value="rosso">Maschio<br>
 
         <input type="radio" name="sesso" value="verde">Femmina<br>
 
         <input type="radio" name="sesso" value="bianco">Altro<br>
-
-        <input type="button" onclick="mostraAnagrafica" value="Invia">
+    }
+  </script>
 
 </body>
 </html>
