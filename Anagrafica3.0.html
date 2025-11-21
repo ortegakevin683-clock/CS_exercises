@@ -1,69 +1,52 @@
 <!DOCTYPE html>
+<html lang="it">
 <head>
-  <title>Anagrafica Utente</title>
+  <meta charset="UTF-8">
+  <title>Anagrafica</title>
 </head>
 <body>
-  <h2>Inserisci i tuoi dati:</h2>
-  
-  <input type="text" id="nome"><br>
-  <input type="text" id="cognome"><br>
-  <input type="text" id="indirizzo"><br>
-  <input type="text" id="citta"><br>
-  <input type="text" id="cap"><br>
-  <input type="date" id="dataNascita"><br><br>
-  <input type="radio" name="sesso" value="maschio">Maschio<br>
-  <input type="radio" name="sesso" value="femmina">Femmina<br>
-  <input type="radio" name="sesso" value="altro">Altro<br>
+  <h2>Anagrafica Utente</h2>
 
+  Nome: <input type="text" id="nome"><br><br>
+  Cognome: <input type="text" id="cognome"><br><br>
+  Data di nascita: <input type="date" id="dataNascita"><br><br>
 
-  
+  <button onclick="mostraRisultato()">Invia</button>
 
-  <button onclick="mostraAnagrafica()">Invia</button>
-
-  <h3>Risultato:</h3>
-  <div id="output"></div>
+  <div id="risultato"></div>
 
   <script>
-    function mostraAnagrafica() {
+    // Funzione per capire la generazione
+    function getGenerazione(anno) {
+      if (anno >= 2013) return "Generazione Alpha";
+      else if (anno >= 1997) return "Generazione Z";
+      else if (anno >= 1981) return "Millennials";
+      else if (anno >= 1965) return "Generazione X";
+      else if (anno >= 1946) return "Baby Boomers";
+      else if (anno >= 1928) return "Generazione Silenziosa";
+      else if (anno >= 1901) return "Greatest Generation";
+      else return "Generazione non definita";
+    }
+
+    function mostraRisultato() {
       let nome = document.getElementById("nome").value;
       let cognome = document.getElementById("cognome").value;
-      let indirizzo = document.getElementById("indirizzo").value;
-      let citta = document.getElementById("citta").value;
-      let cap = document.getElementById("cap").value;
-      let data = document.getElementById("dataNascita").value;
-      let sesso = document.getElementById("sesso").value;
-      let anno = new Date(data).getFullYear();
+      let dataNascita = document.getElementById("dataNascita").value;
 
-      let generazione = "";
+      // Calcolo età in modo semplice
+      let anno = new Date(dataNascita).getFullYear();
+      let oggi = new Date().getFullYear();
+      let eta = oggi - anno;
 
-      if (anno >= 1901 && anno <= 1927) generazione = "Greatest Generation";
-      else if (anno >= 1928 && anno <= 1945) generazione = "Generazione Silenziosa";
-      else if (anno >= 1946 && anno <= 1964) generazione = "Baby Boomers";
-      else if (anno >= 1965 && anno <= 1980) generazione = "Generazione X";
-      else if (anno >= 1981 && anno <= 1996) generazione = "Millennials";
-      else if (anno >= 1997 && anno <= 2012) generazione = "Generazione Z";
-      else if (anno >= 2013) generazione = "Generazione Alpha";
-      else generazione = "Anno non valido";
-      for(i=0;i<document.getElementsByName("sesso").length;i++) {
+      let generazione = getGenerazione(anno);
 
-          if(document.getElementsByName("sesso")[i].checked){
-
-           document.getElementById("output").innerHTML = document.getElementsByName("sesso")[i].value
-           }
-      }
-      
-
-      document.getElementById("output").innerHTML =
-        "<b>Nome:</b> " + nome + "<br>" +
-        "<b>Cognome:</b> " + cognome + "<br>" +
-        "<b>Indirizzo:</b> " + indirizzo + "<br>" +
-        "<b>Città:</b> " + citta + "<br>" +
-        "<b>CAP:</b> " + cap + "<br>" +
-        "<b>Anno di nascita:</b> " + anno + "<br>" +
-        "<b>Generazione:</b> " + generazione+"<br>"+
-        "<b>Sesso:</b>"+  sesso;
+      // Stampa dei risultati
+      document.getElementById("risultato").innerHTML =
+        "Nome: " + nome + "<br>" +
+        "Cognome: " + cognome + "<br>" +
+        "Età: " + eta + " anni<br>" +
+        "Generazione: " + generazione;
     }
   </script>
-
 </body>
 </html>
