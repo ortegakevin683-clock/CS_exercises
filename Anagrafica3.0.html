@@ -47,7 +47,24 @@
         "<b>CAP:</b> " + cap + "<br>" +
         "<b>Anno di nascita:</b> " + anno + "<br>" +
         "<b>Generazione:</b> " + generazione;
+      for(i=0;i<document.getElementsByName("colori").length;i++) {
+
+          if(document.getElementsByName("colori")[i].checked){
+
+           document.getElementById("risp").innerHTML = document.getElementsByName("colori")[i].value
+           }
+      }
     }
   </script>
+  <div style="margin-left:100px;">
+
+        <input type="radio" name="sesso" value="rosso">Maschio<br>
+
+        <input type="radio" name="sesso" value="verde">Femmina<br>
+
+        <input type="radio" name="sesso" value="bianco">Altro<br>
+
+        <input type="button" onclick="mostraAnagrafica" value="Invia">
+
 </body>
 </html>
