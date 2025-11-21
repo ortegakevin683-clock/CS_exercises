@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+  <title>Anagrafica Utente</title>
+</head>
+<body>
+  <h2>Inserisci i tuoi dati:</h2>
+  
+  <input type="text" id="nome"><br>
+  <input type="text" id="cognome"><br>
+  <input type="text" id="indirizzo"><br>
+  <input type="text" id="citta"><br>
+  <input type="text" id="cap"><br>
+  <input type="date" id="dataNascita"><br><br>
+
+  <button onclick="mostraAnagrafica()">Invia</button>
+
+  <h3>Risultato:</h3>
+  <div id="output"></div>
+
+  <script>
+    function mostraAnagrafica() {
+      var nome = document.getElementById("nome").value;
+      var cognome = document.getElementById("cognome").value;
+      var indirizzo = document.getElementById("indirizzo").value;
+      var citta = document.getElementById("citta").value;
+      var cap = document.getElementById("cap").value;
+      var data = document.getElementById("dataNascita").value;
+
+      var anno = new Date(data).getFullYear();
+
+      var generazione = "";
+
+      if (anno >= 1901 && anno <= 1927) generazione = "Greatest Generation";
+      else if (anno >= 1928 && anno <= 1945) generazione = "Generazione Silenziosa";
+      else if (anno >= 1946 && anno <= 1964) generazione = "Baby Boomers";
+      else if (anno >= 1965 && anno <= 1980) generazione = "Generazione X";
+      else if (anno >= 1981 && anno <= 1996) generazione = "Millennials";
+      else if (anno >= 1997 && anno <= 2012) generazione = "Generazione Z";
+      else if (anno >= 2013) generazione = "Generazione Alpha";
+      else generazione = "Anno non valido";
+
+      document.getElementById("output").innerHTML =
+        "<b>Nome:</b> " + nome + "<br>" +
+        "<b>Cognome:</b> " + cognome + "<br>" +
+        "<b>Indirizzo:</b> " + indirizzo + "<br>" +
+        "<b>Città:</b> " + citta + "<br>" +
+        "<b>CAP:</b> " + cap + "<br>" +
+        "<b>Anno di nascita:</b> " + anno + "<br>" +
+        "<b>Generazione:</b> " + generazione;
+    }
+  </script>
+</body>
+</html>
