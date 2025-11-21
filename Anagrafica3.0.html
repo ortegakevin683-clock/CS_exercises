@@ -11,6 +11,12 @@
   <input type="text" id="citta"><br>
   <input type="text" id="cap"><br>
   <input type="date" id="dataNascita"><br><br>
+  <input type="radio" name="sesso" value="maschio">Maschio<br>
+  <input type="radio" name="sesso" value="femmina">Femmina<br>
+  <input type="radio" name="sesso" value="altro">Altro<br>
+
+
+  
 
   <button onclick="mostraAnagrafica()">Invia</button>
 
@@ -42,7 +48,7 @@
 
           if(document.getElementsByName("sesso")[i].checked){
 
-           document.getElementById("output").innerHTML = document.getElementsByName("colori")[i].value
+           document.getElementById("output").innerHTML = document.getElementsByName("sesso")[i].value
            }
       }
       
@@ -56,11 +62,6 @@
         "<b>Anno di nascita:</b> " + anno + "<br>" +
         "<b>Generazione:</b> " + generazione+"<br>"+
         "<b>Sesso:</b>"+  sesso;
-      <input type="radio" name="sesso" value="rosso">Maschio<br>
-
-        <input type="radio" name="sesso" value="verde">Femmina<br>
-
-        <input type="radio" name="sesso" value="bianco">Altro<br>
     }
   </script>
 
