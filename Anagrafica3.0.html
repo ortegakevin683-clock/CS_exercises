@@ -19,16 +19,16 @@
 
   <script>
     function mostraAnagrafica() {
-      var nome = document.getElementById("nome").value;
-      var cognome = document.getElementById("cognome").value;
-      var indirizzo = document.getElementById("indirizzo").value;
-      var citta = document.getElementById("citta").value;
-      var cap = document.getElementById("cap").value;
-      var data = document.getElementById("dataNascita").value;
+      let nome = document.getElementById("nome").value;
+      let cognome = document.getElementById("cognome").value;
+      let indirizzo = document.getElementById("indirizzo").value;
+      let citta = document.getElementById("citta").value;
+      let cap = document.getElementById("cap").value;
+      let data = document.getElementById("dataNascita").value;
 
-      var anno = new Date(data).getFullYear();
+      let anno = new Date(data).getFullYear();
 
-      var generazione = "";
+      let generazione = "";
 
       if (anno >= 1901 && anno <= 1927) generazione = "Greatest Generation";
       else if (anno >= 1928 && anno <= 1945) generazione = "Generazione Silenziosa";
