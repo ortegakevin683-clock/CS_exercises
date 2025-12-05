@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica 3.0</title>
+</head>
+<body>
+  <h2>Anagrafica Utente</h2>
+
+  Nome: <input type="text" id="nome"><br><br>
+  Cognome: <input type="text" id="cognome"><br><br>
+  Città: <input type="text" id="citta"><br><br>
+  CAP: <input type="text" id="cap"><br><br>
+  Data di nascita: <input type="date" id="dataNascita"><br><br>
+
+  Sesso:<br>
+  <input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
+  <input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
+  <input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
+
+  Mezzi posseduti:<br>
+  <input type="checkbox" id="auto" value="Auto"> Auto
+  <input type="checkbox" id="moto" value="Moto"> Moto
+  <input type="checkbox" id="bici" value="Bici"> Bici
+  <input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
+  <input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
+
+  Provincia:
+  <select id="provincia">
+    <option value="MI">Milano</option>
+    <option value="VA">Varese</option>
+    <option value="NA">Napoli</option>
+    <option value="TO">Torino</option>
+    <option value="FI">Firenze</option>
+  </select><br><br>
+
+  Materie preferite (CTRL+click per più scelte):<br>
+  <select id="materie" multiple size="5">
+    <option value="Italiano">Italiano</option>
+    <option value="Storia">Storia</option>
+    <option value="Matematica">Matematica</option>
+    <option value="TPSIT">TPS</option>
+    <option value="Inglese">Inglese</option>
+  </select><br><br>
+
+  <button onclick="mostraRisultato()">Invia</button>
+
+  <h3>Risultato:</h3>
+  <div id="risultato"></div>
+
+  <script>
+    function getGenerazione(anno) {
+      if (anno >= 2013) return "Generazione Alpha";
+      else if (anno >= 1997) return "Generazione Z";
+      else if (anno >= 1981) return "Millennials";
+      else if (anno >= 1965) return "Generazione X";
+      else if (anno >= 1946) return "Baby Boomers";
+      else if (anno >= 1928) return "Generazione Silenziosa";
+      else if (anno >= 1901) return "Greatest Generation";
+      else return "Generazione non definita";
+    }
+
+    function mostraRisultato() {
+      let nome = document.getElementById("nome").value;
+      let cognome = document.getElementById("cognome").value;
+      let citta = document.getElementById("citta").value;
+      let cap = document.getElementById("cap").value;
+      let dataNascita = document.getElementById("dataNascita").value;
+
+      let anno = new Date(dataNascita).getFullYear();
+      let oggi = new Date().getFullYear();
+      let eta = oggi - anno;
+      let generazione = getGenerazione(anno);
+
+      let sesso = "";
+      if (document.getElementById("sessoM").checked) sesso = "Maschio";
+      else if (document.getElementById("sessoF").checked) sesso = "Femmina";
+      else if (document.getElementById("sessoAltro").checked) sesso = "Altro";
+      else sesso = "Non selezionato";
+
+      let mezzi = "";
+      if (document.getElementById("auto").checked) mezzi += "Auto ";
+      if (document.getElementById("moto").checked) mezzi += "Moto ";
+      if (document.getElementById("bici").checked) mezzi += "Bici ";
+      if (document.getElementById("cavallo").checked) mezzi += "Cavallo ";
+      if (document.getElementById("deltaplano").checked) mezzi += "Deltaplano ";
+
+      let provincia = document.getElementById("provincia").value;
+
+      let materieSelezionate = "";
+      let materie = document.getElementById("materie");
+      for (let i = 0; i < materie.options.length; i++) {
+        if (materie.options[i].selected) {
+          materieSelezionate += materie.options[i].value + " ";
+        }
+      }
+      const person = [{nome,cognome,citta,cap,datNascita,sesso,mezzi,materieSelezionate}] 
+
+      document.getElementById("risultato").innerHTML = 
+        document.getElementById("demo").innerHTML = person;
+    }
+  </script>
+</body>
+</html>
