@@ -45,10 +45,11 @@
 
   <button onclick="mostraRisultato()">Invia</button>
 
-  <h3>Risultato:</h3>
+  <h3>Risultato (array finale):</h3>
   <div id="risultato"></div>
 
   <script>
+
     function getGenerazione(anno) {
       if (anno >= 2013) return "Generazione Alpha";
       else if (anno >= 1997) return "Generazione Z";
@@ -61,44 +62,64 @@
     }
 
     function mostraRisultato() {
-      let nome = document.getElementById("nome").value;
-      let cognome = document.getElementById("cognome").value;
-      let citta = document.getElementById("citta").value;
-      let cap = document.getElementById("cap").value;
-      let dataNascita = document.getElementById("dataNascita").value;
+      let persona = {
+        nome: document.getElementById("nome").value,
+        cognome: document.getElementById("cognome").value,
+        citta: document.getElementById("citta").value,
+        cap: document.getElementById("cap").value,
+        dataNascita: document.getElementById("dataNascita").value,
 
-      let anno = new Date(dataNascita).getFullYear();
+        sesso: (function(){
+          if (document.getElementById("sessoM").checked) return "Maschio";
+          if (document.getElementById("sessoF").checked) return "Femmina";
+          if (document.getElementById("sessoAltro").checked) return "Altro";
+          return "Non selezionato";
+        })(),
+
+        mezzi: (function(){
+          let m = [];
+          if (document.getElementById("auto").checked) m.push("Auto");
+          if (document.getElementById("moto").checked) m.push("Moto");
+          if (document.getElementById("bici").checked) m.push("Bici");
+          if (document.getElementById("cavallo").checked) m.push("Cavallo");
+          if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
+          return m;
+        })(),
+
+        provincia: document.getElementById("provincia").value,
+
+        materie: (function(){
+          let lista = [];
+          let opzioni = document.getElementById("materie").options;
+          for (let i = 0; i < opzioni.length; i++) {
+            if (opzioni[i].selected) lista.push(opzioni[i].value);
+          }
+          return lista;
+        })()
+      };
+
+      let anno = new Date(persona.dataNascita).getFullYear();
       let oggi = new Date().getFullYear();
-      let eta = oggi - anno;
-      let generazione = getGenerazione(anno);
+      persona.eta = oggi - anno;
+      persona.generazione = getGenerazione(anno);
 
-      let sesso = "";
-      if (document.getElementById("sessoM").checked) sesso = "Maschio";
-      else if (document.getElementById("sessoF").checked) sesso = "Femmina";
-      else if (document.getElementById("sessoAltro").checked) sesso = "Altro";
-      else sesso = "Non selezionato";
-
-      let mezzi = "";
-      if (document.getElementById("auto").checked) mezzi += "Auto ";
-      if (document.getElementById("moto").checked) mezzi += "Moto ";
-      if (document.getElementById("bici").checked) mezzi += "Bici ";
-      if (document.getElementById("cavallo").checked) mezzi += "Cavallo ";
-      if (document.getElementById("deltaplano").checked) mezzi += "Deltaplano ";
-
-      let provincia = document.getElementById("provincia").value;
-
-      let materieSelezionate = "";
-      let materie = document.getElementById("materie");
-      for (let i = 0; i < materie.options.length; i++) {
-        if (materie.options[i].selected) {
-          materieSelezionate += materie.options[i].value + " ";
-        }
-      }
-      const person = [{nome,cognome,citta,cap,datNascita,sesso,mezzi,materieSelezionate}] 
-
-      document.getElementById("risultato").innerHTML = 
-        document.getElementById("demo").innerHTML = person;
+      let arrayFinale = [
+        persona.nome,
+        persona.cognome,
+        persona.citta,
+        persona.cap,
+        persona.dataNascita,
+        persona.eta,
+        persona.generazione,
+        persona.sesso,
+        persona.mezzi,
+        persona.provincia,
+        persona.materie
+      ];
+      document.getElementById("risultato").innerHTML = arrayFinale;
     }
+
   </script>
 </body>
 </html>
+
