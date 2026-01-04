@@ -3,12 +3,15 @@
     <title>Stella e cerchio</title>
   </head>
   <body>
-    <canvas id="myCanvas" width="600" height="500" style="border:1px solid black;" ></canvas>
+    <canvas id="myCanvas" width="900" height="800" style="border:1px solid black;" ></canvas>
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = "blue";
-      ctx.fillRect = (0,0,600,500);
+      ctx.fillRect(0,0,900,800);
+      ctx.beginPath();
+      ctx.arc(450,400,200,0,2*Math.PI);
+      ctx.stroke();
     </script>
   </body>
 </html>
