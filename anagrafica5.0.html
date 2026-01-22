@@ -33,7 +33,7 @@
         <option value="FI">Firenze</option>
     </select><br><br>
 
-    Materie preferite:<br>
+    Materie preferite (CTRL+click per più scelte):<br>
     <select id="materie" multiple size="5">
         <option value="Italiano">Italiano</option>
         <option value="Storia">Storia</option>
@@ -42,12 +42,11 @@
         <option value="Inglese">Inglese</option>
     </select><br><br>
 
-    <button onclick="mostraRisultato()">Invia e Salva</button>
+    <button onclick="mostraRisultato()">Invia</button>
     <br><br>
-    <a href="stampaAnagrafica.html"><button>Vai alla Pagina di Stampa</button></a>
+    <a href="stampaAnagrafica.html">Stampa</a>
 
     <script>
-        // Carica dati esistenti o crea array vuoto
         let ele = JSON.parse(localStorage.getItem("elenco")) || [];
 
         function getGenerazione(anno) {
@@ -68,33 +67,45 @@
                 citta: document.getElementById("citta").value,
                 cap: document.getElementById("cap").value,
                 dataNascita: document.getElementById("dataNascita").value,
-                sesso: (function() {
-                    let r = document.getElementsByName("sesso");
-                    for(let i=0; i<r.length; i++) if(r[i].checked) return r[i].value;
+
+                sesso: (function(){
+                    if (document.getElementById("sessoM").checked) return "Maschio";
+                    if (document.getElementById("sessoF").checked) return "Femmina";
+                    if (document.getElementById("sessoAltro").checked) return "Altro";
                     return "N/D";
                 })(),
-                mezzi: (function() {
+
+                mezzi: (function(){
                     let m = [];
-                    let ids = ["auto", "moto", "bici", "cavallo", "deltaplano"];
-                    ids.forEach(id => { if(document.getElementById(id).checked) m.push(document.getElementById(id).value); });
+                    if (document.getElementById("auto").checked) m.push("Auto");
+                    if (document.getElementById("moto").checked) m.push("Moto");
+                    if (document.getElementById("bici").checked) m.push("Bici");
+                    if (document.getElementById("cavallo").checked) m.push("Cavallo");
+                    if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
                     return m;
                 })(),
+
                 provincia: document.getElementById("provincia").value,
-                materie: (function() {
+
+                materie: (function(){
                     let lista = [];
                     let opzioni = document.getElementById("materie").options;
-                    for (let i = 0; i < opzioni.length; i++) if (opzioni[i].selected) lista.push(opzioni[i].value);
+                    for (let i = 0; i < opzioni.length; i++) {
+                        if (opzioni[i].selected) lista.push(opzioni[i].value);
+                    }
                     return lista;
                 })()
             };
 
             let anno = new Date(persona.dataNascita).getFullYear();
-            persona.eta = new Date().getFullYear() - anno;
+            let oggi = new Date().getFullYear();
+            persona.eta = oggi - anno;
             persona.generazione = getGenerazione(anno);
 
             ele.push(persona);
             localStorage.setItem("elenco", JSON.stringify(ele));
-          
+            
+            alert("Dati salvati!");
         }
     </script>
 </body>
