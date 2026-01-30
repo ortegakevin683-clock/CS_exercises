@@ -6,29 +6,32 @@
     <body>
         <h2>Elenco Completo Anagrafica 5.0</h2>
         <div id="cont"></div>
-        
         <script>
-            let par;
-            let co = document.getElementById("cont");
             let s = JSON.parse(localStorage.getItem("elenco"));
 
-            if (s && s.length > 0) {
-                for(i=0; i<s.length; i++){
-                    par = document.createElement("p");
-                    
-                    par.textContent = (i+1) + ") " + 
-                        s[i].nome + " " + s[i].cognome + " | " +
-                        "Città: " + s[i].citta + " (" + s[i].provincia + "), CAP: " + s[i].cap + " | " +
-                        "Nato il: " + s[i].dataNascita + " (Età: " + s[i].eta + ", " + s[i].generazione + ") | " +
-                        "Sesso: " + s[i].sesso + " | " +
-                        "Mezzi: " + (s[i].mezzi.length > 0 ? s[i].mezzi.join(", ") : "Nessuno") + " | " +
-                        "Materie: " + (s[i].materie.length > 0 ? s[i].materie.join(", ") : "Nessuna");
-                    
-                    co.appendChild(par);
-                }
-            } else {
-                co.innerHTML = "<p>L'elenco è vuoto.</p>";
-            }
+            for(int i=0;i<s.length;i++){
+            function riempiTabella(){
+                let table = document.getElementById("datiPerson");
+                let html = "";
+                html += "<td>";
+                html += "Nome";
+                html += "Cognome";
+                html += "Citta";
+                html += "CAP";
+                html += "DataNascita";
+                html += "Sesso";
+                html += "Mezzi";
+                html += "Provincia";
+                html += "Materie";
+                html += "</td>";
+                for(int i=0;i<s.length;i++){
+                    html += "<tr>";
+                    html += "<td>" + s[i] + "</td>";
+        html += "<td>" + persone[i].cognome + "</td>";
+        html += "<td>" + persone[i].eta + "</td>";
+        html += "</tr>";
+                
+
         </script>
 
         <br>
