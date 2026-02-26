@@ -85,10 +85,8 @@
         messaggio.textContent = "L'elenco è vuoto.";
         contenitore.appendChild(messaggio);
     } else {
-        // creo la tabella
         let tabella = document.createElement("table");
 
-        // riga intestazione
         let intestazione = document.createElement("tr");
 
         let colonne = [
@@ -105,60 +103,49 @@
 
         tabella.appendChild(intestazione);
 
-        // righe con i dati
         for (let i = 0; i < dati.length; i++) {
             let persona = dati[i];
 
             let riga = document.createElement("tr");
 
-            // N°
             let cellaNum = document.createElement("td");
             cellaNum.textContent = (i + 1);
             riga.appendChild(cellaNum);
 
-            // Nome Cognome
             let cellaNome = document.createElement("td");
             cellaNome.textContent = (persona.nome || "") + " " + (persona.cognome || "");
             riga.appendChild(cellaNome);
 
-            // Città (Provincia)
             let cellaCitta = document.createElement("td");
             cellaCitta.textContent = (persona.citta || "") + " (" + (persona.provincia || "") + ")";
             riga.appendChild(cellaCitta);
 
-            // CAP
             let cellaCap = document.createElement("td");
             cellaCap.textContent = persona.cap || "";
             riga.appendChild(cellaCap);
 
-            // Data nascita
             let cellaData = document.createElement("td");
             cellaData.textContent = persona.dataNascita || "–";
             riga.appendChild(cellaData);
 
-            // Età
             let cellaEta = document.createElement("td");
             cellaEta.textContent = persona.eta || "–";
             riga.appendChild(cellaEta);
 
-            // Generazione
             let cellaGen = document.createElement("td");
             cellaGen.textContent = persona.generazione || "–";
             riga.appendChild(cellaGen);
-
-            // Sesso
+            
             let cellaSesso = document.createElement("td");
             cellaSesso.textContent = persona.sesso || "N/D";
             riga.appendChild(cellaSesso);
 
-            // Mezzi
             let cellaMezzi = document.createElement("td");
             cellaMezzi.textContent = persona.mezzi && persona.mezzi.length > 0 
                 ? persona.mezzi.join(", ") 
                 : "Nessuno";
             riga.appendChild(cellaMezzi);
 
-            // Materie
             let cellaMaterie = document.createElement("td");
             cellaMaterie.textContent = persona.materie && persona.materie.length > 0 
                 ? persona.materie.join(", ") 
