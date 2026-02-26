@@ -1,171 +1,144 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>localStorage - Stampa Completa</title>
+    <title>Stampa Anagrafica</title>
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #eeeeee;
-            margin: 30px;
-            color: #333;
+            font-family: Arial;
+            margin: 20px;
+            background: #f0f0f0;
         }
-
+        
         h2 {
             text-align: center;
-            color: black;
         }
-
+        
         table {
-            width: 100%;
-            max-width: 900px;
-            margin: 20px auto;
+            border: 1px solid black;
             border-collapse: collapse;
-            background: white;
+            width: 100%;
         }
-
+        
         th, td {
-            border: 1px solid #999;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px;
+            border: 1px solid black;
+            padding: 6px;
         }
-
+        
         th {
-            background: #336699;
+            background: #6699cc;
             color: white;
         }
-
-        tr:nth-child(even) {
-            background: #f5f5f5;
-        }
-
+        
         button {
-            background: #336699;
+            background: #6699cc;
             color: white;
-            border: 0;
-            padding: 10px 30px;
-            font-size: 16px;
-            margin: 20px 0;
-            cursor: pointer;
+            border: none;
+            padding: 8px 20px;
+            margin: 20px;
         }
-
-        button:hover {
-            background: #224466;
-        }
-
+        
         a {
+            text-align: center;
             display: block;
-            text-align: center;
-            color: #444;
-            margin: 15px 0;
-        }
-
-        #vuoto {
-            text-align: center;
-            color: #666;
-            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-<h2>Elenco Completo Anagrafica 5.0</h2>
+<h2>Elenco Anagrafica 5.0</h2>
 
-<div id="cont"></div>
+<div id="contenuto"></div>
 
 <script>
-    let dati = JSON.parse(localStorage.getItem("elenco")) || [];
+    let elenco = JSON.parse(localStorage.getItem("elenco")) || [];
+    let div = document.getElementById("contenuto");
 
-    let contenitore = document.getElementById("cont");
-
-    if (dati.length === 0) {
-        let messaggio = document.createElement("p");
-        messaggio.id = "vuoto";
-        messaggio.textContent = "L'elenco è vuoto.";
-        contenitore.appendChild(messaggio);
+    if (elenco.length == 0) {
+        let p = document.createElement("p");
+        p.innerHTML = "Non ci sono persone salvate.";
+        div.appendChild(p);
     } else {
         let tabella = document.createElement("table");
 
-        let intestazione = document.createElement("tr");
-
-        let colonne = [
-            "N°", "Nome e Cognome", "Città (Provincia)", "CAP", 
-            "Data nascita", "Età", "Generazione", "Sesso", 
-            "Mezzi posseduti", "Materie preferite"
-        ];
-
-        colonne.forEach(function(testo) {
+        let rigaHeader = document.createElement("tr");
+        
+        let titoli = ["Nr", "Nome Cognome", "Città e Prov", "CAP", "Data Nascita", "Età", "Generazione", "Sesso", "Mezzi", "Materie"];
+        
+        for (let i = 0; i < titoli.length; i++) {
             let th = document.createElement("th");
-            th.textContent = testo;
-            intestazione.appendChild(th);
-        });
+            th.innerHTML = titoli[i];
+            rigaHeader.appendChild(th);
+        }
+        
+        tabella.appendChild(rigaHeader);
 
-        tabella.appendChild(intestazione);
-
-        for (let i = 0; i < dati.length; i++) {
-            let persona = dati[i];
-
-            let riga = document.createElement("tr");
-
-            let cellaNum = document.createElement("td");
-            cellaNum.textContent = (i + 1);
-            riga.appendChild(cellaNum);
-
-            let cellaNome = document.createElement("td");
-            cellaNome.textContent = (persona.nome || "") + " " + (persona.cognome || "");
-            riga.appendChild(cellaNome);
-
-            let cellaCitta = document.createElement("td");
-            cellaCitta.textContent = (persona.citta || "") + " (" + (persona.provincia || "") + ")";
-            riga.appendChild(cellaCitta);
-
-            let cellaCap = document.createElement("td");
-            cellaCap.textContent = persona.cap || "";
-            riga.appendChild(cellaCap);
-
-            let cellaData = document.createElement("td");
-            cellaData.textContent = persona.dataNascita || "–";
-            riga.appendChild(cellaData);
-
-            let cellaEta = document.createElement("td");
-            cellaEta.textContent = persona.eta || "–";
-            riga.appendChild(cellaEta);
-
-            let cellaGen = document.createElement("td");
-            cellaGen.textContent = persona.generazione || "–";
-            riga.appendChild(cellaGen);
+        for (let i = 0; i < elenco.length; i++) {
+            let persona = elenco[i];
             
-            let cellaSesso = document.createElement("td");
-            cellaSesso.textContent = persona.sesso || "N/D";
-            riga.appendChild(cellaSesso);
+            let riga = document.createElement("tr");
+            
+            let td1 = document.createElement("td");
+            td1.innerHTML = i + 1;
+            riga.appendChild(td1);
 
-            let cellaMezzi = document.createElement("td");
-            cellaMezzi.textContent = persona.mezzi && persona.mezzi.length > 0 
-                ? persona.mezzi.join(", ") 
-                : "Nessuno";
-            riga.appendChild(cellaMezzi);
+            let td2 = document.createElement("td");
+            td2.innerHTML = persona.nome + " " + persona.cognome;
+            riga.appendChild(td2);
+            
+            let td3 = document.createElement("td");
+            td3.innerHTML = persona.citta + " (" + persona.provincia + ")";
+            riga.appendChild(td3);
+            
+            let td4 = document.createElement("td");
+            td4.innerHTML = persona.cap;
+            riga.appendChild(td4);
+            
+            let td5 = document.createElement("td");
+            td5.innerHTML = persona.dataNascita;
+            riga.appendChild(td5);
 
-            let cellaMaterie = document.createElement("td");
-            cellaMaterie.textContent = persona.materie && persona.materie.length > 0 
-                ? persona.materie.join(", ") 
-                : "Nessuna";
-            riga.appendChild(cellaMaterie);
-
+            let td6 = document.createElement("td");
+            td6.innerHTML = persona.eta;
+            riga.appendChild(td6);
+            
+            let td7 = document.createElement("td");
+            td7.innerHTML = persona.generazione;
+            riga.appendChild(td7);
+            
+            let td8 = document.createElement("td");
+            td8.innerHTML = persona.sesso;
+            riga.appendChild(td8);
+            
+            let td9 = document.createElement("td");
+            if (persona.mezzi.length > 0) {
+                td9.innerHTML = persona.mezzi.join(", ");
+            } else {
+                td9.innerHTML = "nessuno";
+            }
+            riga.appendChild(td9);
+            
+            let td10 = document.createElement("td");
+            if (persona.materie.length > 0) {
+                td10.innerHTML = persona.materie.join(", ");
+            } else {
+                td10.innerHTML = "nessuna";
+            }
+            riga.appendChild(td10);
+            
             tabella.appendChild(riga);
         }
 
-        contenitore.appendChild(tabella);
+        div.appendChild(tabella);
     }
 </script>
 
 <br>
 
-<a href="anagrafica5.0.html">Torna all'inserimento</a>
+<a href="anagrafica5.0.html">Torna indietro</a>
 
 <br><br>
 
-<button onclick="localStorage.clear(); location.reload();">Svuota tutto l'elenco</button>
+<button onclick="localStorage.clear(); location.reload();">Cancella tutto</button>
 
 </body>
 </html>
