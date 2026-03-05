@@ -2,40 +2,34 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Anagrafica 5.0</title>
+    <title>Anagrafica 6.0</title>
     <style>
         body { font-family: Arial; background: #eeeeee; margin: 30px; }
         h2 { text-align: center; }
         input, select { width: 280px; padding: 5px; margin-bottom: 5px; }
         button { background: #336699; color: white; padding: 10px 40px; font-size: 16px; }
-        .rosso { color: red; font-size: 13px; display: none; }
     </style>
 </head>
 <body>
 <h2>Anagrafica Utente</h2>
 
 Nome:<br>
-<input type="text" id="nome">
-<span class="rosso" id="errNome">Solo lettere e spazi!</span><br><br>
+<input type="text" id="nome"><br><br>
 
 Cognome:<br>
-<input type="text" id="cognome">
-<span class="rosso" id="errCognome">Solo lettere e spazi!</span><br><br>
+<input type="text" id="cognome"><br><br>
 
 Città:<br>
 <input type="text" id="citta"><br><br>
 
 CAP:<br>
-<input type="text" id="cap" maxlength="5">
-<span class="rosso" id="errCap">Deve essere 5 numeri!</span><br><br>
+<input type="text" id="cap" maxlength="5"><br><br>
 
 Email:<br>
-<input type="text" id="email">
-<span class="rosso" id="errEmail">Email non valida!</span><br><br>
+<input type="text" id="email"><br><br>
 
 Codice Fiscale:<br>
-<input type="text" id="cf" maxlength="16" style="text-transform:uppercase;">
-<span class="rosso" id="errCF">Deve avere 16 caratteri!</span><br><br>
+<input type="text" id="cf" maxlength="16" style="text-transform:uppercase;"><br><br>
 
 Data di nascita:<br>
 <input type="date" id="dataNascita"><br><br>
@@ -80,42 +74,32 @@ function invia() {
 
     let nome = document.getElementById("nome").value;
     if (!/^[a-zA-Z ]+$/.test(nome)) {
-        document.getElementById("errNome").style.display = "inline";
+        alert("Errore: Nome solo lettere e spazi!");
         return;
-    } else {
-        document.getElementById("errNome").style.display = "none";
     }
 
     let cognome = document.getElementById("cognome").value;
     if (!/^[a-zA-Z ]+$/.test(cognome)) {
-        document.getElementById("errCognome").style.display = "inline";
+        alert("Errore: Cognome solo lettere e spazi!");
         return;
-    } else {
-        document.getElementById("errCognome").style.display = "none";
     }
 
     let cap = document.getElementById("cap").value;
     if (cap.length != 5 || isNaN(cap)) {
-        document.getElementById("errCap").style.display = "inline";
+        alert("Errore: CAP deve essere 5 numeri!");
         return;
-    } else {
-        document.getElementById("errCap").style.display = "none";
     }
 
     let email = document.getElementById("email").value;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        document.getElementById("errEmail").style.display = "inline";
+        alert("Errore: Email non valida!");
         return;
-    } else {
-        document.getElementById("errEmail").style.display = "none";
     }
 
     let cf = document.getElementById("cf").value.toUpperCase();
     if (!/^[A-Z0-9]{16}$/.test(cf)) {
-        document.getElementById("errCF").style.display = "inline";
+        alert("Errore: Codice Fiscale deve avere 16 caratteri!");
         return;
-    } else {
-        document.getElementById("errCF").style.display = "none";
     }
 
     let p = {
