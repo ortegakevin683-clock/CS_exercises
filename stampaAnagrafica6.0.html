@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stampa Anagrafica</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f0f0f0; }
+        h2 { text-align: center; }
+        table { border: 1px solid black; border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 6px; text-align: left; }
+        th { background: #6699cc; color: white; }
+        button { background: #6699cc; color: white; border: none; padding: 8px 20px; margin: 20px; }
+        a { text-align: center; display: block; }
+    </style>
+</head>
+<body>
+<h2>Elenco Anagrafica 5.0</h2>
+<div id="contenuto"></div>
 
+<script>
+    let elenco = JSON.parse(localStorage.getItem("elenco")) || [];
+    let div = document.getElementById("contenuto");
+
+    if (elenco.length == 0) {
+        div.innerHTML = "<p>Non ci sono persone salvate.</p>";
+    } else {
+        let tabella = "<table><tr><th>Nr</th><th>Nome Cognome</th><th>Città e Prov</th><th>CAP</th><th>Data Nascita</th><th>Età</th><th>Generazione</th><th>Sesso</th><th>Mezzi</th><th>Materie</th></tr>";
+
+        for (let i = 0; i < elenco.length; i++) {
+            let p = elenco[i];
+            
+            let mezzi = "nessuno";
+            if (p.mezzi.length > 0) mezzi = p.mezzi.join(", ");
+            
+            let materie = "nessuna";
+            if (p.materie.length > 0) materie = p.materie.join(", ");
+
+            tabella += "<tr>" +
+                "<td>" + (i+1) + "</td>" +
+                "<td>" + p.nome + " " + p.cognome + "</td>" +
+                "<td>" + p.citta + " (" + p.provincia + ")</td>" +
+                "<td>" + p.cap + "</td>" +
+                "<td>" + p.dataNascita + "</td>" +
+                "<td>" + p.eta + "</td>" +
+                "<td>" + p.generazione + "</td>" +
+                "<td>" + p.sesso + "</td>" +
+                "<td>" + mezzi + "</td>" +
+                "<td>" + materie + "</td>" +
+                "</tr>";
+        }
+        tabella += "</table>";
+        div.innerHTML = tabella;
+    }
+</script>
+
+<br>
+<a href="Anagrafica6.0.html">Torna indietro</a>
+<br><br>
+<button onclick="localStorage.clear(); location.reload();">Cancella tutto</button>
+</body>
+</html>
