@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Anagrafica 5.0</title>
+    <style>
+        body { font-family: Arial; background: #eeeeee; margin: 30px; }
+        h2 { text-align: center; }
+        input, select { width: 280px; padding: 5px; margin-bottom: 5px; }
+        button { background: #336699; color: white; padding: 10px 40px; font-size: 16px; }
+        .rosso { color: red; font-size: 13px; display: none; }
+    </style>
+</head>
+<body>
+<h2>Anagrafica Utente</h2>
 
+Nome:<br>
+<input type="text" id="nome">
+<span class="rosso" id="errNome">Solo lettere e spazi!</span><br><br>
+
+Cognome:<br>
+<input type="text" id="cognome">
+<span class="rosso" id="errCognome">Solo lettere e spazi!</span><br><br>
+
+Città:<br>
+<input type="text" id="citta"><br><br>
+
+CAP:<br>
+<input type="text" id="cap" maxlength="5">
+<span class="rosso" id="errCap">Deve essere 5 numeri!</span><br><br>
+
+Email:<br>
+<input type="text" id="email">
+<span class="rosso" id="errEmail">Email non valida!</span><br><br>
+
+Codice Fiscale:<br>
+<input type="text" id="cf" maxlength="16" style="text-transform:uppercase;">
+<span class="rosso" id="errCF">Deve avere 16 caratteri!</span><br><br>
+
+Data di nascita:<br>
+<input type="date" id="dataNascita"><br><br>
+
+Sesso:<br>
+<input type="radio" name="sesso" id="sessoM" value="Maschio"> Maschio
+<input type="radio" name="sesso" id="sessoF" value="Femmina"> Femmina
+<input type="radio" name="sesso" id="sessoAltro" value="Altro"> Altro<br><br>
+
+Mezzi posseduti:<br>
+<input type="checkbox" id="auto"> Auto
+<input type="checkbox" id="moto"> Moto
+<input type="checkbox" id="bici"> Bici
+<input type="checkbox" id="cavallo"> Cavallo
+<input type="checkbox" id="deltaplano"> Deltaplano<br><br>
+
+Provincia:<br>
+<select id="provincia">
+    <option value="MI">Milano</option>
+    <option value="VA">Varese</option>
+    <option value="NA">Napoli</option>
+    <option value="TO">Torino</option>
+    <option value="FI">Firenze</option>
+</select><br><br>
+
+Materie preferite:<br>
+<select id="materie" multiple size="5">
+    <option value="Italiano">Italiano</option>
+    <option value="Storia">Storia</option>
+    <option value="Matematica">Matematica</option>
+    <option value="TPSIT">TPS</option>
+    <option value="Inglese">Inglese</option>
+</select><br><br>
+
+<button onclick="invia()">Invia</button><br><br>
+<a href="stampaAnagrafica.html">Stampa</a>
+
+<script>
+let elenco = JSON.parse(localStorage.getItem("elenco")) || [];
+
+function invia() {
+
+    let nome = document.getElementById("nome").value;
+    if (!/^[a-zA-Z ]+$/.test(nome)) {
+        document.getElementById("errNome").style.display = "inline";
+        return;
+    } else {
+        document.getElementById("errNome").style.display = "none";
+    }
+
+    let cognome = document.getElementById("cognome").value;
+    if (!/^[a-zA-Z ]+$/.test(cognome)) {
+        document.getElementById("errCognome").style.display = "inline";
+        return;
+    } else {
+        document.getElementById("errCognome").style.display = "none";
+    }
+
+    let cap = document.getElementById("cap").value;
+    if (cap.length != 5 || isNaN(cap)) {
+        document.getElementById("errCap").style.display = "inline";
+        return;
+    } else {
+        document.getElementById("errCap").style.display = "none";
+    }
+
+    let email = document.getElementById("email").value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById("errEmail").style.display = "inline";
+        return;
+    } else {
+        document.getElementById("errEmail").style.display = "none";
+    }
+
+    let cf = document.getElementById("cf").value.toUpperCase();
+    if (!/^[A-Z0-9]{16}$/.test(cf)) {
+        document.getElementById("errCF").style.display = "inline";
+        return;
+    } else {
+        document.getElementById("errCF").style.display = "none";
+    }
+
+    let p = {
+        nome: nome,
+        cognome: cognome,
+        citta: document.getElementById("citta").value,
+        cap: cap,
+        email: email,
+        codiceFiscale: cf,
+        dataNascita: document.getElementById("dataNascita").value,
+        sesso: "N/D",
+        mezzi: [],
+        provincia: document.getElementById("provincia").value,
+        materie: []
+    };
+
+    if (document.getElementById("sessoM").checked) {
+        p.sesso = "Maschio";
+    }
+    else if (document.getElementById("sessoF").checked) {
+        p.sesso = "Femmina";
+    }
+    else if (document.getElementById("sessoAltro").checked) {
+        p.sesso = "Altro";
+    }
+
+    if (document.getElementById("auto").checked) p.mezzi.push("Auto");
+    if (document.getElementById("moto").checked) p.mezzi.push("Moto");
+    if (document.getElementById("bici").checked) p.mezzi.push("Bici");
+    if (document.getElementById("cavallo").checked) p.mezzi.push("Cavallo");
+    if (document.getElementById("deltaplano").checked) p.mezzi.push("Deltaplano");
+
+    let sel = document.getElementById("materie");
+    for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].selected) p.materie.push(sel.options[i].value);
+    }
+
+    if (p.dataNascita != "") {
+        let anno = new Date(p.dataNascita).getFullYear();
+        p.eta = new Date().getFullYear() - anno;
+        if (anno >= 2013) p.generazione = "Generazione Alpha";
+        else if (anno >= 1997) p.generazione = "Generazione Z";
+        else if (anno >= 1981) p.generazione = "Millennials";
+        else if (anno >= 1965) p.generazione = "Generazione X";
+        else p.generazione = "Generazione vecchia";
+    }
+
+    elenco.push(p);
+    localStorage.setItem("elenco", JSON.stringify(elenco));
+
+    alert("Dati salvati correttamente!");
+}
+</script>
+</body>
+</html>
