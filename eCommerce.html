@@ -16,6 +16,8 @@
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
     }
+
+    /* --- NAVBAR --- */
     nav {
       background-color: #2c3e50;
       padding: 12px 20px;
@@ -25,17 +27,17 @@
     }
 
     nav button {
-      background-color: #3498db;
+      background-color: #ff7f50;
       color: white;
       border: none;
       padding: 8px 16px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 14px;
     }
 
     nav button:hover {
-      background-color: #2980b9;
+      background-color: #e8673a;
     }
 
     nav span {
@@ -44,6 +46,8 @@
       font-weight: bold;
       margin-right: auto;
     }
+
+    /* --- SEZIONI --- */
     .sezione {
       display: none;
       max-width: 900px;
@@ -62,6 +66,8 @@
       margin-bottom: 20px;
       color: #2c3e50;
     }
+
+    /* --- FORM --- */
     .form-gruppo {
       margin-bottom: 14px;
     }
@@ -82,18 +88,18 @@
     }
 
     .btn-primario {
-      background-color: #27ae60;
+      background-color: #ff7f50;
       color: white;
       border: none;
       padding: 10px 20px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 14px;
       margin-top: 8px;
     }
 
     .btn-primario:hover {
-      background-color: #229954;
+      background-color: #e8673a;
     }
 
     .messaggio {
@@ -101,6 +107,8 @@
       font-size: 14px;
       color: #e74c3c;
     }
+
+    /* --- VETRINA --- */
     #carica-csv {
       margin-bottom: 20px;
     }
@@ -108,6 +116,8 @@
     #carica-csv input[type="file"] {
       margin-left: 10px;
     }
+
+    /* Flexbox per i prodotti */
     #lista-prodotti {
       display: flex;
       flex-wrap: wrap;
@@ -117,11 +127,17 @@
     .box-prodotto {
       background-color: #fafafa;
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: 12px;
       padding: 14px;
       width: calc(33% - 12px);
       min-width: 200px;
       flex-grow: 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .box-prodotto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .box-prodotto img {
@@ -170,7 +186,7 @@
       border: none;
       padding: 7px 14px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 13px;
       width: 100%;
     }
@@ -199,7 +215,7 @@
       border: none;
       padding: 4px 10px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 12px;
     }
 
@@ -217,13 +233,17 @@
   </style>
 </head>
 <body>
+
+<!-- NAVBAR -->
 <nav>
   <span>🛒 NegozioCSV</span>
-  <button onclick="mostraSezione('login')">Login</button>
+  <button id="btn-login-nav" onclick="mostraSezione('login')">Login</button>
   <button onclick="mostraSezione('registrazione')">Registrazione</button>
   <button onclick="mostraSezione('vetrina')">Vetrina</button>
   <button onclick="mostraSezione('carrello')">Carrello (<span id="conta-carrello">0</span>)</button>
 </nav>
+
+<!-- SEZIONE LOGIN -->
 <div id="login" class="sezione attiva">
   <h2>Accedi al tuo account</h2>
   <div class="form-gruppo">
@@ -237,6 +257,8 @@
   <button class="btn-primario" onclick="faiLogin()">Entra</button>
   <p class="messaggio" id="msg-login"></p>
 </div>
+
+<!-- SEZIONE REGISTRAZIONE -->
 <div id="registrazione" class="sezione">
   <h2>Crea un account</h2>
   <div class="form-gruppo">
@@ -254,6 +276,8 @@
   <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
   <p class="messaggio" id="msg-reg"></p>
 </div>
+
+<!-- SEZIONE VETRINA -->
 <div id="vetrina" class="sezione">
   <h2>Vetrina Prodotti</h2>
   <div id="carica-csv">
@@ -265,6 +289,7 @@
   </div>
 </div>
 
+<!-- SEZIONE CARRELLO -->
 <div id="carrello" class="sezione">
   <h2>Il tuo Carrello</h2>
   <div id="lista-carrello">
@@ -277,8 +302,10 @@
 </div>
 
 <script>
+  // Array dove teniamo gli articoli nel carrello
   var carrello = [];
 
+  // Funzione per cambiare sezione visibile
   function mostraSezione(quale) {
     var sezioni = document.querySelectorAll('.sezione');
     for (var i = 0; i < sezioni.length; i++) {
@@ -286,6 +313,8 @@
     }
     document.getElementById(quale).classList.add('attiva');
   }
+
+  // --- LOGIN ---
   function faiLogin() {
     var email = document.getElementById('login-email').value;
     var password = document.getElementById('login-password').value;
@@ -295,15 +324,23 @@
       msg.textContent = 'Compila tutti i campi!';
       return;
     }
+
+    // Controllo semplice (in un progetto reale ci sarebbe un server)
     if (email === 'utente@test.it' && password === '1234') {
       msg.style.color = 'green';
       msg.textContent = 'Login effettuato! Benvenuto.';
+
+      // Cambiamo il testo del bottone Login nella navbar
+      document.getElementById('btn-login-nav').textContent = 'Ciao, ' + email;
+
       setTimeout(function() { mostraSezione('vetrina'); }, 1000);
     } else {
       msg.style.color = 'red';
       msg.textContent = 'Email o password sbagliati.';
     }
   }
+
+  // --- REGISTRAZIONE ---
   function faiRegistrazione() {
     var nome = document.getElementById('reg-nome').value;
     var email = document.getElementById('reg-email').value;
@@ -323,6 +360,8 @@
     msg.style.color = 'green';
     msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
   }
+
+  // --- LEGGI CSV con FileReader ---
   function leggiCSV(input) {
     var file = input.files[0];
     if (!file) return;
@@ -333,6 +372,7 @@
       var testo = evento.target.result;
       var righe = testo.split('\n');
 
+      // Saltiamo la prima riga (intestazione)
       var datiRighe = [];
       for (var i = 1; i < righe.length; i++) {
         var riga = righe[i].trim();
@@ -341,21 +381,29 @@
         }
       }
 
+      // Svuotiamo la lista prodotti
       var contenitore = document.getElementById('lista-prodotti');
       contenitore.innerHTML = '';
 
+      // Chiamiamo la funzione ricorsiva partendo dall'indice 0
       creaProdottiRicorsivo(datiRighe, 0, contenitore);
     };
 
     reader.readAsText(file);
   }
+
+  // --- FUNZIONE RICORSIVA per creare i box prodotti ---
+  // Prende l'array delle righe, un indice e il contenitore dove aggiungere i box
   function creaProdottiRicorsivo(righe, indice, contenitore) {
+    // Caso base: se abbiamo finito le righe, ci fermiamo
     if (indice >= righe.length) {
       return;
     }
 
+    // Prendiamo la riga corrente
     var colonne = righe[indice];
 
+    // Colonne CSV: nome, marca, descrizione, immagine, prezzo, dimensioni, taglio, giorni, provenienza
     var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
     var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
     var descrizione = colonne[2] ? colonne[2].trim() : 'N/D';
@@ -366,9 +414,11 @@
     var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
     var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
 
+    // Creiamo il div del prodotto
     var box = document.createElement('div');
     box.className = 'box-prodotto';
 
+    // Immagine (se non c'è usiamo un placeholder)
     var srcImmagine = immagine !== '' ? immagine : 'https://via.placeholder.com/300x160?text=No+Immagine';
 
     box.innerHTML =
@@ -387,10 +437,13 @@
 
     contenitore.appendChild(box);
 
+    // Chiamata ricorsiva con l'indice successivo
     creaProdottiRicorsivo(righe, indice + 1, contenitore);
   }
 
+  // --- CARRELLO ---
   function aggiungiAlCarrello(nome, prezzo) {
+    // Cerchiamo se il prodotto è già nel carrello
     var trovato = false;
     for (var i = 0; i < carrello.length; i++) {
       if (carrello[i].nome === nome) {
@@ -414,12 +467,14 @@
   }
 
   function aggiornaCarrello() {
+    // Aggiorna il contatore nella navbar
     var totaleArticoli = 0;
     for (var i = 0; i < carrello.length; i++) {
       totaleArticoli += carrello[i].quantita;
     }
     document.getElementById('conta-carrello').textContent = totaleArticoli;
 
+    // Aggiorna la lista nel carrello
     var lista = document.getElementById('lista-carrello');
     var vuoto = document.getElementById('carrello-vuoto');
     var btnScontrino = document.getElementById('btn-scontrino');
@@ -455,6 +510,7 @@
     btnScontrino.style.display = 'inline-block';
   }
 
+  // --- SCONTRINO PDF con jsPDF ---
   function scaricaScontrino() {
     var doc = new window.jspdf.jsPDF();
 
@@ -490,11 +546,6 @@
     doc.save('scontrino.pdf');
   }
 </script>
-
-</body>
-</html>
-
-  </script>
 
 </body>
 </html>
