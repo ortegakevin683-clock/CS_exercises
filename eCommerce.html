@@ -1,47 +1,498 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Lettura file CSV</title>
-	<style>
-		 body { font-family: Verdana; background: #45454a; margin: 30px; }
-		h2{text-align:center;}
-	</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Negozio Online</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    nav {
+      background-color: #2c3e50;
+      padding: 12px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    nav button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    nav button:hover {
+      background-color: #2980b9;
+    }
+
+    nav span {
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: auto;
+    }
+    .sezione {
+      display: none;
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .sezione.attiva {
+      display: block;
+    }
+
+    .sezione h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    .form-gruppo {
+      margin-bottom: 14px;
+    }
+
+    .form-gruppo label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .form-gruppo input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .btn-primario {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .btn-primario:hover {
+      background-color: #229954;
+    }
+
+    .messaggio {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #e74c3c;
+    }
+    #carica-csv {
+      margin-bottom: 20px;
+    }
+
+    #carica-csv input[type="file"] {
+      margin-left: 10px;
+    }
+    #lista-prodotti {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .box-prodotto {
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 14px;
+      width: calc(33% - 12px);
+      min-width: 200px;
+      flex-grow: 1;
+    }
+
+    .box-prodotto img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .box-prodotto h3 {
+      font-size: 15px;
+      color: #2c3e50;
+      margin-bottom: 4px;
+    }
+
+    .box-prodotto .marca {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .box-prodotto .descrizione {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .box-prodotto .prezzo {
+      font-size: 16px;
+      font-weight: bold;
+      color: #27ae60;
+      margin-bottom: 10px;
+    }
+
+    .box-prodotto .dettagli {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .btn-carrello {
+      background-color: #e67e22;
+      color: white;
+      border: none;
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      width: 100%;
+    }
+
+    .btn-carrello:hover {
+      background-color: #ca6f1e;
+    }
+
+    /* --- CARRELLO --- */
+    #lista-carrello {
+      margin-bottom: 20px;
+    }
+
+    .riga-carrello {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .riga-carrello button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    #totale-carrello {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 16px;
+    }
+
+    #carrello-vuoto {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
+<nav>
+  <span>🛒 NegozioCSV</span>
+  <button onclick="mostraSezione('login')">Login</button>
+  <button onclick="mostraSezione('registrazione')">Registrazione</button>
+  <button onclick="mostraSezione('vetrina')">Vetrina</button>
+  <button onclick="mostraSezione('carrello')">Carrello (<span id="conta-carrello">0</span>)</button>
+</nav>
+<div id="login" class="sezione attiva">
+  <h2>Accedi al tuo account</h2>
+  <div class="form-gruppo">
+    <label>Email</label>
+    <input type="email" id="login-email" placeholder="tuaemail@esempio.com" />
+  </div>
+  <div class="form-gruppo">
+    <label>Password</label>
+    <input type="password" id="login-password" placeholder="La tua password" />
+  </div>
+  <button class="btn-primario" onclick="faiLogin()">Entra</button>
+  <p class="messaggio" id="msg-login"></p>
+</div>
+<div id="registrazione" class="sezione">
+  <h2>Crea un account</h2>
+  <div class="form-gruppo">
+    <label>Nome</label>
+    <input type="text" id="reg-nome" placeholder="Il tuo nome" />
+  </div>
+  <div class="form-gruppo">
+    <label>Email</label>
+    <input type="email" id="reg-email" placeholder="tuaemail@esempio.com" />
+  </div>
+  <div class="form-gruppo">
+    <label>Password</label>
+    <input type="password" id="reg-password" placeholder="Scegli una password" />
+  </div>
+  <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
+  <p class="messaggio" id="msg-reg"></p>
+</div>
+<div id="vetrina" class="sezione">
+  <h2>Vetrina Prodotti</h2>
+  <div id="carica-csv">
+    <label><strong>Carica il file CSV del professore:</strong></label>
+    <input type="file" id="file-csv" accept=".csv" onchange="leggiCSV(this)" />
+  </div>
+  <div id="lista-prodotti">
+    <p style="color:#999; font-style:italic;">Carica un file CSV per vedere i prodotti.</p>
+  </div>
+</div>
 
-  <h2 text-align:center>Carica file CSV</h2>
+<div id="carrello" class="sezione">
+  <h2>Il tuo Carrello</h2>
+  <div id="lista-carrello">
+    <p id="carrello-vuoto">Il carrello è vuoto.</p>
+  </div>
+  <p id="totale-carrello"></p>
+  <button class="btn-primario" onclick="scaricaScontrino()" id="btn-scontrino" style="display:none;">
+    Scarica Scontrino PDF
+  </button>
+</div>
 
-  <input type="file" id="fileInput" accept=".csv">
-  <pre id="output"></pre>
+<script>
+  var carrello = [];
 
-  <script>
-    const fileInput = document.getElementById("fileInput");
-    const output = document.getElementById("output");
+  function mostraSezione(quale) {
+    var sezioni = document.querySelectorAll('.sezione');
+    for (var i = 0; i < sezioni.length; i++) {
+      sezioni[i].classList.remove('attiva');
+    }
+    document.getElementById(quale).classList.add('attiva');
+  }
+  function faiLogin() {
+    var email = document.getElementById('login-email').value;
+    var password = document.getElementById('login-password').value;
+    var msg = document.getElementById('msg-login');
 
-    fileInput.addEventListener("change", function () {
-      const file = this.files[0];
-      if (!file) return;
+    if (email === '' || password === '') {
+      msg.textContent = 'Compila tutti i campi!';
+      return;
+    }
+    if (email === 'utente@test.it' && password === '1234') {
+      msg.style.color = 'green';
+      msg.textContent = 'Login effettuato! Benvenuto.';
+      setTimeout(function() { mostraSezione('vetrina'); }, 1000);
+    } else {
+      msg.style.color = 'red';
+      msg.textContent = 'Email o password sbagliati.';
+    }
+  }
+  function faiRegistrazione() {
+    var nome = document.getElementById('reg-nome').value;
+    var email = document.getElementById('reg-email').value;
+    var password = document.getElementById('reg-password').value;
+    var msg = document.getElementById('msg-reg');
 
-      const reader = new FileReader();
+    if (nome === '' || email === '' || password === '') {
+      msg.textContent = 'Compila tutti i campi!';
+      return;
+    }
 
-      reader.onload = function (e) {
-        const testo = e.target.result;
-        const dati = parseCSV(testo);
-      };
-      reader.readAsText(file);
+    if (password.length < 4) {
+      msg.textContent = 'La password deve essere di almeno 4 caratteri.';
+      return;
+    }
 
-      });
+    msg.style.color = 'green';
+    msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
+  }
+  function leggiCSV(input) {
+    var file = input.files[0];
+    if (!file) return;
 
- 
-	function parseCSV(testo) { 
+    var reader = new FileReader();
 
-    		const righe = testo.split("\n"); 
+    reader.onload = function(evento) {
+      var testo = evento.target.result;
+      var righe = testo.split('\n');
 
-        	for (var i = 0; i < righe.length; i++) {
-                   output.innerHTML+=righe[i].split(',')+"<br>";
-        	}
-	}
+      var datiRighe = [];
+      for (var i = 1; i < righe.length; i++) {
+        var riga = righe[i].trim();
+        if (riga !== '') {
+          datiRighe.push(riga.split(','));
+        }
+      }
+
+      var contenitore = document.getElementById('lista-prodotti');
+      contenitore.innerHTML = '';
+
+      creaProdottiRicorsivo(datiRighe, 0, contenitore);
+    };
+
+    reader.readAsText(file);
+  }
+  function creaProdottiRicorsivo(righe, indice, contenitore) {
+    if (indice >= righe.length) {
+      return;
+    }
+
+    var colonne = righe[indice];
+
+    var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
+    var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
+    var descrizione = colonne[2] ? colonne[2].trim() : 'N/D';
+    var immagine    = colonne[3] ? colonne[3].trim() : '';
+    var prezzo      = colonne[4] ? colonne[4].trim() : '0';
+    var dimensioni  = colonne[5] ? colonne[5].trim() : 'N/D';
+    var taglio      = colonne[6] ? colonne[6].trim() : 'N/D';
+    var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
+    var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
+
+    var box = document.createElement('div');
+    box.className = 'box-prodotto';
+
+    var srcImmagine = immagine !== '' ? immagine : 'https://via.placeholder.com/300x160?text=No+Immagine';
+
+    box.innerHTML =
+      '<img src="' + srcImmagine + '" alt="' + nome + '" onerror="this.src=\'https://via.placeholder.com/300x160?text=No+Immagine\'" />' +
+      '<h3>' + nome + '</h3>' +
+      '<p class="marca">' + marca + '</p>' +
+      '<p class="descrizione">' + descrizione + '</p>' +
+      '<p class="prezzo">€ ' + parseFloat(prezzo).toFixed(2) + '</p>' +
+      '<div class="dettagli">' +
+        'Dimensioni: ' + dimensioni + '<br>' +
+        'Taglio: ' + taglio + '<br>' +
+        'Giorni: ' + giorni + '<br>' +
+        'Provenienza: ' + provenienza +
+      '</div>' +
+      '<button class="btn-carrello" onclick="aggiungiAlCarrello(\'' + nome + '\', ' + parseFloat(prezzo) + ')">Aggiungi al carrello</button>';
+
+    contenitore.appendChild(box);
+
+    creaProdottiRicorsivo(righe, indice + 1, contenitore);
+  }
+
+  function aggiungiAlCarrello(nome, prezzo) {
+    var trovato = false;
+    for (var i = 0; i < carrello.length; i++) {
+      if (carrello[i].nome === nome) {
+        carrello[i].quantita++;
+        trovato = true;
+        break;
+      }
+    }
+
+    if (!trovato) {
+      carrello.push({ nome: nome, prezzo: prezzo, quantita: 1 });
+    }
+
+    aggiornaCarrello();
+    alert(nome + ' aggiunto al carrello!');
+  }
+
+  function rimuoviDalCarrello(indice) {
+    carrello.splice(indice, 1);
+    aggiornaCarrello();
+  }
+
+  function aggiornaCarrello() {
+    var totaleArticoli = 0;
+    for (var i = 0; i < carrello.length; i++) {
+      totaleArticoli += carrello[i].quantita;
+    }
+    document.getElementById('conta-carrello').textContent = totaleArticoli;
+
+    var lista = document.getElementById('lista-carrello');
+    var vuoto = document.getElementById('carrello-vuoto');
+    var btnScontrino = document.getElementById('btn-scontrino');
+    var totaleDiv = document.getElementById('totale-carrello');
+
+    lista.innerHTML = '';
+
+    if (carrello.length === 0) {
+      lista.innerHTML = '<p id="carrello-vuoto" style="color:#999; font-style:italic;">Il carrello è vuoto.</p>';
+      totaleDiv.textContent = '';
+      btnScontrino.style.display = 'none';
+      return;
+    }
+
+    var totale = 0;
+
+    for (var i = 0; i < carrello.length; i++) {
+      var articolo = carrello[i];
+      var subtotale = articolo.prezzo * articolo.quantita;
+      totale += subtotale;
+
+      var riga = document.createElement('div');
+      riga.className = 'riga-carrello';
+      riga.innerHTML =
+        '<span>' + articolo.nome + ' x' + articolo.quantita + '</span>' +
+        '<span>€ ' + subtotale.toFixed(2) + '</span>' +
+        '<button onclick="rimuoviDalCarrello(' + i + ')">Rimuovi</button>';
+
+      lista.appendChild(riga);
+    }
+
+    totaleDiv.textContent = 'Totale: € ' + totale.toFixed(2);
+    btnScontrino.style.display = 'inline-block';
+  }
+
+  function scaricaScontrino() {
+    var doc = new window.jspdf.jsPDF();
+
+    doc.setFontSize(20);
+    doc.text('Scontrino', 20, 20);
+
+    doc.setFontSize(12);
+    doc.text('Data: ' + new Date().toLocaleDateString('it-IT'), 20, 35);
+
+    doc.line(20, 40, 190, 40);
+
+    var y = 50;
+    var totale = 0;
+
+    for (var i = 0; i < carrello.length; i++) {
+      var articolo = carrello[i];
+      var subtotale = articolo.prezzo * articolo.quantita;
+      totale += subtotale;
+
+      doc.text(articolo.nome, 20, y);
+      doc.text('x' + articolo.quantita, 120, y);
+      doc.text('€ ' + subtotale.toFixed(2), 165, y);
+
+      y += 10;
+    }
+
+    doc.line(20, y, 190, y);
+    y += 10;
+
+    doc.setFontSize(14);
+    doc.text('TOTALE: € ' + totale.toFixed(2), 130, y);
+
+    doc.save('scontrino.pdf');
+  }
+</script>
+
+</body>
+</html>
 
   </script>
 
