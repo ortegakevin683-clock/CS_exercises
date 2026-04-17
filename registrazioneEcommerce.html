@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>Global Crafts eCom</title>
+</head>
+  <body>
+    <div id="registrazione" class="sezione">
+  <h2>Crea un account</h2>
+  <div class="form-gruppo">
+    <label>Nome</label>
+    <input type="text" id="reg-nome" placeholder="Il tuo nome" />
+  </div>
+  <div class="form-gruppo">
+    <label>Cognome</label>
+    <input type="text" id="reg-cog" placeholder="il tuo cognome"/>
+  </div>
+   <div class="form-gruppo">
+    <label>CAP</label>
+    <input type="text" id="reg-CAP" placeholder="Il tuo CAP" />
+  </div>
+  <div class="form-gruppo">
+    <label>Indirizzo</label>
+    <input type="text" id="reg-ind" placeholder="Il tuo indirizzo" />
+  </div>
+  <div class="form-gruppo">
+    <label>Email</label>
+    <input type="email" id="reg-email" placeholder="tuaemail@esempio.com" />
+  </div>
+  <div class="form-gruppo">
+    <label>Password</label>
+    <input type="password" id="reg-password" placeholder="Scegli una password" />
+  </div>
+  <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
+  <p class="messaggio" id="msg-reg"></p>
+</div>
+    <script> 
+    function faiRegistrazione() {
+    var nome = document.getElementById('reg-nome').value;
+    var cognome = document.getElementById('reg-cog').value;
+    var CAP = document.getElementById('reg-CAP').value;
+    var indirizzo = document.getElementById('reg-ind').value;
+    var email = document.getElementById('reg-email').value;
+    var password = document.getElementById('reg-password').value;
+    var msg = document.getElementById('msg-reg');
+    if (nome === '' || cognome= '' || CAP== '' || indirizzo== '' || email === '' || password === '') {
+      msg.style.color = 'red';
+      msg.textContent = 'Compila tutti i campi!';
+      return;
+    }
+    if (password.length < 4) {
+      msg.style.color = 'red';
+      msg.textContent = 'La password deve essere di almeno 4 caratteri.';
+      return;
+    }
+    msg.style.color = 'green';
+    msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
+  }
+  </script>
+   
+  </body>
+</html>
