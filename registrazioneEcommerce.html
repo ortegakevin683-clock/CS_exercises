@@ -93,6 +93,13 @@
     msg.style.color = 'green';
     msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
   }
+        function mostraSezione(quale) {
+    var sezioni = document.querySelectorAll('.sezione');
+    for (var i = 0; i < sezioni.length; i++) {
+      sezioni[i].classList.remove('attiva');
+    }
+    document.getElementById(quale).classList.add('attiva');
+  }
   </script>
    
   </body>
