@@ -1,6 +1,12 @@
 <html>
 <head>
   <title>Global Crafts eCom</title>
+   <style>
+        body { font-family: Arial; background: #eeeeee; margin: 30px; }
+        h2 { text-align: center; }
+        input, select { width: 280px; padding: 5px; margin-bottom: 5px; }
+        button { background: #336699; color: white; padding: 10px 40px; font-size: 16px; }
+    </style>
 </head>
   <body>
     <div id="registrazione" class="sezione">
@@ -33,13 +39,43 @@
   <p class="messaggio" id="msg-reg"></p>
 </div>
     <script> 
+       let nome = document.getElementById("reg-nome").value;
+    
+
+    let cognome = document.getElementById("reg-cog").value;
+    
+
+    let cap = document.getElementById("reg-CAP").value;
+    
+    let email = document.getElementById("reg-email").value;
+    
     function faiRegistrazione() {
     var nome = document.getElementById('reg-nome').value;
+    if (!/^[a-zA-Z ]+$/.test(nome)) {
+        alert("Errore: Nome solo lettere e spazi!");
+        return;
+    }
     var cognome = document.getElementById('reg-cog').value;
+    if (!/^[a-zA-Z ]+$/.test(cognome)) {
+        alert("Errore: Cognome solo lettere e spazi!");
+        return;
+    }
     var CAP = document.getElementById('reg-CAP').value;
+    if (cap.length != 5 || isNaN(cap)) {
+        alert("Errore: CAP deve essere 5 numeri!");
+        return;
+    }
     var indirizzo = document.getElementById('reg-ind').value;
     var email = document.getElementById('reg-email').value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Errore: Email non valida!");
+        return;
+    }
     var password = document.getElementById('reg-password').value;
+    if(!/^[a-z0-9_-]{6,18}$/.test(password)){
+      alert("Errore : password non valida";
+      return;
+    }
     var msg = document.getElementById('msg-reg');
     if (nome === '' || cognome= '' || CAP== '' || indirizzo== '' || email === '' || password === '') {
       msg.style.color = 'red';
@@ -51,6 +87,7 @@
       msg.textContent = 'La password deve essere di almeno 4 caratteri.';
       return;
     }
+      
     msg.style.color = 'green';
     msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
   }
