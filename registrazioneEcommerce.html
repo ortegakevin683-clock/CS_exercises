@@ -4,55 +4,65 @@
   <title>Global Crafts eCOM</title>
 
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: Arial;
-      background: #f4f4f4;
+      background: #e9e5dd;
       color: #222;
     }
+
     header {
       text-align: center;
       padding: 20px;
-      background: #ffffff;
-      border-bottom: 2px solid #ddd;
+      background: #2f3b2f;
+      color: #f5f1e6;
       font-size: 22px;
       font-weight: bold;
-      animation: fadeDown 0.6s ease;
+      animation: fadeDown 0.5s ease;
     }
 
     .container {
       display: flex;
     }
+
     .sidebar-left {
       width: 20%;
-      background: #ffffff;
+      background: #2f3b2f;
       height: 100vh;
       padding: 20px;
-      box-sizing: border-box;
-      border-right: 1px solid #ddd;
-      animation: slideLeft 0.6s ease;
+      animation: slideLeft 0.5s ease;
     }
 
     .sidebar-left a {
       display: block;
       text-decoration: none;
-      color: #333;
+      color: white;
       padding: 12px;
       margin-bottom: 10px;
-      background: #f0f0f0;
+      background: #3e4b3e;
       border-radius: 5px;
-      transition: 0.3s;
       text-align: center;
+      transition: 0.3s;
     }
 
     .sidebar-left a:hover {
-      background: #d9d9d9;
+      background: #b08d57;
+      color: #000;
     }
+
     main {
       width: 60%;
       padding: 40px;
       text-align: center;
-      animation: fadeIn 0.8s ease;
+      background: white;
+      margin: 20px;
+      border-radius: 10px;
+      animation: fadeIn 0.6s ease;
     }
 
     input {
@@ -65,7 +75,7 @@
 
     button {
       padding: 10px 25px;
-      background: #4caf50;
+      background: #b08d57;
       color: white;
       border: none;
       border-radius: 5px;
@@ -74,27 +84,30 @@
     }
 
     button:hover {
-      background: #45a049;
+      background: #9a7a48;
       transform: scale(1.05);
     }
     .sidebar-right {
       width: 20%;
-      background: #ffffff;
+      background: #2f3b2f;
+      color: #f5f1e6;
       padding: 20px;
-      box-sizing: border-box;
-      border-left: 1px solid #ddd;
-      animation: slideRight 0.6s ease;
+      animation: slideRight 0.5s ease;
     }
 
     .sidebar-right h3 {
-      border-bottom: 1px solid #ddd;
+      color: #b08d57;
+      margin-top: 15px;
+      border-bottom: 1px solid #b08d57;
       padding-bottom: 5px;
     }
 
     .sidebar-right p {
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
+
     .messaggio {
       margin-top: 15px;
       font-weight: bold;
@@ -107,23 +120,24 @@
     .errore {
       color: red;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
+      from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes slideLeft {
-      from { opacity: 0; transform: translateX(-20px); }
+      from { opacity: 0; transform: translateX(-10px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
     @keyframes slideRight {
-      from { opacity: 0; transform: translateX(20px); }
+      from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
@@ -137,72 +151,53 @@
 <div class="container">
 
   <nav class="sidebar-left">
-    <a href="login.html">Login</a>
-    <a href="registrazione.html">Registrazione</a>
-    <a href="vetrina.html">Vetrina</a>
-    <a href="carrello.html">Carrello</a>
+    <a href="#">Login</a>
+    <a href="#">Registrazione</a>
+    <a href="#">Vetrina</a>
+    <a href="#">Carrello</a>
   </nav>
 
   <main>
     <h2>Registrazione</h2>
 
-    <input type="text" id="reg-nome" placeholder="Nome"><br>
-    <input type="text" id="reg-cog" placeholder="Cognome"><br>
-    <input type="text" id="reg-cap" placeholder="CAP"><br>
-    <input type="text" id="reg-ind" placeholder="Indirizzo"><br>
-    <input type="email" id="reg-email" placeholder="Email"><br>
-    <input type="password" id="reg-password" placeholder="Password"><br>
+    <input type="text" placeholder="Nome"><br>
+    <input type="text" placeholder="Cognome"><br>
+    <input type="text" placeholder="CAP"><br>
+    <input type="text" placeholder="Indirizzo"><br>
+    <input type="email" placeholder="Email"><br>
+    <input type="password" placeholder="Password"><br>
 
-    <button onclick="registra()">Registrati</button>
+    <button>Registrati</button>
 
     <p id="msg" class="messaggio"></p>
   </main>
-  
-  <aside class="sidebar-right">
-    <h3>Chi siamo?</h3>
-    <p>Vendiamo minerali e cristalli naturali selezionati dai nostri esperti del settore. Siamo riconosciuti per le nostre lavorazioni impeccabili e originali</p>
 
-    <h3>Cosa facciamo?</h3>
-    <p>Selezioniamo e vendiamo pezzi unici provenienti da tutto il mondo per farvi scoprire le bellezze minerarie del nostro pianeta terra.</p>
+  <aside class="sidebar-right">
+
+    <h3>Chi siamo</h3>
+
+    <p>
+      Vendiamo <strong>minerali naturali selezionati</strong> da tutto il mondo,
+      scelti uno ad uno per la loro <span style="color:#b08d57;">bellezza unica</span>.
+    </p>
+
+    <p>
+      Ogni pezzo è <strong>autentico</strong> e controllato per garantire qualità e origine.
+    </p>
+
+    <h3>Cosa facciamo</h3>
+
+    <p>
+      Ci occupiamo di <strong>ricerca, selezione e vendita</strong> di minerali rari.
+    </p>
+
+    <p>
+      Offriamo solo <span style="color:#b08d57;">pezzi unici e naturali</span> per collezionisti e appassionati.
+    </p>
 
   </aside>
 
 </div>
-
-<script>
-function registra() {
-
-  let msg = document.getElementById("msg");
-  msg.textContent = "";
-  msg.className = "messaggio";
-
-  let nome = document.getElementById("reg-nome").value;
-  if (!nome) return errore("Nome obbligatorio");
-
-  let cognome = document.getElementById("reg-cog").value;
-  if (!cognome) return errore("Cognome obbligatorio");
-
-  let cap = document.getElementById("reg-cap").value;
-  if (cap.length != 5) return errore("CAP non valido");
-
-  let email = document.getElementById("reg-email").value;
-  if (!email.includes("@")) return errore("Email non valida");
-
-  let password = document.getElementById("reg-password").value;
-  if (password.length < 6) return errore("Password troppo corta");
-
-  msg.classList.add("successo");
-  msg.textContent = "Registrazione completata con successo!";
-  
-  document.querySelectorAll("input").forEach(i => i.value = "");
-}
-
-function errore(testo) {
-  let msg = document.getElementById("msg");
-  msg.classList.add("errore");
-  msg.textContent = testo;
-}
-</script>
 
 </body>
 </html>
