@@ -23,19 +23,18 @@
       color: #f5f1e6;
       font-size: 22px;
       font-weight: bold;
-      animation: fadeDown 0.5s ease;
     }
 
     .container {
       display: flex;
     }
 
+    /* SINISTRA */
     .sidebar-left {
       width: 20%;
       background: #2f3b2f;
       height: 100vh;
       padding: 20px;
-      animation: slideLeft 0.5s ease;
     }
 
     .sidebar-left a {
@@ -47,7 +46,6 @@
       background: #3e4b3e;
       border-radius: 5px;
       text-align: center;
-      transition: 0.3s;
     }
 
     .sidebar-left a:hover {
@@ -55,6 +53,7 @@
       color: #000;
     }
 
+    /* CENTRO */
     main {
       width: 60%;
       padding: 40px;
@@ -62,7 +61,6 @@
       background: #cccccc;
       margin: 20px;
       border-radius: 10px;
-      animation: fadeIn 0.6s ease;
     }
 
     input {
@@ -80,19 +78,18 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     button:hover {
       background: #9a7a48;
-      transform: scale(1.05);
     }
+
+    /* DESTRA */
     .sidebar-right {
       width: 20%;
       background: #2f3b2f;
       color: #f5f1e6;
       padding: 20px;
-      animation: slideRight 0.5s ease;
     }
 
     .sidebar-right h3 {
@@ -108,37 +105,25 @@
       margin-bottom: 12px;
     }
 
+    /* MESSAGGI VISIBILI */
     .messaggio {
       margin-top: 15px;
       font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      display: inline-block;
     }
 
     .successo {
-      color: green;
+      color: #1b5e20;
+      background: #dff5e1;
+      border: 1px solid #a5d6a7;
     }
 
     .errore {
-      color: red;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideLeft {
-      from { opacity: 0; transform: translateX(-10px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes slideRight {
-      from { opacity: 0; transform: translateX(10px); }
-      to { opacity: 1; transform: translateX(0); }
+      color: #b71c1c;
+      background: #fdecea;
+      border: 1px solid #f5c6cb;
     }
 
   </style>
@@ -146,10 +131,11 @@
 
 <body>
 
-<header>Global Crafts</header>
+<header>Global Crafts 💎</header>
 
 <div class="container">
 
+  <!-- SINISTRA -->
   <nav class="sidebar-left">
     <a href="#">Login</a>
     <a href="#">Registrazione</a>
@@ -157,6 +143,7 @@
     <a href="#">Carrello</a>
   </nav>
 
+  <!-- CENTRO -->
   <main>
     <h2>Registrazione</h2>
 
@@ -167,37 +154,56 @@
     <input type="email" placeholder="Email"><br>
     <input type="password" placeholder="Password"><br>
 
-    <button>Registrati</button>
+    <button onclick="registra()">Registrati</button>
 
     <p id="msg" class="messaggio"></p>
   </main>
 
+  <!-- DESTRA -->
   <aside class="sidebar-right">
 
     <h3>Chi siamo</h3>
-
     <p>
-      Vendiamo <strong>minerali naturali selezionati</strong> da tutto il mondo,
-      scelti uno ad uno per la loro <span style="color:#b08d57;">bellezza unica</span>.
-    </p>
-
-    <p>
-      Ogni pezzo è <strong>autentico</strong> e controllato per garantire qualità e origine.
+      Vendiamo minerali naturali selezionati da tutto il mondo.
     </p>
 
     <h3>Cosa facciamo</h3>
-
     <p>
-      Ci occupiamo di <strong>ricerca, selezione e vendita</strong> di minerali rari.
-    </p>
-
-    <p>
-      Offriamo solo <span style="color:#b08d57;">pezzi unici e naturali</span> per collezionisti e appassionati.
+      Selezioniamo e vendiamo pezzi unici per collezionisti e appassionati.
     </p>
 
   </aside>
 
 </div>
+
+<script>
+function registra() {
+
+  let msg = document.getElementById("msg");
+  msg.textContent = "";
+  msg.className = "messaggio";
+
+  let inputs = document.querySelectorAll("input");
+
+  let nome = inputs[0].value;
+  let cognome = inputs[1].value;
+  let cap = inputs[2].value;
+  let indirizzo = inputs[3].value;
+  let email = inputs[4].value;
+  let password = inputs[5].value;
+
+  if (!nome || !cognome || cap.length != 5 || !email.includes("@") || password.length < 6) {
+    msg.classList.add("errore");
+    msg.textContent = "Errore: controlla i dati inseriti";
+    return;
+  }
+
+  msg.classList.add("successo");
+  msg.textContent = "Registrazione eseguita con successo!";
+
+  inputs.forEach(i => i.value = "");
+}
+</script>
 
 </body>
 </html>
