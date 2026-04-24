@@ -1,97 +1,123 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>Global Crafts eCom</title>
-   <style>
-        body { font-family: Arial; background: #eeeeee; margin: 30px; text-align:center}
-        h1{text-align:center}
-        h2 { text-align: center; }
-        input, select { width: 280px; padding: 5px; margin-bottom: 5px; text-align:center}
-        button { background: #336699; color: white; padding: 10px 40px; font-size: 16px; text-align:center}
-    </style>
+  <title>Registrazione</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #1f1f1f;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    input {
+      width: 250px;
+      padding: 8px;
+      margin: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 30px;
+      background: #336699;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Messaggi */
+    .messaggio {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .successo {
+      color: #4CAF50;
+    }
+
+    .errore {
+      color: #ff4d4d;
+    }
+  </style>
 </head>
-  <body>
-    <nav>
-  <span>Global Crafts eCOM</span>
- <nav>
-  <span>Global Crafts eCOM</span>
-  <a href="loginEcommerce.html">Login</a>
-  <a href="registrazioneEcommerce.html">Registrazione</a>
-  <a href="vetrinaEcommerce.html">Vetrina</a>
-  <a href="carrelloEcommerce.html">Carrello</a>
-</nav>
-</nav>
-    <div id="registrazione">
-      <h1>Non sei nostro cliente?<br>REGISTRATI SUBITO</h1>
-  <h2>Crea un account</h2>
-  <div class="form-gruppo">
-    <label>Nome</label>
-    <input type="text" id="reg-nome" placeholder="Il tuo nome" />
-  </div>
-  <div class="form-gruppo">
-    <label>Cognome</label>
-    <input type="text" id="reg-cog" placeholder="il tuo cognome"/>
-  </div>
-   <div class="form-gruppo">
-    <label>CAP</label>
-    <input type="text" id="reg-CAP" placeholder="Il tuo CAP" />
-  </div>
-  <div class="form-gruppo">
-    <label>Indirizzo</label>
-    <input type="text" id="reg-ind" placeholder="Il tuo indirizzo" />
-  </div>
-  <div class="form-gruppo">
-    <label>Email</label>
-    <input type="email" id="reg-email" placeholder="tuaemail@esempio.com" />
-  </div>
-  <div class="form-gruppo">
-    <label>Password</label>
-    <input type="password" id="reg-password" placeholder="Scegli una password" />
-  </div>
-  <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
-  <p class="messaggio" id="msg-reg"></p>
-</div>
-    <script> 
-       let nome = document.getElementById("reg-nome").value;
-      
-    let cognome = document.getElementById("reg-cog").value;
 
-    let cap = document.getElementById("reg-CAP").value;
-    
-    let email = document.getElementById("reg-email").value;
-    
+<body>
+
+  <h1>Registrazione</h1>
+
+  <input type="text" id="reg-nome" placeholder="Nome"><br>
+  <input type="text" id="reg-cog" placeholder="Cognome"><br>
+  <input type="text" id="reg-CAP" placeholder="CAP"><br>
+  <input type="text" id="reg-ind" placeholder="Indirizzo"><br>
+  <input type="email" id="reg-email" placeholder="Email"><br>
+  <input type="password" id="reg-password" placeholder="Password"><br>
+
+  <button onclick="faiRegistrazione()">Registrati</button>
+
+  <p id="msg-reg" class="messaggio"></p>
+
+  <script>
     function faiRegistrazione() {
-    var nome = document.getElementById('reg-nome').value;
-    if (!/^[a-zA-Z ]+$/.test(nome)) {
-        alert("Errore: Nome solo lettere e spazi!");
-        return;
-    }
-    var cognome = document.getElementById('reg-cog').value;
-    if (!/^[a-zA-Z ]+$/.test(cognome)) {
-        alert("Errore: Cognome solo lettere e spazi!");
-        return;
-    }
-    var CAP = document.getElementById('reg-CAP').value;
-    if (cap.length != 5 || isNaN(cap)) {
-        alert("Errore: CAP deve essere 5 numeri!");
-        return;
-    }
-    var indirizzo = document.getElementById('reg-ind').value;
-    var email = document.getElementById('reg-email').value;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert("Errore: Email non valida!");
-        return;
-    }
-    var password = document.getElementById('reg-password').value;
-    if(!/^[a-z0-9_-]{6,18}$/.test(password)){
-      alert("Errore : password non valida";
-      return;
-    }
-    if (nome != '' || cognome != '' || CAP != '' || indirizzo != '' || email != '' || password != '') {
-      
-      return alert("Registrazione eseguita, Benvenuto");
-    }  
 
+      let msg = document.getElementById("msg-reg");
+      msg.textContent = "";
+      msg.className = "messaggio";
+
+      let nome = document.getElementById("reg-nome").value;
+      if (!/^[a-zA-Z ]+$/.test(nome)) {
+        msg.classList.add("errore");
+        msg.textContent = "Nome non valido";
+        return;
+      }
+
+      let cognome = document.getElementById("reg-cog").value;
+      if (!/^[a-zA-Z ]+$/.test(cognome)) {
+        msg.classList.add("errore");
+        msg.textContent = "Cognome non valido";
+        return;
+      }
+
+      let cap = document.getElementById("reg-CAP").value;
+      if (cap.length != 5 || isNaN(cap)) {
+        msg.classList.add("errore");
+        msg.textContent = "CAP non valido";
+        return;
+      }
+
+      let indirizzo = document.getElementById("reg-ind").value;
+      if (indirizzo === "") {
+        msg.classList.add("errore");
+        msg.textContent = "Inserisci indirizzo";
+        return;
+      }
+
+      let email = document.getElementById("reg-email").value;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.classList.add("errore");
+        msg.textContent = "Email non valida";
+        return;
+      }
+
+      let password = document.getElementById("reg-password").value;
+      if (!/^[a-zA-Z0-9_-]{6,18}$/.test(password)) {
+        msg.classList.add("errore");
+        msg.textContent = "Password non valida";
+        return;
+      }
+
+      // ✅ SUCCESSO
+      msg.classList.add("successo");
+      msg.textContent = "Registrazione eseguita con successo!";
+
+      // opzionale: svuota i campi
+      document.querySelectorAll("input").forEach(input => input.value = "");
+    }
   </script>
-   
-  </body>
+
+</body>
+</html>
 </html>
