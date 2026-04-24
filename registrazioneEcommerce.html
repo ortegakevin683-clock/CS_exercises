@@ -1,138 +1,231 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Global Crafts</title>
+  <title>Global Crafts eCOM</title>
+
   <style>
     body {
+      margin: 0;
       font-family: Arial;
       background: #1f1f1f;
       color: white;
+    }
+
+    /* HEADER */
+    header {
       text-align: center;
+      padding: 20px;
+      background: #121212;
+      font-size: 24px;
+      font-weight: bold;
+      color: #c9a44c;
+    }
+
+    /* CONTAINER PRINCIPALE */
+    .container {
+      display: flex;
+    }
+
+    /* SIDEBAR SINISTRA */
+    .sidebar-left {
+      width: 20%;
+      background: #2a2a2a;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar-left a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #333;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .sidebar-left a:hover {
+      background: #c9a44c;
+      color: black;
+    }
+
+    /* CENTRO */
+    main {
+      width: 60%;
       padding: 40px;
+      text-align: center;
     }
 
     input {
       width: 250px;
       padding: 8px;
-      margin: 8px;
-      border-radius: 5px;
+      margin: 6px;
       border: none;
+      border-radius: 5px;
     }
 
     button {
       padding: 10px 30px;
-      background: #336699;
-      color: white;
+      background: #c9a44c;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
     }
+
+    button:hover {
+      background: #e0b85a;
+    }
+
+    /* SIDEBAR DESTRA */
+    .sidebar-right {
+      width: 20%;
+      background: #2c2c2c;
+      padding: 20px;
+      box-sizing: border-box;
+      height: 100vh;
+      border-left: 2px solid #c9a44c;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar-right h3 {
+      color: #c9a44c;
+      border-bottom: 1px solid #c9a44c;
+      padding-bottom: 8px;
+    }
+
+    .sidebar-right p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* MESSAGGIO SUCCESSO */
     .messaggio {
       margin-top: 15px;
       font-weight: bold;
     }
+
     .successo {
       color: #4CAF50;
     }
+
     .errore {
       color: #ff4d4d;
     }
-    .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 200px;
-  height: 100%;
-  background: #2a2a2a;
-  padding-top: 20px;
-}
 
-.sidebar h2 {
-  color: white;
-  text-align: center;
-}
-
-.sidebar a {
-  display: block;
-  color: white;
-  padding: 15px;
-  text-decoration: none;
-}
-
-.sidebar a:hover {
-  background: #444;
-}
   </style>
 </head>
 
 <body>
-  
-<nav class="sidebar">
-  <h2>Menu</h2>
-  <a href="loginEcommerce.html">Login</a>
-  <a href="registrazioneEcommerce.html">Registrazione</a>
-  <a href="vetrinaEcommerce.html">Vetrina</a>
-  <a href="carrelloEcommerce.html">Carrello</a>
-</nav>
 
-  <h1>Benvenuto<br> registratit subito</h1>
+<header>Global Crafts eCOM</header>
 
-  <input type="text" id="reg-nome" placeholder="Nome"><br>
-  <input type="text" id="reg-cog" placeholder="Cognome"><br>
-  <input type="text" id="reg-CAP" placeholder="CAP"><br>
-  <input type="text" id="reg-ind" placeholder="Indirizzo"><br>
-  <input type="email" id="reg-email" placeholder="Email"><br>
-  <input type="password" id="reg-password" placeholder="Password"><br>
+<div class="container">
 
-  <button onclick="faiRegistrazione()">Registrati</button>
+  <!-- SINISTRA -->
+  <nav class="sidebar-left">
+    <a href="loginEcommerce.html">Login</a>
+    <a href="registrazioneEcommerce.html">Registrazione</a>
+    <a href="vetrinaEcommerce.html">Vetrina</a>
+    <a href="carrelloEcommerce.html">Carrello</a>
+  </nav>
 
-  <p id="msg-reg" class="messaggio"></p>
+  <!-- CENTRO -->
+  <main>
+    <h2>Registrazione Minerali</h2>
 
-  <script>
-    function faiRegistrazione() {
-      let msg = document.getElementById("msg-reg");
-      msg.textContent = "";
-      msg.className = "messaggio";
-      let nome = document.getElementById("reg-nome").value;
-      if (!/^[a-zA-Z ]+$/.test(nome)) {
-        msg.classList.add("errore");
-        msg.textContent = "Nome non valido";
-        return;
-      }
-      let cognome = document.getElementById("reg-cog").value;
-      if (!/^[a-zA-Z ]+$/.test(cognome)) {
-        msg.classList.add("errore");
-        msg.textContent = "Cognome non valido";
-        return;
-      }
-      let cap = document.getElementById("reg-CAP").value;
-      if (cap.length != 5 || isNaN(cap)) {
-        msg.classList.add("errore");
-        msg.textContent = "CAP non valido";
-        return;
-      }
-      let indirizzo = document.getElementById("reg-ind").value;
-      if (indirizzo === "") {
-        msg.classList.add("errore");
-        msg.textContent = "Inserisci indirizzo";
-        return;
-      }
-      let email = document.getElementById("reg-email").value;
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msg.classList.add("errore");
-        msg.textContent = "Email non valida";
-        return;
-      }
-      let password = document.getElementById("reg-password").value;
-      if (!/^[a-zA-Z0-9_-]{6,18}$/.test(password)) {
-        msg.classList.add("errore");
-        msg.textContent = "Password non valida";
-        return;
-      }
-      msg.classList.add("successo");
-      msg.textContent = "Registrazione eseguita con successo!";
+    <input type="text" id="reg-nome" placeholder="Nome"><br>
+    <input type="text" id="reg-cog" placeholder="Cognome"><br>
+    <input type="text" id="reg-CAP" placeholder="CAP"><br>
+    <input type="text" id="reg-ind" placeholder="Indirizzo"><br>
+    <input type="email" id="reg-email" placeholder="Email"><br>
+    <input type="password" id="reg-password" placeholder="Password"><br>
 
-  </script>
+    <button onclick="faiRegistrazione()">Registrati</button>
+
+    <p id="msg-reg" class="messaggio"></p>
+  </main>
+
+  <!-- DESTRA -->
+  <aside class="sidebar-right">
+    <h3>Chi siamo</h3>
+
+    <p>
+      Vendiamo minerali e cristalli selezionati da tutto il mondo.
+    </p>
+
+    <p>
+      Ogni pezzo è autentico e scelto per la sua bellezza naturale.
+    </p>
+
+    <p>
+      Portiamo l’energia della natura direttamente a casa tua 💎
+    </p>
+  </aside>
+
+</div>
+
+<script>
+function faiRegistrazione() {
+
+  let msg = document.getElementById("msg-reg");
+  msg.textContent = "";
+  msg.className = "messaggio";
+
+  let nome = document.getElementById("reg-nome").value;
+  if (!/^[a-zA-Z ]+$/.test(nome)) {
+    msg.classList.add("errore");
+    msg.textContent = "Nome non valido";
+    return;
+  }
+
+  let cognome = document.getElementById("reg-cog").value;
+  if (!/^[a-zA-Z ]+$/.test(cognome)) {
+    msg.classList.add("errore");
+    msg.textContent = "Cognome non valido";
+    return;
+  }
+
+  let cap = document.getElementById("reg-CAP").value;
+  if (cap.length != 5 || isNaN(cap)) {
+    msg.classList.add("errore");
+    msg.textContent = "CAP non valido";
+    return;
+  }
+
+  let indirizzo = document.getElementById("reg-ind").value;
+  if (indirizzo === "") {
+    msg.classList.add("errore");
+    msg.textContent = "Inserisci indirizzo";
+    return;
+  }
+
+  let email = document.getElementById("reg-email").value;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.classList.add("errore");
+    msg.textContent = "Email non valida";
+    return;
+  }
+
+  let password = document.getElementById("reg-password").value;
+  if (!/^[a-zA-Z0-9_-]{6,18}$/.test(password)) {
+    msg.classList.add("errore");
+    msg.textContent = "Password non valida";
+    return;
+  }
+
+  // SUCCESSO
+  msg.classList.add("successo");
+  msg.textContent = "Registrazione eseguita con successo! 💎";
+
+  document.querySelectorAll("input").forEach(i => i.value = "");
+}
+</script>
 
 </body>
 </html>
