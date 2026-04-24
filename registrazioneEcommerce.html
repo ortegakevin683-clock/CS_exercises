@@ -18,7 +18,7 @@
   <button> <a href="carrelloEcommerce.html">Carrello</button>
 </nav>
     <div id="registrazione" class="sezione">
-      <h1>Non sei nostro cliente? <br>REGISTRATI SUBITO</h1>
+      <h1>Non sei nostro cliente?<br>REGISTRATI SUBITO</h1>
   <h2>Crea un account</h2>
   <div class="form-gruppo">
     <label>Nome</label>
@@ -49,10 +49,8 @@
 </div>
     <script> 
        let nome = document.getElementById("reg-nome").value;
-    
-
+      
     let cognome = document.getElementById("reg-cog").value;
-    
 
     let cap = document.getElementById("reg-CAP").value;
     
@@ -93,13 +91,6 @@
     }  
     msg.style.color = 'green';
     msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
-  }
-        function mostraSezione(quale) {
-    var sezioni = document.querySelectorAll('.sezione');
-    for (var i = 0; i < sezioni.length; i++) {
-      sezioni[i].classList.remove('attiva');
-    }
-    document.getElementById(quale).classList.add('attiva');
   }
   </script>
    
