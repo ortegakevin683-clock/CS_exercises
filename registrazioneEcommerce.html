@@ -17,7 +17,7 @@
   <button> <a href="vetrinaEcommerce.html">Vetrina</button>
   <button> <a href="carrelloEcommerce.html">Carrello</button>
 </nav>
-    <div id="registrazione" class="sezione">
+    <div id="registrazione">
       <h1>Non sei nostro cliente?<br>REGISTRATI SUBITO</h1>
   <h2>Crea un account</h2>
   <div class="form-gruppo">
@@ -83,15 +83,11 @@
       alert("Errore : password non valida";
       return;
     }
-    var msg = document.getElementById('msg-reg');
-    if (nome === '' || cognome= '' || CAP== '' || indirizzo== '' || email === '' || password === '') {
-      msg.style.color = 'red';
-      msg.textContent = 'Compila tutti i campi!';
-      return;
+    if (nome != '' || cognome != '' || CAP != '' || indirizzo != '' || email != '' || password != '') {
+      
+      return alert("Registrazione eseguita, Benvenuto");
     }  
-    msg.style.color = 'green';
-    msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
-  }
+
   </script>
    
   </body>
