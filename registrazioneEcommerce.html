@@ -7,115 +7,124 @@
     body {
       margin: 0;
       font-family: Arial;
-      background: #1f1f1f;
-      color: white;
+      background: #f4f4f4;
+      color: #222;
     }
-
-    /* HEADER */
     header {
       text-align: center;
       padding: 20px;
-      background: #121212;
-      font-size: 24px;
+      background: #ffffff;
+      border-bottom: 2px solid #ddd;
+      font-size: 22px;
       font-weight: bold;
-      color: #c9a44c;
+      animation: fadeDown 0.6s ease;
     }
 
-    /* CONTAINER PRINCIPALE */
     .container {
       display: flex;
     }
-
-    /* SIDEBAR SINISTRA */
     .sidebar-left {
       width: 20%;
-      background: #2a2a2a;
+      background: #ffffff;
       height: 100vh;
       padding: 20px;
       box-sizing: border-box;
-      position: sticky;
-      top: 0;
+      border-right: 1px solid #ddd;
+      animation: slideLeft 0.6s ease;
     }
 
     .sidebar-left a {
       display: block;
-      color: white;
       text-decoration: none;
+      color: #333;
       padding: 12px;
       margin-bottom: 10px;
-      background: #333;
+      background: #f0f0f0;
       border-radius: 5px;
+      transition: 0.3s;
       text-align: center;
     }
 
     .sidebar-left a:hover {
-      background: #c9a44c;
-      color: black;
+      background: #d9d9d9;
     }
-
-    /* CENTRO */
     main {
       width: 60%;
       padding: 40px;
       text-align: center;
+      animation: fadeIn 0.8s ease;
     }
 
     input {
       width: 250px;
-      padding: 8px;
+      padding: 10px;
       margin: 6px;
-      border: none;
+      border: 1px solid #ccc;
       border-radius: 5px;
     }
 
     button {
-      padding: 10px 30px;
-      background: #c9a44c;
+      padding: 10px 25px;
+      background: #4caf50;
+      color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-weight: bold;
+      transition: 0.3s;
     }
 
     button:hover {
-      background: #e0b85a;
+      background: #45a049;
+      transform: scale(1.05);
     }
-
-    /* SIDEBAR DESTRA */
     .sidebar-right {
       width: 20%;
-      background: #2c2c2c;
+      background: #ffffff;
       padding: 20px;
       box-sizing: border-box;
-      height: 100vh;
-      border-left: 2px solid #c9a44c;
-      position: sticky;
-      top: 0;
+      border-left: 1px solid #ddd;
+      animation: slideRight 0.6s ease;
     }
 
     .sidebar-right h3 {
-      color: #c9a44c;
-      border-bottom: 1px solid #c9a44c;
-      padding-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
     }
 
     .sidebar-right p {
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
-
-    /* MESSAGGIO SUCCESSO */
     .messaggio {
       margin-top: 15px;
       font-weight: bold;
     }
 
     .successo {
-      color: #4CAF50;
+      color: green;
     }
 
     .errore {
-      color: #ff4d4d;
+      color: red;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
 
   </style>
@@ -123,110 +132,77 @@
 
 <body>
 
-<header>Global Crafts eCOM</header>
+<header>Global Crafts eCOM 💎</header>
 
 <div class="container">
 
-  <!-- SINISTRA -->
   <nav class="sidebar-left">
-    <a href="loginEcommerce.html">Login</a>
-    <a href="registrazioneEcommerce.html">Registrazione</a>
-    <a href="vetrinaEcommerce.html">Vetrina</a>
-    <a href="carrelloEcommerce.html">Carrello</a>
+    <a href="login.html">Login</a>
+    <a href="registrazione.html">Registrazione</a>
+    <a href="vetrina.html">Vetrina</a>
+    <a href="carrello.html">Carrello</a>
   </nav>
 
-  <!-- CENTRO -->
   <main>
-    <h2>Registrazione Minerali</h2>
+    <h2>Registrazione</h2>
 
     <input type="text" id="reg-nome" placeholder="Nome"><br>
     <input type="text" id="reg-cog" placeholder="Cognome"><br>
-    <input type="text" id="reg-CAP" placeholder="CAP"><br>
+    <input type="text" id="reg-cap" placeholder="CAP"><br>
     <input type="text" id="reg-ind" placeholder="Indirizzo"><br>
     <input type="email" id="reg-email" placeholder="Email"><br>
     <input type="password" id="reg-password" placeholder="Password"><br>
 
-    <button onclick="faiRegistrazione()">Registrati</button>
+    <button onclick="registra()">Registrati</button>
 
-    <p id="msg-reg" class="messaggio"></p>
+    <p id="msg" class="messaggio"></p>
   </main>
-
-  <!-- DESTRA -->
+  
   <aside class="sidebar-right">
-    <h3>Chi siamo</h3>
+    <h3>Chi siamo?</h3>
+    <p>Vendiamo minerali e cristalli naturali selezionati dai nostri esperti del settore. Siamo riconosciuti per le nostre lavorazioni impeccabili e originali</p>
 
-    <p>
-      Vendiamo minerali e cristalli selezionati da tutto il mondo.
-    </p>
+    <h3>Cosa facciamo?</h3>
+    <p>Selezioniamo e vendiamo pezzi unici provenienti da tutto il mondo per farvi scoprire le bellezze minerarie del nostro pianeta terra.</p>
 
-    <p>
-      Ogni pezzo è autentico e scelto per la sua bellezza naturale.
-    </p>
-
-    <p>
-      Portiamo l’energia della natura direttamente a casa tua 💎
-    </p>
   </aside>
 
 </div>
 
 <script>
-function faiRegistrazione() {
+function registra() {
 
-  let msg = document.getElementById("msg-reg");
+  let msg = document.getElementById("msg");
   msg.textContent = "";
   msg.className = "messaggio";
 
   let nome = document.getElementById("reg-nome").value;
-  if (!/^[a-zA-Z ]+$/.test(nome)) {
-    msg.classList.add("errore");
-    msg.textContent = "Nome non valido";
-    return;
-  }
+  if (!nome) return errore("Nome obbligatorio");
 
   let cognome = document.getElementById("reg-cog").value;
-  if (!/^[a-zA-Z ]+$/.test(cognome)) {
-    msg.classList.add("errore");
-    msg.textContent = "Cognome non valido";
-    return;
-  }
+  if (!cognome) return errore("Cognome obbligatorio");
 
-  let cap = document.getElementById("reg-CAP").value;
-  if (cap.length != 5 || isNaN(cap)) {
-    msg.classList.add("errore");
-    msg.textContent = "CAP non valido";
-    return;
-  }
-
-  let indirizzo = document.getElementById("reg-ind").value;
-  if (indirizzo === "") {
-    msg.classList.add("errore");
-    msg.textContent = "Inserisci indirizzo";
-    return;
-  }
+  let cap = document.getElementById("reg-cap").value;
+  if (cap.length != 5) return errore("CAP non valido");
 
   let email = document.getElementById("reg-email").value;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    msg.classList.add("errore");
-    msg.textContent = "Email non valida";
-    return;
-  }
+  if (!email.includes("@")) return errore("Email non valida");
 
   let password = document.getElementById("reg-password").value;
-  if (!/^[a-zA-Z0-9_-]{6,18}$/.test(password)) {
-    msg.classList.add("errore");
-    msg.textContent = "Password non valida";
-    return;
-  }
+  if (password.length < 6) return errore("Password troppo corta");
 
-  // SUCCESSO
   msg.classList.add("successo");
-  msg.textContent = "Registrazione eseguita con successo! 💎";
-
+  msg.textContent = "Registrazione completata con successo!";
+  
   document.querySelectorAll("input").forEach(i => i.value = "");
+}
+
+function errore(testo) {
+  let msg = document.getElementById("msg");
+  msg.classList.add("errore");
+  msg.textContent = testo;
 }
 </script>
 
 </body>
-</html>
 </html>
