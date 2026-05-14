@@ -1,209 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <title>Global Crafts eCOM</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial;
-      background: #e9e5dd;
-      color: #222;
-    }
-
-    header {
-      text-align: center;
-      padding: 20px;
-      background: #2f3b2f;
-      color: #f5f1e6;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    /* SINISTRA */
-    .sidebar-left {
-      width: 20%;
-      background: #2f3b2f;
-      height: 100vh;
-      padding: 20px;
-    }
-
-    .sidebar-left a {
-      display: block;
-      text-decoration: none;
-      color: white;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: #3e4b3e;
-      border-radius: 5px;
-      text-align: center;
-    }
-
-    .sidebar-left a:hover {
-      background: #b08d57;
-      color: #000;
-    }
-
-    /* CENTRO */
-    main {
-      width: 60%;
-      padding: 40px;
-      text-align: center;
-      background: #cccccc;
-      margin: 20px;
-      border-radius: 10px;
-    }
-
-    input {
-      width: 250px;
-      padding: 10px;
-      margin: 6px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      padding: 10px 25px;
-      background: #b08d57;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #9a7a48;
-    }
-
-    /* DESTRA */
-    .sidebar-right {
-      width: 20%;
-      background: #2f3b2f;
-      color: #f5f1e6;
-      padding: 20px;
-    }
-
-    .sidebar-right h3 {
-      color: #b08d57;
-      margin-top: 15px;
-      border-bottom: 1px solid #b08d57;
-      padding-bottom: 5px;
-    }
-
-    .sidebar-right p {
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    /* MESSAGGI VISIBILI */
-    .messaggio {
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
-      display: inline-block;
-    }
-
-    .successo {
-      color: #1b5e20;
-      background: #dff5e1;
-      border: 1px solid #a5d6a7;
-    }
-
-    .errore {
-      color: #b71c1c;
-      background: #fdecea;
-      border: 1px solid #f5c6cb;
-    }
-
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrazione — NegozioCSV</title>
+  <!-- Collegamento al foglio di stile condiviso -->
+  <link rel="stylesheet" href="stile.css" />
 </head>
-
 <body>
-
-<header>Global Crafts 💎</header>
-
-<div class="container">
-
-  <!-- SINISTRA -->
-  <nav class="sidebar-left">
-    <a href="#">Login</a>
-    <a href="#">Registrazione</a>
-    <a href="#">Vetrina</a>
-    <a href="#">Carrello</a>
-  </nav>
-
-  <!-- CENTRO -->
-  <main>
-    <h2>Registrazione</h2>
-
-    <input type="text" placeholder="Nome"><br>
-    <input type="text" placeholder="Cognome"><br>
-    <input type="text" placeholder="CAP"><br>
-    <input type="text" placeholder="Indirizzo"><br>
-    <input type="email" placeholder="Email"><br>
-    <input type="password" placeholder="Password"><br>
-
-    <button onclick="registra()">Registrati</button>
-
-    <p id="msg" class="messaggio"></p>
-  </main>
-
-  <!-- DESTRA -->
-  <aside class="sidebar-right">
-
-    <h3>Chi siamo</h3>
-    <p>
-      Vendiamo minerali naturali selezionati da tutto il mondo.
+ 
+  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
+  <div id="navbar"></div>
+ 
+  <!-- Contenuto della pagina -->
+  <div class="contenuto">
+    <h2>Crea un account</h2>
+ 
+    <div class="form-gruppo">
+      <label>Nome</label>
+      <input type="text" id="reg-nome" placeholder="Il tuo nome" />
+    </div>
+ 
+    <div class="form-gruppo">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="tuaemail@esempio.com" />
+    </div>
+ 
+    <div class="form-gruppo">
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Scegli una password (min. 4 caratteri)" />
+    </div>
+ 
+    <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
+ 
+    <p class="messaggio" id="msg-reg"></p>
+ 
+    <p style="margin-top: 16px; font-size: 14px; color: #555;">
+      Hai già un account?
+      <a href="loginEcommerce.html" style="color: #ff7f50;">Accedi qui</a>
     </p>
-
-    <h3>Cosa facciamo</h3>
-    <p>
-      Selezioniamo e vendiamo pezzi unici per collezionisti e appassionati.
-    </p>
-
-  </aside>
-
-</div>
-
-<script>
-function registra() {
-
-  let msg = document.getElementById("msg");
-  msg.textContent = "";
-  msg.className = "messaggio";
-
-  let inputs = document.querySelectorAll("input");
-
-  let nome = inputs[0].value;
-  let cognome = inputs[1].value;
-  let cap = inputs[2].value;
-  let indirizzo = inputs[3].value;
-  let email = inputs[4].value;
-  let password = inputs[5].value;
-
-  if (!nome || !cognome || cap.length != 5 || !email.includes("@") || password.length < 6) {
-    msg.classList.add("errore");
-    msg.textContent = "Errore: controlla i dati inseriti";
-    return;
-  }
-
-  msg.classList.add("successo");
-  msg.textContent = "Registrazione eseguita con successo!";
-
-  inputs.forEach(i => i.value = "");
-}
-</script>
-
+  </div>
+ 
+  <!-- Script condivisi -->
+  <script src="navbar.js"></script>
+ 
+  <script>
+    // ============================================================
+    // Logica della Registrazione
+    // ============================================================
+ 
+    function faiRegistrazione() {
+      var nome     = document.getElementById('reg-nome').value;
+      var email    = document.getElementById('reg-email').value;
+      var password = document.getElementById('reg-password').value;
+      var msg      = document.getElementById('msg-reg');
+ 
+      // Controlliamo che tutti i campi siano compilati
+      if (nome === '' || email === '' || password === '') {
+        msg.style.color = 'red';
+        msg.textContent = 'Compila tutti i campi!';
+        return;
+      }
+ 
+      // La password deve avere almeno 4 caratteri
+      if (password.length < 4) {
+        msg.style.color = 'red';
+        msg.textContent = 'La password deve essere di almeno 4 caratteri.';
+        return;
+      }
+ 
+      // Tutto ok: mostriamo il messaggio di successo
+      msg.style.color = 'green';
+      msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
+ 
+      // Dopo 2 secondi portiamo l'utente alla pagina di login
+      setTimeout(function() {
+        window.location.href = 'loginEcommerce.html';
+      }, 2000);
+    }
+  </script>
+ 
 </body>
 </html>
