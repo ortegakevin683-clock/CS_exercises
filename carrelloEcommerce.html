@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrello — NegozioCSV</title>
+  <!-- Collegamento al foglio di stile condiviso -->
+  <link rel="stylesheet" href="stile.css" />
+  <!-- jsPDF: libreria esterna per generare il PDF dello scontrino -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
 
+  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
+  <div id="navbar"></div>
+
+  <!-- Contenuto della pagina -->
+  <div class="contenuto">
+    <h2>Il tuo Carrello</h2>
+
+    <!-- Qui verranno inserite le righe del carrello -->
+    <div id="lista-carrello">
+      <p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>
+    </div>
+
+    <!-- Totale e bottone PDF, nascosti se il carrello è vuoto -->
+    <p id="totale-carrello"></p>
+    <button class="btn-primario" onclick="scaricaScontrino()"
+            id="btn-scontrino" style="display:none;">
+      Scarica Scontrino PDF
+    </button>
+  </div>
+
+  <!-- Script condivisi -->
+  <script src="navbar.js"></script>
+  <script src="carrello.js"></script>
+
+  <script>
+    // ============================================================
+    // Visualizzazione del carrello
+    //
+    // Questa funzione legge il carrello dal localStorage
+    // e ridisegna tutta la lista nella pagina.
+    // Viene chiamata al caricamento e dopo ogni rimozione.
+    // ============================================================
+
+    function mostraCarrello() {
+      var carrello     = leggiCarrello(); // funzione in carrello.js
+      var lista        = document.getElementById('lista-carrello');
+      var totaleDiv    = document.getElementById('totale-carrello');
+      var btnScontrino = document.getElementById('btn-scontrino');
+
+      // Svuotiamo la lista prima di ridisegnarla
+      lista.innerHTML = '';
+
+      // Se il carrello è vuoto mostriamo il messaggio e usciamo
+      if (carrello.length === 0) {
+        lista.innerHTML = '<p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>';
+        totaleDiv.textContent      = '';
+        btnScontrino.style.display = 'none';
+        return;
+      }
+
+      // Costruiamo una riga per ogni articolo nel carrello
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+        var articolo  = carrello[i];
+        var subtotale = articolo.prezzo * articolo.quantita;
+        totale += subtotale;
+
+        var riga = document.createElement('div');
+        riga.className = 'riga-carrello';
+        riga.innerHTML =
+          '<span>' + articolo.nome + ' x' + articolo.quantita + '</span>' +
+          '<span>€ ' + subtotale.toFixed(2) + '</span>' +
+          // Passiamo l'indice i alla funzione di rimozione in carrello.js
+          '<button onclick="rimuoviDalCarrello(' + i + ')">Rimuovi</button>';
+
+        lista.appendChild(riga);
+      }
+
+      // Mostriamo il totale e rendiamo visibile il bottone PDF
+      totaleDiv.textContent      = 'Totale: € ' + totale.toFixed(2);
+      btnScontrino.style.display = 'inline-block';
+    }
+
+    // ============================================================
+    // Generazione dello scontrino PDF con jsPDF
+    // ============================================================
+
+    function scaricaScontrino() {
+      var carrello = leggiCarrello(); // funzione in carrello.js
+      var doc      = new window.jspdf.jsPDF();
+
+      // Titolo e data
+      doc.setFontSize(20);
+      doc.text('Scontrino', 20, 20);
+      doc.setFontSize(12);
+      doc.text('Data: ' + new Date().toLocaleDateString('it-IT'), 20, 35);
+      doc.line(20, 40, 190, 40);
+
+      // Riga per ogni articolo
+      var y      = 50;
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+        var articolo  = carrello[i];
+        var subtotale = articolo.prezzo * articolo.quantita;
+        totale += subtotale;
+
+        doc.text(articolo.nome, 20, y);
+        doc.text('x' + articolo.quantita, 120, y);
+        doc.text('€ ' + subtotale.toFixed(2), 165, y);
+        y += 10;
+      }
+
+      // Riga finale con il totale
+      doc.line(20, y, 190, y);
+      y += 10;
+      doc.setFontSize(14);
+      doc.text('TOTALE: € ' + totale.toFixed(2), 130, y);
+
+      // Scarichiamo il file
+      doc.save('scontrino.pdf');
+    }
+
+    // Quando la pagina si carica, mostriamo subito il carrello
+    window.addEventListener('DOMContentLoaded', mostraCarrello);
+  </script>
+
+</body>
+</html>
