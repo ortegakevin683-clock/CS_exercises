@@ -1,1 +1,82 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — NegozioCSV</title>
+  <!-- Collegamento al foglio di stile condiviso -->
+  <link rel="stylesheet" href="stile.css" />
+</head>
+<body>
+
+  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
+  <div id="navbar"></div>
+
+  <!-- Contenuto della pagina -->
+  <div class="contenuto">
+    <h2>Accedi al tuo account</h2>
+
+    <div class="form-gruppo">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="tuaemail@esempio.com" />
+    </div>
+
+    <div class="form-gruppo">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="La tua password" />
+    </div>
+
+    <button class="btn-primario" onclick="faiLogin()">Entra</button>
+
+    <p class="messaggio" id="msg-login"></p>
+
+    <p style="margin-top: 16px; font-size: 14px; color: #555;">
+      Non hai un account?
+      <a href="registrazioneEcommerce.html" style="color: #ff7f50;">Registrati qui</a>
+    </p>
+  </div>
+
+  <!-- Script condivisi -->
+  <script src="navbar.js"></script>
+
+  <script>
+    // ============================================================
+    // Logica del Login
+    // ============================================================
+
+    function faiLogin() {
+      var email    = document.getElementById('login-email').value;
+      var password = document.getElementById('login-password').value;
+      var msg      = document.getElementById('msg-login');
+
+      // Controlliamo che i campi non siano vuoti
+      if (email === '' || password === '') {
+        msg.style.color = 'red';
+        msg.textContent = 'Compila tutti i campi!';
+        return;
+      }
+
+      // Credenziali di test (in un progetto reale ci sarebbe un server)
+      if (email === 'utente@test.it' && password === '1234') {
+        msg.style.color = 'green';
+        msg.textContent = 'Login effettuato! Reindirizzamento...';
+
+        // Salviamo l'email nel localStorage così la navbar
+        // può mostrare "Ciao, [email]" su tutte le pagine
+        localStorage.setItem('utenteLoggato', email);
+
+        // Dopo 1 secondo portiamo l'utente alla vetrina
+        setTimeout(function() {
+          window.location.href = 'vetrinaEcommerce.html';
+        }, 1000);
+
+      } else {
+        msg.style.color = 'red';
+        msg.textContent = 'Email o password sbagliati.';
+      }
+    }
+  </script>
+
+</body>
+</html>
