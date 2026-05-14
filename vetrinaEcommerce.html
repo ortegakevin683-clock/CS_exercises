@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vetrina — NegozioCSV</title>
+  <!-- Collegamento al foglio di stile condiviso -->
+  <link rel="stylesheet" href="stile.css" />
+</head>
+<body>
 
+  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
+  <div id="navbar"></div>
+
+  <!-- Contenuto della pagina -->
+  <div class="contenuto">
+    <h2>Vetrina Prodotti</h2>
+
+    <div id="carica-csv">
+      <label><strong>Carica il file CSV del professore:</strong></label>
+      <input type="file" id="file-csv" accept=".csv" onchange="leggiCSV(this)" />
+    </div>
+
+    <!-- Qui verranno inseriti i box dei prodotti -->
+    <div id="lista-prodotti">
+      <p style="color:#999; font-style:italic;">Carica un file CSV per vedere i prodotti.</p>
+    </div>
+  </div>
+
+  <!-- Script condivisi -->
+  <script src="navbar.js"></script>
+  <script src="carrello.js"></script>
+
+  <script>
+    // ============================================================
+    // Lettura del file CSV con FileReader
+    // ============================================================
+
+    function leggiCSV(input) {
+      var file = input.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+
+      // Questa funzione scatta quando il file è stato letto completamente
+      reader.onload = function(evento) {
+        var testo = evento.target.result;
+        var righe = testo.split('\n');
+
+        // Saltiamo la prima riga (è l'intestazione con i nomi delle colonne)
+        // e costruiamo un array con le righe dei dati veri
+        var datiRighe = [];
+        for (var i = 1; i < righe.length; i++) {
+          var riga = righe[i].trim();
+          if (riga !== '') {
+            datiRighe.push(riga.split(','));
+          }
+        }
+
+        // Svuotiamo il contenitore e avviamo la funzione ricorsiva
+        var contenitore = document.getElementById('lista-prodotti');
+        contenitore.innerHTML = '';
+
+        // Partiamo dall'indice 0: il primo prodotto
+        creaProdottiRicorsivo(datiRighe, 0, contenitore);
+      };
+
+      // Diciamo al FileReader di leggere il file come testo
+      reader.readAsText(file);
+    }
+
+    // ============================================================
+    // FUNZIONE RICORSIVA — crea i box prodotti uno alla volta
+    //
+    // Parametri:
+    //   righe       = array con tutte le righe del CSV
+    //   indice      = quale riga stiamo elaborando adesso
+    //   contenitore = il div dove aggiungere i box
+    //
+    // Come funziona:
+    //   - CASO BASE: se indice >= righe.length, abbiamo finito → usciamo
+    //   - PASSO RICORSIVO: creiamo il box per la riga "indice",
+    //     poi richiamiamo la stessa funzione con indice + 1
+    //     (così la prossima chiamata elabora la riga successiva)
+    // ============================================================
+    function creaProdottiRicorsivo(righe, indice, contenitore) {
+
+      // --- CASO BASE: abbiamo elaborato tutte le righe, ci fermiamo ---
+      if (indice >= righe.length) {
+        return;
+      }
+
+      // Leggiamo le colonne della riga corrente
+      // Formato CSV: nome, marca, descrizione, immagine, prezzo,
+      //              dimensioni, taglio, giorni, provenienza
+      var colonne     = righe[indice];
+      var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
+      var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
+      var descrizione = colonne[2] ? colonne[2].trim() : 'N/D';
+      var immagine    = colonne[3] ? colonne[3].trim() : '';
+      var prezzo      = colonne[4] ? colonne[4].trim() : '0';
+      var dimensioni  = colonne[5] ? colonne[5].trim() : 'N/D';
+      var taglio      = colonne[6] ? colonne[6].trim() : 'N/D';
+      var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
+      var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
+
+      // Se l'immagine non è specificata usiamo un'immagine segnaposto
+      var srcImg = immagine !== ''
+        ? immagine
+        : 'https://via.placeholder.com/300x160?text=No+Immagine';
+
+      // Creiamo il div del prodotto e lo riempiamo con i dati
+      var box = document.createElement('div');
+      box.className = 'box-prodotto';
+      box.innerHTML =
+        '<img src="' + srcImg + '" alt="' + nome + '" ' +
+             'onerror="this.src=\'https://via.placeholder.com/300x160?text=No+Immagine\'" />' +
+        '<h3>' + nome + '</h3>' +
+        '<p class="marca">' + marca + '</p>' +
+        '<p class="descrizione">' + descrizione + '</p>' +
+        '<p class="prezzo">€ ' + parseFloat(prezzo).toFixed(2) + '</p>' +
+        '<div class="dettagli">' +
+          'Dimensioni: '  + dimensioni  + '<br>' +
+          'Taglio: '      + taglio      + '<br>' +
+          'Giorni: '      + giorni      + '<br>' +
+          'Provenienza: ' + provenienza +
+        '</div>' +
+        '<button class="btn-carrello" ' +
+          'onclick="aggiungiAlCarrello(\'' + nome + '\', ' + parseFloat(prezzo) + ')">' +
+          'Aggiungi al carrello' +
+        '</button>';
+
+      contenitore.appendChild(box);
+
+      // --- PASSO RICORSIVO: passiamo alla riga successiva ---
+      creaProdottiRicorsivo(righe, indice + 1, contenitore);
+    }
+  </script>
+
+</body>
+</html>
