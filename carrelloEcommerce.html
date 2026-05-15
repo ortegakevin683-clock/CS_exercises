@@ -2,85 +2,107 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Riepilogo Ordine - Negozio Professionale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riepilogo - NewCave Portal</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* ... STESSI STILI BASE NAVBAR E LAYOUT ... */
-    :root { --sidebar-bg: #0f172a; --accent: #3b82f6; --bg-main: #f8fafc; --sidebar-width: 260px; }
+    /* STILI IDENTICI AI PRECEDENTI PER SIDEBAR E FOOTER */
+    :root { --sidebar-bg: #0f172a; --accent: #3b82f6; --bg-main: #f8fafc; --footer-bg: #020617; --sidebar-width: 260px; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; }
-    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; position: fixed; height: 100vh; padding-top: 30px; }
-    .logo-area { padding: 0 25px 40px; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
+    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; position: fixed; height: 100vh; padding: 30px 0; }
+    .logo-area { padding: 0 25px 40px; font-size: 1.4rem; font-weight: 800; color: white; letter-spacing: -1px; }
+    .logo-area span { color: var(--accent); }
     nav button { background: transparent; color: #94a3b8; border: none; padding: 15px 25px; text-align: left; width: 100%; cursor: pointer; }
+    
+    .right-side-container { margin-left: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .main-content { flex: 1; padding: 60px; max-width: 900px; }
+    
+    h2 { font-size: 2rem; color: var(--sidebar-bg); margin-bottom: 30px; font-weight: 700; }
+    .cart-table { background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 30px; }
+    .item { display: flex; justify-content: space-between; padding: 20px 30px; border-bottom: 1px solid #f1f5f9; align-items: center; }
+    .item:last-child { border-bottom: none; }
+    .item-nome { font-weight: 600; color: var(--sidebar-bg); }
+    .item-prezzo { font-family: monospace; font-size: 1.1rem; color: var(--accent); }
 
-    .main-wrapper { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; padding: 60px; gap: 60px; }
-    .content-area { flex: 1.5; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .description-side { flex: 1; }
-    .description-side h1 { font-size: 2.2rem; color: var(--sidebar-bg); margin-bottom: 20px; }
+    .summary-box { background: #1e293b; color: white; padding: 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .totale-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
+    .totale-valore { font-size: 2rem; font-weight: 800; }
+    
+    .btn-pdf { background: var(--accent); color: white; border: none; padding: 18px 40px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 20px; float: right; }
+    .btn-pdf:hover { background: #2563eb; transform: scale(1.02); }
 
-    .item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #e2e8f0; }
-    .totale { font-size: 1.8rem; font-weight: 700; margin-top: 30px; text-align: right; color: var(--sidebar-bg); }
-    .btn-pdf { width: 100%; background: var(--accent); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 30px; }
+    footer { background: var(--footer-bg); color: #64748b; padding: 50px 60px; display: flex; justify-content: space-between; margin-top: auto; }
+    .footer-col h4 { color: white; margin-bottom: 18px; font-size: 0.8rem; text-transform: uppercase; }
+    .footer-col p { font-size: 0.85rem; line-height: 1.8; }
   </style>
 </head>
 <body>
   <nav>
-    <div class="logo-area">SISTEMA INVENTARIO</div>
-    <button onclick="location.href='loginEcommerce.html'">Accesso Utente</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Catalogo Prodotti</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Gestione Ordine</button>
+    <div class="logo-area">New<span>Cave</span></div>
+    <button onclick="location.href='loginEcommerce.html'">Terminale Accesso</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione Nodo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Sfoglia Catalogo</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Analisi Ordine</button>
   </nav>
 
-  <div class="main-wrapper">
-    <div class="content-area">
-      <h2>Riepilogo Operazioni</h2>
-      <div id="lista-carrello"></div>
-      <div class="totale" id="totale">Totale: € 0.00</div>
-      <button class="btn-pdf" onclick="generaPDF()">Genera Report PDF</button>
+  <div class="right-side-container">
+    <div class="main-content">
+      <h2>Riepilogo Analitico Ordine</h2>
+      <div id="lista-carrello" class="cart-table">
+        <!-- Generato via JS -->
+      </div>
+      <div class="summary-box">
+        <div>
+          <p class="totale-label">Valore Totale Asset</p>
+          <p class="totale-valore" id="totale">€ 0.00</p>
+        </div>
+        <button class="btn-pdf" onclick="generaPDF()">Esporta Report PDF</button>
+      </div>
     </div>
 
-    <div class="description-side">
-      <h1>Finalizzazione e Reportistica.</h1>
-      <p>
-        In questa sezione è possibile verificare le unità selezionate e procedere alla generazione del documento formale di riepilogo. Il sistema calcola automaticamente i costi totali e produce un file PDF pronto per l'archiviazione contabile.
-      </p>
-    </div>
+    <footer>
+      <div class="footer-col"><h4>NewCave Headquarters</h4><p>Digital District, Area Rho<br>20017 Milano, IT</p></div>
+      <div class="footer-col"><h4>Contatti Sistemi</h4><p>tech-support@newcave.com<br>Protocollo: +39 02 998877</p></div>
+      <div class="footer-col" style="text-align: right;"><h4>Legal</h4><p>© 2026 NewCave Technologies S.p.A.<br>Sistemi di gestione asset certificati.</p></div>
+    </footer>
   </div>
 
   <script>
-    function carica() {
+    function caricaCarrello() {
       const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
       const container = document.getElementById('lista-carrello');
-      let t = 0;
+      let totale = 0;
       container.innerHTML = '';
-      carrello.forEach((art, i) => {
-        t += art.prezzo;
+
+      if(carrello.length === 0) {
+        container.innerHTML = '<div class="item">Nessun asset in coda di elaborazione.</div>';
+        return;
+      }
+
+      carrello.forEach(art => {
+        totale += art.prezzo;
         container.innerHTML += `
           <div class="item">
-            <span>${art.nome}</span>
-            <span>€ ${art.prezzo.toFixed(2)}</span>
+            <span class="item-nome">${art.nome}</span>
+            <span class="item-prezzo">€ ${art.prezzo.toFixed(2)}</span>
           </div>`;
       });
-      document.getElementById('totale').textContent = `Totale: € ${t.toFixed(2)}`;
+      document.getElementById('totale').textContent = `€ ${totale.toFixed(2)}`;
     }
 
     function generaPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.setFontSize(18);
-      doc.text("REPORT ORDINE PROFESSIONALE", 10, 20);
-      doc.setFontSize(12);
-      const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-      let y = 40;
-      carrello.forEach(art => {
-        doc.text(`${art.nome}: Euro ${art.prezzo.toFixed(2)}`, 10, y);
-        y += 10;
-      });
-      doc.save("report_ordine.pdf");
+      doc.setFont("helvetica", "bold");
+      doc.text("NEWCAVE TECHNOLOGIES - REPORT ORDINE", 20, 20);
+      doc.setFont("helvetica", "normal");
+      doc.text("Documento generato automaticamente dai sistemi NewCave.", 20, 30);
+      doc.text("Sede: Rho (MI) - Distretto Digitale", 20, 40);
+      doc.save("Report_Ordine_NewCave.pdf");
     }
-    carica();
+
+    caricaCarrello();
   </script>
 </body>
-</html>
 </html>
