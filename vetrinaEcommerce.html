@@ -4,15 +4,180 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vetrina — NegozioCSV</title>
-  <!-- Collegamento al foglio di stile condiviso -->
-  <link rel="stylesheet" href="stile.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    /* ========== NAVBAR ========== */
+    nav {
+      background-color: #2c3e50;
+      padding: 12px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    nav .logo {
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: auto;
+      text-decoration: none;
+    }
+
+    nav a {
+      background-color: #ff7f50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 12px;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    nav a:hover {
+      background-color: #e8673a;
+    }
+
+    nav a.attivo {
+      background-color: #c0392b;
+    }
+
+    /* ========== CONTENUTO ========== */
+    .contenuto {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .contenuto h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    /* ========== CARICA CSV ========== */
+    #carica-csv {
+      margin-bottom: 20px;
+    }
+
+    #carica-csv input[type="file"] {
+      margin-left: 10px;
+    }
+
+    /* ========== GRIGLIA PRODOTTI (Flexbox) ========== */
+    #lista-prodotti {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .box-prodotto {
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+      width: calc(33% - 12px);
+      min-width: 200px;
+      flex-grow: 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Il box si solleva al passaggio del mouse */
+    .box-prodotto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Segnaposto immagine quando il file non è disponibile */
+    .img-placeholder {
+      width: 100%;
+      height: 160px;
+      background-color: #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+    }
+
+    .box-prodotto img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .box-prodotto h3 {
+      font-size: 15px;
+      color: #2c3e50;
+      margin-bottom: 4px;
+    }
+
+    .box-prodotto .marca {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .box-prodotto .descrizione {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .box-prodotto .prezzo {
+      font-size: 16px;
+      font-weight: bold;
+      color: #27ae60;
+      margin-bottom: 10px;
+    }
+
+    .box-prodotto .dettagli {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .btn-carrello {
+      background-color: #e67e22;
+      color: white;
+      border: none;
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 12px;
+      font-size: 13px;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-carrello:hover {
+      background-color: #ca6f1e;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
+  <!-- Segnaposto della navbar -->
   <div id="navbar"></div>
 
-  <!-- Contenuto della pagina -->
   <div class="contenuto">
     <h2>Vetrina Prodotti</h2>
 
@@ -27,28 +192,102 @@
     </div>
   </div>
 
-  <!-- Script condivisi -->
-  <script src="navbar.js"></script>
-  <script src="carrello.js"></script>
-
   <script>
-    // ============================================================
-    // Lettura del file CSV con FileReader
-    // ============================================================
 
+    // ============================================================
+    // NAVBAR — costruita dinamicamente e inserita nel div#navbar
+    // ============================================================
+    function costruisciNavbar() {
+      var divNavbar = document.getElementById('navbar');
+      if (!divNavbar) return;
+
+      divNavbar.innerHTML =
+        '<nav>' +
+          '<a href="loginEcommerce.html" class="logo">🛒 NegozioCSV</a>' +
+          '<a href="loginEcommerce.html" id="link-login">Login</a>' +
+          '<a href="registrazioneEcommerce.html" id="link-registrazione">Registrazione</a>' +
+          '<a href="vetrinaEcommerce.html" id="link-vetrina">Vetrina</a>' +
+          '<a href="carrelloEcommerce.html" id="link-carrello">' +
+            'Carrello (<span id="conta-carrello">0</span>)' +
+          '</a>' +
+        '</nav>';
+
+      // Questa è la pagina VETRINA quindi evidenziamo solo il link vetrina
+      document.getElementById('link-vetrina').classList.add('attivo');
+
+      aggiornaContatoreNavbar();
+
+      var utenteLoggato = localStorage.getItem('utenteLoggato');
+      if (utenteLoggato) {
+        document.getElementById('link-login').textContent = 'Ciao, ' + utenteLoggato;
+      }
+    }
+
+    // Aggiorna il numero del carrello nella navbar
+    function aggiornaContatoreNavbar() {
+      var contatoreSpan = document.getElementById('conta-carrello');
+      if (!contatoreSpan) return;
+
+      var datiSalvati    = localStorage.getItem('carrello');
+      var carrello       = datiSalvati ? JSON.parse(datiSalvati) : [];
+      var totaleArticoli = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+        totaleArticoli += carrello[i].quantita;
+      }
+
+      contatoreSpan.textContent = totaleArticoli;
+    }
+
+    // ============================================================
+    // CARRELLO — aggiunge un prodotto e salva nel localStorage
+    // ============================================================
+    function leggiCarrello() {
+      var datiSalvati = localStorage.getItem('carrello');
+      return datiSalvati ? JSON.parse(datiSalvati) : [];
+    }
+
+    function salvaCarrello(carrello) {
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+    }
+
+    function aggiungiAlCarrello(nome, prezzo) {
+      var carrello = leggiCarrello();
+      var trovato  = false;
+
+      for (var i = 0; i < carrello.length; i++) {
+        if (carrello[i].nome === nome) {
+          carrello[i].quantita++;
+          trovato = true;
+          break;
+        }
+      }
+
+      if (!trovato) {
+        carrello.push({ nome: nome, prezzo: prezzo, quantita: 1 });
+      }
+
+      salvaCarrello(carrello);
+      aggiornaContatoreNavbar();
+      alert(nome + ' aggiunto al carrello!');
+    }
+
+    // ============================================================
+    // LETTURA CSV con FileReader
+    // ============================================================
     function leggiCSV(input) {
       var file = input.files[0];
       if (!file) return;
 
       var reader = new FileReader();
 
-      // Questa funzione scatta quando il file è stato letto completamente
       reader.onload = function(evento) {
         var testo = evento.target.result;
+
+        // Dividiamo il testo in righe
         var righe = testo.split('\n');
 
-        // Saltiamo la prima riga (è l'intestazione con i nomi delle colonne)
-        // e costruiamo un array con le righe dei dati veri
+        // Saltiamo la prima riga (intestazione)
         var datiRighe = [];
         for (var i = 1; i < righe.length; i++) {
           var riga = righe[i].trim();
@@ -57,42 +296,32 @@
           }
         }
 
-        // Svuotiamo il contenitore e avviamo la funzione ricorsiva
         var contenitore = document.getElementById('lista-prodotti');
         contenitore.innerHTML = '';
 
-        // Partiamo dall'indice 0: il primo prodotto
+        // Avviamo la funzione ricorsiva dall'indice 0
         creaProdottiRicorsivo(datiRighe, 0, contenitore);
       };
 
-      // Diciamo al FileReader di leggere il file come testo
       reader.readAsText(file);
     }
 
     // ============================================================
     // FUNZIONE RICORSIVA — crea i box prodotti uno alla volta
     //
-    // Parametri:
-    //   righe       = array con tutte le righe del CSV
-    //   indice      = quale riga stiamo elaborando adesso
-    //   contenitore = il div dove aggiungere i box
-    //
     // Come funziona:
-    //   - CASO BASE: se indice >= righe.length, abbiamo finito → usciamo
+    //   - CASO BASE: se indice >= righe.length abbiamo finito → usciamo
     //   - PASSO RICORSIVO: creiamo il box per la riga "indice",
     //     poi richiamiamo la stessa funzione con indice + 1
-    //     (così la prossima chiamata elabora la riga successiva)
     // ============================================================
     function creaProdottiRicorsivo(righe, indice, contenitore) {
 
-      // --- CASO BASE: abbiamo elaborato tutte le righe, ci fermiamo ---
+      // --- CASO BASE: tutte le righe sono state elaborate ---
       if (indice >= righe.length) {
         return;
       }
 
       // Leggiamo le colonne della riga corrente
-      // Formato CSV: nome, marca, descrizione, immagine, prezzo,
-      //              dimensioni, taglio, giorni, provenienza
       var colonne     = righe[indice];
       var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
       var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
@@ -104,17 +333,25 @@
       var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
       var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
 
-      // Se l'immagine non è specificata usiamo un'immagine segnaposto
-      var srcImg = immagine !== ''
-        ? immagine
-        : 'https://via.placeholder.com/300x160?text=No+Immagine';
-
-      // Creiamo il div del prodotto e lo riempiamo con i dati
+      // Creiamo il div del prodotto
       var box = document.createElement('div');
       box.className = 'box-prodotto';
+
+      // Gestiamo l'immagine:
+      // Se il nome file c'è proviamo a mostrarla, altrimenti mostriamo
+      // un riquadro grigio con il nome del minerale
+      var htmlImmagine;
+      if (immagine !== '') {
+        htmlImmagine =
+          '<img src="' + immagine + '" alt="' + nome + '" ' +
+          'onerror="this.style.display=\'none\'; this.nextSibling.style.display=\'flex\';" />' +
+          '<div class="img-placeholder" style="display:none;">📷 ' + nome + '</div>';
+      } else {
+        htmlImmagine = '<div class="img-placeholder">📷 ' + nome + '</div>';
+      }
+
       box.innerHTML =
-        '<img src="' + srcImg + '" alt="' + nome + '" ' +
-             'onerror="this.src=\'https://via.placeholder.com/300x160?text=No+Immagine\'" />' +
+        htmlImmagine +
         '<h3>' + nome + '</h3>' +
         '<p class="marca">' + marca + '</p>' +
         '<p class="descrizione">' + descrizione + '</p>' +
@@ -135,6 +372,9 @@
       // --- PASSO RICORSIVO: passiamo alla riga successiva ---
       creaProdottiRicorsivo(righe, indice + 1, contenitore);
     }
+
+    // Avviamo la navbar quando la pagina è pronta
+    window.addEventListener('DOMContentLoaded', costruisciNavbar);
   </script>
 
 </body>
