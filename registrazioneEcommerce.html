@@ -3,218 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrazione - Negozio Moderno</title>
+  <title>Registrazione Sistema - Negozio Professionale</title>
   <style>
     :root {
-      --primary: #6366f1;
-      --secondary: #a855f7;
-      --bg: #f1f5f9;
-      --text: #1e293b;
+      --sidebar-bg: #0f172a;
+      --accent: #3b82f6;
+      --bg-main: #f8fafc;
+      --text-dark: #1e293b;
+      --text-light: #94a3b8;
+      --sidebar-width: 260px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background: var(--bg); 
-      color: var(--text); 
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
 
-    /* NAVBAR */
     nav {
-      background: #0f172a;
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: var(--sidebar-width); background: var(--sidebar-bg); color: white;
+      display: flex; flex-direction: column; padding: 30px 0; position: fixed; height: 100vh;
     }
-    .logo { 
-      color: white; 
-      font-weight: bold; 
-      margin-right: auto; 
-      font-size: 1.2rem; 
-      letter-spacing: -0.5px;
-    }
+    .logo-area { padding: 0 25px 40px; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
     nav button {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      background: transparent; color: var(--text-light); border: none; padding: 15px 25px;
+      text-align: left; cursor: pointer; transition: 0.2s; width: 100%; border-left: 3px solid transparent;
     }
-    nav button:hover { 
-      background: var(--primary); 
-      transform: translateY(-2px); 
-      border-color: var(--primary);
-    }
+    nav button:hover { background: rgba(255,255,255,0.05); color: white; border-left: 3px solid var(--accent); }
 
-    /* CARD REGISTRAZIONE */
-    .container {
-      max-width: 480px;
-      margin: 60px auto;
-      background: white;
-      padding: 40px;
-      border-radius: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-      animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    @keyframes slideUp { 
-      from { opacity: 0; transform: translateY(40px); } 
-      to { opacity: 1; transform: translateY(0); } 
-    }
-
-    h2 { 
-      margin-bottom: 10px; 
-      text-align: center; 
-      color: #0f172a; 
-      font-size: 1.8rem;
-    }
-    p.subtitle {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 30px;
-      font-size: 0.9rem;
-    }
+    .main-wrapper { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; padding: 60px; gap: 60px; }
+    .form-container { flex: 1; max-width: 500px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .description-side { flex: 1; }
+    .description-side h1 { font-size: 2.5rem; color: var(--sidebar-bg); margin-bottom: 20px; }
+    .description-side p { font-size: 1.1rem; line-height: 1.6; color: #64748b; }
 
     .form-group { margin-bottom: 20px; }
-    label { 
-      display: block; 
-      margin-bottom: 8px; 
-      font-size: 0.85rem; 
-      font-weight: 600; 
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #475569;
-    }
-    input { 
-      width: 100%; 
-      padding: 14px; 
-      border: 1.5px solid #e2e8f0; 
-      border-radius: 12px; 
-      outline: none; 
-      transition: all 0.3s ease; 
-      font-size: 1rem;
-    }
-    input:focus { 
-      border-color: var(--primary); 
-      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); 
-    }
-    
-    .btn-register {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-    }
-    .btn-register:hover { 
-      filter: brightness(1.1); 
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-    }
-
-    #msg-reg {
-      margin-top: 20px;
-      text-align: center;
-      font-weight: 500;
-      min-height: 24px;
-    }
-
-    .footer-link {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 0.9rem;
-      color: #64748b;
-    }
-    .footer-link a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
+    label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: #475569; }
+    input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+    .btn-action {
+      width: 100%; background: var(--sidebar-bg); color: white; border: none; padding: 14px;
+      border-radius: 8px; font-weight: 600; cursor: pointer;
     }
   </style>
 </head>
 <body>
-
   <nav>
-    <div class="logo">🛒 NegozioCSV</div>
-    <button onclick="location.href='loginEcommerce.html'">Login</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Vetrina</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Carrello</button>
+    <div class="logo-area">SISTEMA INVENTARIO</div>
+    <button onclick="location.href='loginEcommerce.html'">Accesso Utente</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Catalogo Prodotti</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Gestione Ordine</button>
   </nav>
 
-  <div class="container">
-    <h2>Crea Account</h2>
-    <p class="subtitle">Unisciti alla nostra community</p>
-    
-    <div class="form-group">
-      <label>Nome Completo</label>
-      <input type="text" id="reg-nome" placeholder="Es. Mario Rossi">
+  <div class="main-wrapper">
+    <div class="form-container">
+      <h2>Creazione Account</h2>
+      <div class="form-group">
+        <label>Nome Operatore</label>
+        <input type="text" id="reg-nome">
+      </div>
+      <div class="form-group">
+        <label>Email Aziendale</label>
+        <input type="email" id="reg-email">
+      </div>
+      <div class="form-group">
+        <label>Password di Sicurezza</label>
+        <input type="password" id="reg-password">
+      </div>
+      <button class="btn-action" onclick="faiRegistrazione()">Registra Credenziali</button>
+      <p id="msg-reg" style="margin-top:15px;"></p>
     </div>
 
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="reg-email" placeholder="mario@esempio.it">
-    </div>
-
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="reg-password" placeholder="Almeno 4 caratteri">
-    </div>
-
-    <button class="btn-register" onclick="faiRegistrazione()">Registrati Ora</button>
-    
-    <p id="msg-reg"></p>
-
-    <div class="footer-link">
-      Hai già un account? <a href="login.html">Accedi qui</a>
+    <div class="description-side">
+      <h1>Integrazione Utenti e Permessi.</h1>
+      <p>
+        L'archiviazione dei nuovi profili abilita l'accesso alle funzioni avanzate di acquisto. Ogni utente registrato può interagire con il carrello persistente e mantenere traccia delle proprie selezioni durante la sessione di lavoro corrente.
+      </p>
     </div>
   </div>
 
   <script>
     function faiRegistrazione() {
-      const nome = document.getElementById('reg-nome').value;
-      const email = document.getElementById('reg-email').value;
-      const pass = document.getElementById('reg-password').value;
-      const msg = document.getElementById('msg-reg');
-
-      // Validazione base
-      if (nome === '' || email === '' || pass === '') {
-        msg.style.color = '#ef4444'; // Rosso
-        msg.textContent = '⚠️ Compila tutti i campi!';
-        return;
+      const n = document.getElementById('reg-nome').value;
+      const e = document.getElementById('reg-email').value;
+      const p = document.getElementById('reg-password').value;
+      if (n && e && p.length >= 4) {
+        document.getElementById('msg-reg').style.color = "green";
+        document.getElementById('msg-reg').textContent = "Dati acquisiti correttamente.";
+      } else {
+        document.getElementById('msg-reg').style.color = "red";
+        document.getElementById('msg-reg').textContent = "Errore: Inserire dati validi.";
       }
-
-      if (pass.length < 4) {
-        msg.style.color = '#ef4444';
-        msg.textContent = '⚠️ Password troppo corta (min 4 car.)';
-        return;
-      }
-
-      // Simulazione successo
-      msg.style.color = '#10b981'; // Verde
-      msg.textContent = '✅ Registrazione completata! Vai al login.';
-      
-      // Opzionale: pulisci i campi dopo 2 secondi
-      setTimeout(() => {
-        document.getElementById('reg-nome').value = '';
-        document.getElementById('reg-email').value = '';
-        document.getElementById('reg-password').value = '';
-        // volendo puoi reindirizzare al login
-        // location.href = 'login.html';
-      }, 2000);
     }
   </script>
-
 </body>
 </html>
