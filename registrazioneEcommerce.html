@@ -2,44 +2,60 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Registrazione - NewCave Portal</title>
-  <style>/* Usa lo stesso identico CSS di loginEcommerce.html */</style>
+  <title>NewCave - Login Collezionisti</title>
+  <style>
+    :root { --dark: #121212; --gold: #c5a059; --text: #e0e0e0; --sidebar: 260px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Garamond', serif; background: #1a1a1a; color: var(--text); display: flex; min-height: 100vh; }
+
+    nav { width: var(--sidebar); background: var(--dark); border-right: 1px solid #333; display: flex; flex-direction: column; padding: 40px 0; position: fixed; height: 100vh; }
+    .logo-area { padding: 0 25px 50px; font-size: 1.8rem; font-weight: bold; letter-spacing: 3px; color: var(--gold); text-align: center; }
+    nav button { background: transparent; color: #888; border: none; padding: 18px 25px; text-align: left; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+    nav button:hover { color: var(--gold); background: rgba(197, 160, 89, 0.05); }
+
+    .right-side-container { margin-left: var(--sidebar); flex: 1; display: flex; flex-direction: column; }
+    .hero-section { display: flex; padding: 100px 60px; gap: 80px; align-items: center; flex: 1; }
+    
+    .form-box { flex: 1; max-width: 400px; background: #222; padding: 50px; border: 1px solid #333; border-radius: 2px; }
+    .info-box { flex: 1.5; }
+    .info-box h1 { font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; font-weight: normal; }
+    .info-box p { font-size: 1.3rem; line-height: 1.8; color: #aaa; font-style: italic; }
+
+    footer { background: #000; color: #555; padding: 50px 60px; display: flex; justify-content: space-between; border-top: 1px solid #222; }
+    .footer-col h4 { color: var(--gold); margin-bottom: 15px; font-size: 0.75rem; text-transform: uppercase; }
+    .footer-col p { font-size: 0.8rem; line-height: 2; }
+
+    input { width: 100%; padding: 12px; margin: 10px 0 25px; background: #111; border: 1px solid #444; color: white; outline: none; }
+    input:focus { border-color: var(--gold); }
+    .btn-main { width: 100%; background: var(--gold); color: black; border: none; padding: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+  </style>
 </head>
 <body>
   <nav>
-    <div class="logo-area">New<span>Cave</span></div>
-    <button onclick="location.href='loginEcommerce.html'">Terminale Accesso</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione Nodo</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Sfoglia Catalogo</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Analisi Ordine</button>
+    <div class="logo-area">NEWCAVE</div>
+    <button onclick="location.href='loginEcommerce.html'">Accesso Membri</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Collezione Minerali</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Certificati e Ordini</button>
   </nav>
-
   <div class="right-side-container">
-    <div class="main-content">
+    <div class="hero-section">
       <div class="form-box">
-        <h2 style="margin-bottom: 30px; font-weight: 700;">Registrazione Nodo</h2>
-        <div class="form-group"><label>Nome Operativo</label><input type="text" id="reg-nome"></div>
-        <div class="form-group"><label>Email Sistemi</label><input type="email" id="reg-email"></div>
-        <div class="form-group"><label>Nuova Password</label><input type="password" id="reg-password"></div>
-        <button class="btn-main" onclick="faiReg()">Inizializza Profilo</button>
-        <p id="msg-reg" style="margin-top: 20px;"></p>
+        <h2 style="margin-bottom: 30px; font-weight: normal;">Login</h2>
+        <label>Email</label><input type="email" id="email">
+        <label>Password</label><input type="password" id="pass">
+        <button class="btn-main">Entra nella Collezione</button>
       </div>
       <div class="info-box">
-        <h1>Unisciti al Network NewCave.</h1>
-        <p>Siamo una realtà dedicata all'eccellenza digitale. Registrando il tuo profilo operatore, otterrai l'accesso immediato alla nostra infrastruttura di gestione dati. In NewCave crediamo che la tecnologia debba essere al servizio dell'uomo, semplificando i processi complessi per lasciare spazio alla creatività e alla strategia aziendale.</p>
+        <h1>Custodi della Bellezza Sotterranea.</h1>
+        <p>NewCave seleziona solo campioni mineralogici di eccezionale valore estetico e scientifico. Dalle geodi brasiliane ai cristalli rari dell'Afghanistan, ogni pezzo è una scultura naturale millenaria.</p>
       </div>
     </div>
     <footer>
-      <div class="footer-col"><h4>NewCave Headquarters</h4><p>Digital District, Area Rho<br>20017 Milano, IT</p></div>
-      <div class="footer-col"><h4>Contatti Sistemi</h4><p>tech-support@newcave.com<br>Protocollo: +39 02 998877</p></div>
-      <div class="footer-col" style="text-align: right;"><h4>Legal</h4><p>© 2026 NewCave Technologies S.p.A.<br>Sistemi di gestione asset certificati.</p></div>
+      <div class="footer-col"><h4>Sede NewCave</h4><p>Nerviano, Milano<br>Distretto Geologico</p></div>
+      <div class="footer-col"><h4>Contatti</h4><p>info@newcave-minerali.it<br>+39 02 445566</p></div>
+      <div class="footer-col" style="text-align: right;"><h4>Legal</h4><p>© 2026 NewCave Minerali Pregiati.<br>Tutti i diritti riservati.</p></div>
     </footer>
   </div>
-  <script>
-    function faiReg() {
-        document.getElementById('msg-reg').style.color = "#10b981";
-        document.getElementById('msg-reg').textContent = "Profilo creato. Procedere al login.";
-    }
-  </script>
 </body>
 </html>
