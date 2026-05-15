@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vetrina — NegozioCSV</title>
+  <title>Carrello — NegozioCSV</title>
+  <!-- jsPDF: libreria per generare il PDF dello scontrino -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
- 
+
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
     }
- 
+
     /* ========== NAVBAR ========== */
     nav {
       background-color: #2c3e50;
@@ -24,7 +26,7 @@
       gap: 12px;
       align-items: center;
     }
- 
+
     nav .logo {
       color: white;
       font-size: 16px;
@@ -32,7 +34,7 @@
       margin-right: auto;
       text-decoration: none;
     }
- 
+
     nav a {
       background-color: #ff7f50;
       color: white;
@@ -44,15 +46,15 @@
       text-decoration: none;
       transition: background-color 0.2s ease;
     }
- 
+
     nav a:hover {
       background-color: #e8673a;
     }
- 
+
     nav a.attivo {
       background-color: #c0392b;
     }
- 
+
     /* ========== CONTENUTO ========== */
     .contenuto {
       max-width: 900px;
@@ -62,121 +64,84 @@
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     }
- 
+
     .contenuto h2 {
       margin-bottom: 20px;
       color: #2c3e50;
     }
- 
-    /* ========== CARICA CSV ========== */
-    #carica-csv {
-      margin-bottom: 20px;
-    }
- 
-    #carica-csv input[type="file"] {
-      margin-left: 10px;
-    }
- 
-    /* ========== GRIGLIA PRODOTTI (Flexbox) ========== */
-    #lista-prodotti {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
- 
-    .box-prodotto {
-      background-color: #fafafa;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 14px;
-      width: calc(33% - 12px);
-      min-width: 200px;
-      flex-grow: 1;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
- 
-    /* Il box si solleva al passaggio del mouse */
-    .box-prodotto:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
- 
-    .box-prodotto img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
- 
-    .box-prodotto h3 {
-      font-size: 15px;
-      color: #2c3e50;
-      margin-bottom: 4px;
-    }
- 
-    .box-prodotto .marca {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 6px;
-    }
- 
-    .box-prodotto .descrizione {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 8px;
-    }
- 
-    .box-prodotto .prezzo {
-      font-size: 16px;
-      font-weight: bold;
-      color: #27ae60;
-      margin-bottom: 10px;
-    }
- 
-    .box-prodotto .dettagli {
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 10px;
-      line-height: 1.6;
-    }
- 
-    .btn-carrello {
-      background-color: #e67e22;
+
+    .btn-primario {
+      background-color: #ff7f50;
       color: white;
       border: none;
-      padding: 7px 14px;
+      padding: 10px 20px;
       cursor: pointer;
       border-radius: 12px;
-      font-size: 13px;
-      width: 100%;
+      font-size: 14px;
+      margin-top: 8px;
       transition: background-color 0.2s ease;
     }
- 
-    .btn-carrello:hover {
-      background-color: #ca6f1e;
+
+    .btn-primario:hover {
+      background-color: #e8673a;
+    }
+
+    /* ========== RIGHE CARRELLO ========== */
+    #lista-carrello {
+      margin-bottom: 20px;
+    }
+
+    .riga-carrello {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .riga-carrello button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 12px;
+      font-size: 12px;
+      transition: background-color 0.2s ease;
+    }
+
+    .riga-carrello button:hover {
+      background-color: #c0392b;
+    }
+
+    #totale-carrello {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 16px;
     }
   </style>
 </head>
 <body>
- 
+
   <!-- Segnaposto della navbar -->
   <div id="navbar"></div>
- 
+
   <div class="contenuto">
-    <h2>Vetrina Prodotti</h2>
- 
-    <div id="carica-csv">
-      <label><strong>Carica il file CSV del professore:</strong></label>
-      <input type="file" id="file-csv" accept=".csv" onchange="leggiCSV(this)" />
+    <h2>Il tuo Carrello</h2>
+
+    <div id="lista-carrello">
+      <p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>
     </div>
- 
-    <!-- Qui verranno inseriti i box dei prodotti -->
-    <div id="lista-prodotti">
-      <p style="color:#999; font-style:italic;">Carica un file CSV per vedere i prodotti.</p>
-    </div>
+
+    <p id="totale-carrello"></p>
+    <button class="btn-primario" onclick="scaricaScontrino()"
+            id="btn-scontrino" style="display:none;">
+      Scarica Scontrino PDF
+    </button>
   </div>
- 
+
   <script>
     // ============================================================
     // NAVBAR — costruita dinamicamente e inserita nel div#navbar
@@ -184,7 +149,7 @@
     function costruisciNavbar() {
       var divNavbar = document.getElementById('navbar');
       if (!divNavbar) return;
- 
+
       divNavbar.innerHTML =
         '<nav>' +
           '<a href="loginEcommerce.html" class="logo">🛒 NegozioCSV</a>' +
@@ -195,166 +160,142 @@
             'Carrello (<span id="conta-carrello">0</span>)' +
           '</a>' +
         '</nav>';
- 
+
       // Evidenziamo il link della pagina corrente
-      document.getElementById('link-vetrina').classList.add('attivo');
- 
+      document.getElementById('link-carrello').classList.add('attivo');
+
       // Aggiorniamo il contatore del carrello
       aggiornaContatoreNavbar();
- 
+
       // Se c'è un utente loggato mostriamo il saluto
       var utenteLoggato = localStorage.getItem('utenteLoggato');
       if (utenteLoggato) {
         document.getElementById('link-login').textContent = 'Ciao, ' + utenteLoggato;
       }
     }
- 
+
     // Legge il carrello dal localStorage e aggiorna il numero nella navbar
     function aggiornaContatoreNavbar() {
       var contatoreSpan = document.getElementById('conta-carrello');
       if (!contatoreSpan) return;
- 
+
       var datiSalvati    = localStorage.getItem('carrello');
       var carrello       = datiSalvati ? JSON.parse(datiSalvati) : [];
       var totaleArticoli = 0;
- 
+
       for (var i = 0; i < carrello.length; i++) {
         totaleArticoli += carrello[i].quantita;
       }
- 
+
       contatoreSpan.textContent = totaleArticoli;
     }
- 
+
     // ============================================================
-    // CARRELLO — funzioni condivise (qui dentro perché non abbiamo file esterni)
+    // CARRELLO — funzioni per leggere e salvare nel localStorage
     // ============================================================
- 
+
     // Legge il carrello dal localStorage
     function leggiCarrello() {
       var datiSalvati = localStorage.getItem('carrello');
       return datiSalvati ? JSON.parse(datiSalvati) : [];
     }
- 
+
     // Salva il carrello nel localStorage
     function salvaCarrello(carrello) {
       localStorage.setItem('carrello', JSON.stringify(carrello));
     }
- 
-    // Aggiunge un prodotto al carrello (o aumenta la quantità se esiste già)
-    function aggiungiAlCarrello(nome, prezzo) {
+
+    // Rimuove un prodotto tramite il suo indice e ridisegna la lista
+    function rimuoviDalCarrello(indice) {
       var carrello = leggiCarrello();
-      var trovato  = false;
- 
-      for (var i = 0; i < carrello.length; i++) {
-        if (carrello[i].nome === nome) {
-          carrello[i].quantita++;
-          trovato = true;
-          break;
-        }
-      }
- 
-      if (!trovato) {
-        carrello.push({ nome: nome, prezzo: prezzo, quantita: 1 });
-      }
- 
+      carrello.splice(indice, 1); // togliamo l'elemento all'indice dato
       salvaCarrello(carrello);
       aggiornaContatoreNavbar();
-      alert(nome + ' aggiunto al carrello!');
+      mostraCarrello();           // ridisegniamo la lista
     }
- 
+
     // ============================================================
-    // LETTURA CSV con FileReader
+    // Legge il carrello dal localStorage e ridisegna la lista
     // ============================================================
-    function leggiCSV(input) {
-      var file = input.files[0];
-      if (!file) return;
- 
-      var reader = new FileReader();
- 
-      // Scatta quando il file è stato letto completamente
-      reader.onload = function(evento) {
-        var testo = evento.target.result;
-        var righe = testo.split('\n');
- 
-        // Saltiamo la prima riga (intestazione) e costruiamo l'array dati
-        var datiRighe = [];
-        for (var i = 1; i < righe.length; i++) {
-          var riga = righe[i].trim();
-          if (riga !== '') {
-            datiRighe.push(riga.split(','));
-          }
-        }
- 
-        var contenitore = document.getElementById('lista-prodotti');
-        contenitore.innerHTML = '';
- 
-        // Avviamo la funzione ricorsiva dall'indice 0
-        creaProdottiRicorsivo(datiRighe, 0, contenitore);
-      };
- 
-      reader.readAsText(file);
-    }
- 
-    // ============================================================
-    // FUNZIONE RICORSIVA — crea i box prodotti uno alla volta
-    //
-    // Come funziona:
-    //   - CASO BASE: se indice >= righe.length, abbiamo finito → usciamo
-    //   - PASSO RICORSIVO: creiamo il box per la riga "indice",
-    //     poi richiamiamo la stessa funzione con indice + 1
-    // ============================================================
-    function creaProdottiRicorsivo(righe, indice, contenitore) {
- 
-      // --- CASO BASE: tutte le righe sono state elaborate ---
-      if (indice >= righe.length) {
+    function mostraCarrello() {
+      var carrello     = leggiCarrello();
+      var lista        = document.getElementById('lista-carrello');
+      var totaleDiv    = document.getElementById('totale-carrello');
+      var btnScontrino = document.getElementById('btn-scontrino');
+
+      lista.innerHTML = '';
+
+      // Se il carrello è vuoto mostriamo il messaggio e usciamo
+      if (carrello.length === 0) {
+        lista.innerHTML = '<p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>';
+        totaleDiv.textContent      = '';
+        btnScontrino.style.display = 'none';
         return;
       }
- 
-      // Leggiamo le colonne della riga corrente
-      var colonne     = righe[indice];
-      var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
-      var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
-      var descrizione = colonne[2] ? colonne[2].trim() : 'N/D';
-      var immagine    = colonne[3] ? colonne[3].trim() : '';
-      var prezzo      = colonne[4] ? colonne[4].trim() : '0';
-      var dimensioni  = colonne[5] ? colonne[5].trim() : 'N/D';
-      var taglio      = colonne[6] ? colonne[6].trim() : 'N/D';
-      var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
-      var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
- 
-      var srcImg = immagine !== ''
-        ? immagine
-        : 'https://via.placeholder.com/300x160?text=No+Immagine';
- 
-      var box = document.createElement('div');
-      box.className = 'box-prodotto';
-      box.innerHTML =
-        '<img src="' + srcImg + '" alt="' + nome + '" ' +
-             'onerror="this.src=\'https://via.placeholder.com/300x160?text=No+Immagine\'" />' +
-        '<h3>' + nome + '</h3>' +
-        '<p class="marca">' + marca + '</p>' +
-        '<p class="descrizione">' + descrizione + '</p>' +
-        '<p class="prezzo">€ ' + parseFloat(prezzo).toFixed(2) + '</p>' +
-        '<div class="dettagli">' +
-          'Dimensioni: '  + dimensioni  + '<br>' +
-          'Taglio: '      + taglio      + '<br>' +
-          'Giorni: '      + giorni      + '<br>' +
-          'Provenienza: ' + provenienza +
-        '</div>' +
-        '<button class="btn-carrello" ' +
-          'onclick="aggiungiAlCarrello(\'' + nome + '\', ' + parseFloat(prezzo) + ')">' +
-          'Aggiungi al carrello' +
-        '</button>';
- 
-      contenitore.appendChild(box);
- 
-      // --- PASSO RICORSIVO: passiamo alla riga successiva ---
-      creaProdottiRicorsivo(righe, indice + 1, contenitore);
+
+      // Costruiamo una riga per ogni articolo
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+        var articolo  = carrello[i];
+        var subtotale = articolo.prezzo * articolo.quantita;
+        totale += subtotale;
+
+        var riga = document.createElement('div');
+        riga.className = 'riga-carrello';
+        riga.innerHTML =
+          '<span>' + articolo.nome + ' x' + articolo.quantita + '</span>' +
+          '<span>€ ' + subtotale.toFixed(2) + '</span>' +
+          '<button onclick="rimuoviDalCarrello(' + i + ')">Rimuovi</button>';
+
+        lista.appendChild(riga);
+      }
+
+      totaleDiv.textContent      = 'Totale: € ' + totale.toFixed(2);
+      btnScontrino.style.display = 'inline-block';
     }
- 
-    // Avviamo la navbar quando la pagina è pronta
-    window.addEventListener('DOMContentLoaded', costruisciNavbar);
+
+    // ============================================================
+    // Genera lo scontrino PDF con jsPDF
+    // ============================================================
+    function scaricaScontrino() {
+      var carrello = leggiCarrello();
+      var doc      = new window.jspdf.jsPDF();
+
+      doc.setFontSize(20);
+      doc.text('Scontrino', 20, 20);
+      doc.setFontSize(12);
+      doc.text('Data: ' + new Date().toLocaleDateString('it-IT'), 20, 35);
+      doc.line(20, 40, 190, 40);
+
+      var y      = 50;
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+        var articolo  = carrello[i];
+        var subtotale = articolo.prezzo * articolo.quantita;
+        totale += subtotale;
+
+        doc.text(articolo.nome, 20, y);
+        doc.text('x' + articolo.quantita, 120, y);
+        doc.text('€ ' + subtotale.toFixed(2), 165, y);
+        y += 10;
+      }
+
+      doc.line(20, y, 190, y);
+      y += 10;
+      doc.setFontSize(14);
+      doc.text('TOTALE: € ' + totale.toFixed(2), 130, y);
+
+      doc.save('scontrino.pdf');
+    }
+
+    // Quando la pagina si carica costruiamo navbar e carrello
+    window.addEventListener('DOMContentLoaded', function() {
+      costruisciNavbar();
+      mostraCarrello();
+    });
   </script>
- 
+
 </body>
 </html>
