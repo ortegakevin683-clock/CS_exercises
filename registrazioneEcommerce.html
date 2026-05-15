@@ -2,83 +2,43 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Corporate Portal</title>
-  <style>
-    :root {
-      --sidebar-bg: #0f172a;
-      --accent: #3b82f6;
-      --bg-main: #f8fafc;
-      --footer-bg: #020617;
-      --sidebar-width: 260px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
-
-    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; padding: 30px 0; position: fixed; height: 100vh; z-index: 10; }
-    .logo-area { padding: 0 25px 40px; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
-    nav button { background: transparent; color: #94a3b8; border: none; padding: 15px 25px; text-align: left; cursor: pointer; transition: 0.2s; width: 100%; border-left: 3px solid transparent; }
-    nav button:hover { background: rgba(255,255,255,0.05); color: white; border-left: 3px solid var(--accent); }
-
-    .right-side-container { margin-left: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .main-content { flex: 1; display: flex; padding: 60px; gap: 60px; align-items: center; }
-    
-    .form-box { flex: 1; max-width: 450px; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-    .info-box { flex: 1.2; }
-    .info-box h1 { font-size: 2.8rem; color: var(--sidebar-bg); margin-bottom: 20px; line-height: 1.1; }
-    .info-box p { font-size: 1.15rem; line-height: 1.6; color: #64748b; }
-
-    footer { background: var(--footer-bg); color: #94a3b8; padding: 40px 60px; display: flex; justify-content: space-between; }
-    .footer-col h4 { color: white; margin-bottom: 15px; font-size: 0.8rem; text-transform: uppercase; }
-    .footer-col p { font-size: 0.85rem; line-height: 1.8; }
-
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; }
-    input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1rem; outline: none; }
-    .btn-main { width: 100%; background: var(--sidebar-bg); color: white; border: none; padding: 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-  </style>
+  <title>Registrazione - NewCave Portal</title>
+  <style>/* Usa lo stesso identico CSS di loginEcommerce.html */</style>
 </head>
 <body>
   <nav>
-    <div class="logo-area">SISTEMA INVENTARIO</div>
-    <button onclick="location.href='loginEcommerce.html'">Accesso Utente</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Catalogo Prodotti</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Gestione Ordine</button>
+    <div class="logo-area">New<span>Cave</span></div>
+    <button onclick="location.href='loginEcommerce.html'">Terminale Accesso</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione Nodo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Sfoglia Catalogo</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Analisi Ordine</button>
   </nav>
 
   <div class="right-side-container">
     <div class="main-content">
       <div class="form-box">
-        <h2 style="margin-bottom: 25px;">Autenticazione</h2>
-        <div class="form-group">
-          <label>ID Utente</label>
-          <input type="email" id="email" placeholder="utente@azienda.it">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="pass">
-        </div>
-        <button class="btn-main" onclick="faiLogin()">Esegui Accesso</button>
-        <p id="msg" style="margin-top: 15px;"></p>
+        <h2 style="margin-bottom: 30px; font-weight: 700;">Registrazione Nodo</h2>
+        <div class="form-group"><label>Nome Operativo</label><input type="text" id="reg-nome"></div>
+        <div class="form-group"><label>Email Sistemi</label><input type="email" id="reg-email"></div>
+        <div class="form-group"><label>Nuova Password</label><input type="password" id="reg-password"></div>
+        <button class="btn-main" onclick="faiReg()">Inizializza Profilo</button>
+        <p id="msg-reg" style="margin-top: 20px;"></p>
       </div>
       <div class="info-box">
-        <h1>Infrastruttura Digitale Sicura.</h1>
-        <p>L'accesso al portale garantisce l'integrità dei flussi di magazzino. Attraverso questo terminale è possibile operare sull'inventario aziendale tramite caricamento dati CSV e monitoraggio in tempo reale degli asset.</p>
+        <h1>Unisciti al Network NewCave.</h1>
+        <p>Siamo una realtà dedicata all'eccellenza digitale. Registrando il tuo profilo operatore, otterrai l'accesso immediato alla nostra infrastruttura di gestione dati. In NewCave crediamo che la tecnologia debba essere al servizio dell'uomo, semplificando i processi complessi per lasciare spazio alla creatività e alla strategia aziendale.</p>
       </div>
     </div>
     <footer>
-      <div class="footer-col"><h4>Sede Legale</h4><p>Via dell'Informatica 102<br>20017 Rho (MI)</p></div>
-      <div class="footer-col"><h4>Supporto</h4><p>assistenza@sistema.it<br>+39 02 1234567</p></div>
-      <div class="footer-col" style="text-align: right;"><h4>Compliance</h4><p>© 2026 Sistema Inventario Professionale.</p></div>
+      <div class="footer-col"><h4>NewCave Headquarters</h4><p>Digital District, Area Rho<br>20017 Milano, IT</p></div>
+      <div class="footer-col"><h4>Contatti Sistemi</h4><p>tech-support@newcave.com<br>Protocollo: +39 02 998877</p></div>
+      <div class="footer-col" style="text-align: right;"><h4>Legal</h4><p>© 2026 NewCave Technologies S.p.A.<br>Sistemi di gestione asset certificati.</p></div>
     </footer>
   </div>
   <script>
-    function faiLogin() {
-      if(document.getElementById('email').value === 'utente@test.it' && document.getElementById('pass').value === '1234') {
-        localStorage.setItem('utenteLoggato', 'test');
-        location.href = 'vetrinaEcommerce.html';
-      }
+    function faiReg() {
+        document.getElementById('msg-reg').style.color = "#10b981";
+        document.getElementById('msg-reg').textContent = "Profilo creato. Procedere al login.";
     }
   </script>
 </body>
