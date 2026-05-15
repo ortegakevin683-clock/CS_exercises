@@ -2,38 +2,50 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Carrello - Negozio Moderno</title>
+  <title>Riepilogo Ordine - Negozio Professionale</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* ... (Navbar e Body uguali agli altri) ... */
-    :root { --primary: #6366f1; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; }
-    nav { background: #0f172a; padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: white; }
-    .logo { flex-grow: 1; font-weight: bold; }
-    nav button { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+    /* ... STESSI STILI BASE NAVBAR E LAYOUT ... */
+    :root { --sidebar-bg: #0f172a; --accent: #3b82f6; --bg-main: #f8fafc; --sidebar-width: 260px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; }
+    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; position: fixed; height: 100vh; padding-top: 30px; }
+    .logo-area { padding: 0 25px 40px; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+    nav button { background: transparent; color: #94a3b8; border: none; padding: 15px 25px; text-align: left; width: 100%; cursor: pointer; }
 
-    .main { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-    .item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
-    .btn-del { background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-    .btn-del:hover { background: #ef4444; color: white; }
-    .totale { font-size: 1.8rem; font-weight: bold; margin-top: 25px; text-align: right; }
-    .btn-pdf { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+    .main-wrapper { margin-left: var(--sidebar-width); flex-grow: 1; display: flex; padding: 60px; gap: 60px; }
+    .content-area { flex: 1.5; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .description-side { flex: 1; }
+    .description-side h1 { font-size: 2.2rem; color: var(--sidebar-bg); margin-bottom: 20px; }
+
+    .item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #e2e8f0; }
+    .totale { font-size: 1.8rem; font-weight: 700; margin-top: 30px; text-align: right; color: var(--sidebar-bg); }
+    .btn-pdf { width: 100%; background: var(--accent); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 30px; }
   </style>
 </head>
 <body>
   <nav>
-    <div class="logo">🛒 NegozioCSV</div>
-    <button onclick="location.href='loginEcommerce.html'">Login</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Vetrina</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Carrello</button>
+    <div class="logo-area">SISTEMA INVENTARIO</div>
+    <button onclick="location.href='loginEcommerce.html'">Accesso Utente</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Catalogo Prodotti</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Gestione Ordine</button>
   </nav>
 
-  <div class="main">
-    <h1>Il tuo ordine</h1>
-    <div id="lista-carrello"></div>
-    <div class="totale" id="totale">Totale: € 0.00</div>
-    <button class="btn-pdf" onclick="generaPDF()">Scarica Scontrino PDF</button>
+  <div class="main-wrapper">
+    <div class="content-area">
+      <h2>Riepilogo Operazioni</h2>
+      <div id="lista-carrello"></div>
+      <div class="totale" id="totale">Totale: € 0.00</div>
+      <button class="btn-pdf" onclick="generaPDF()">Genera Report PDF</button>
+    </div>
+
+    <div class="description-side">
+      <h1>Finalizzazione e Reportistica.</h1>
+      <p>
+        In questa sezione è possibile verificare le unità selezionate e procedere alla generazione del documento formale di riepilogo. Il sistema calcola automaticamente i costi totali e produce un file PDF pronto per l'archiviazione contabile.
+      </p>
+    </div>
   </div>
 
   <script>
@@ -48,34 +60,27 @@
           <div class="item">
             <span>${art.nome}</span>
             <span>€ ${art.prezzo.toFixed(2)}</span>
-            <button class="btn-del" onclick="rimuovi(${i})">Rimuovi</button>
-          </div>
-        `;
+          </div>`;
       });
       document.getElementById('totale').textContent = `Totale: € ${t.toFixed(2)}`;
-    }
-
-    function rimuovi(i) {
-      let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-      carrello.splice(i, 1);
-      localStorage.setItem('carrello', JSON.stringify(carrello));
-      carica();
     }
 
     function generaPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.text("SCONTRINO NEGOZIO CSV", 10, 10);
+      doc.setFontSize(18);
+      doc.text("REPORT ORDINE PROFESSIONALE", 10, 20);
+      doc.setFontSize(12);
       const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-      let y = 20;
+      let y = 40;
       carrello.forEach(art => {
-        doc.text(`${art.nome} - € ${art.prezzo.toFixed(2)}`, 10, y);
+        doc.text(`${art.nome}: Euro ${art.prezzo.toFixed(2)}`, 10, y);
         y += 10;
       });
-      doc.save("scontrino.pdf");
+      doc.save("report_ordine.pdf");
     }
-
     carica();
   </script>
 </body>
+</html>
 </html>
