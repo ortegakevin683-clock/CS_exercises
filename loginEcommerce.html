@@ -3,173 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Area Riservata - Negozio Professionale</title>
+  <title>Login - NewCave Portal</title>
   <style>
     :root {
       --sidebar-bg: #0f172a;
       --accent: #3b82f6;
       --bg-main: #f8fafc;
-      --text-dark: #1e293b;
-      --text-light: #94a3b8;
+      --footer-bg: #020617;
       --sidebar-width: 260px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
-      font-family: 'Inter', -apple-system, sans-serif; 
-      background: var(--bg-main); 
-      color: var(--text-dark);
-      display: flex; /* Layout a due colonne */
-      min-height: 100vh;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
 
-    /* NAV BAR VERTICALE (SIDEBAR) */
-    nav {
-      width: var(--sidebar-width);
-      background: var(--sidebar-bg);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 30px 0;
-      position: fixed;
-      height: 100vh;
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
+    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; padding: 30px 0; position: fixed; height: 100vh; z-index: 10; }
+    .logo-area { padding: 0 25px 40px; font-size: 1.4rem; font-weight: 800; color: white; letter-spacing: -1px; }
+    .logo-area span { color: var(--accent); }
+    nav button { background: transparent; color: #94a3b8; border: none; padding: 15px 25px; text-align: left; cursor: pointer; transition: 0.2s; width: 100%; border-left: 3px solid transparent; font-size: 0.9rem; }
+    nav button:hover { background: rgba(255,255,255,0.05); color: white; border-left: 3px solid var(--accent); }
 
-    .logo-area {
-      padding: 0 25px 40px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    nav button {
-      background: transparent;
-      color: var(--text-light);
-      border: none;
-      padding: 15px 25px;
-      text-align: left;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      width: 100%;
-      border-left: 3px solid transparent;
-    }
-
-    nav button:hover {
-      background: rgba(255,255,255,0.05);
-      color: white;
-      border-left: 3px solid var(--accent);
-    }
-
-    /* CONTENUTO DESTRO */
-    .main-wrapper {
-      margin-left: var(--sidebar-width);
-      flex-grow: 1;
-      display: flex;
-      padding: 60px;
-      gap: 60px;
-      align-items: flex-start;
-    }
-
-    .form-container {
-      flex: 1;
-      max-width: 500px;
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    /* DESCRIZIONE LATERALE DESTRA */
-    .description-side {
-      flex: 1;
-      padding-top: 20px;
-    }
-
-    .description-side h1 {
-      font-size: 2.5rem;
-      color: var(--sidebar-bg);
-      margin-bottom: 20px;
-      line-height: 1.2;
-    }
-
-    .description-side p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #64748b;
-    }
-
-    /* ELEMENTI FORM */
-    h2 { margin-bottom: 25px; font-weight: 600; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: #475569; }
-    input { 
-      width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; 
-      transition: 0.2s; font-size: 1rem;
-    }
-    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    .right-side-container { margin-left: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .main-content { flex: 1; display: flex; padding: 60px; gap: 80px; align-items: center; }
     
-    .btn-action {
-      width: 100%; background: var(--sidebar-bg); color: white; border: none; padding: 14px;
-      border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
-    }
-    .btn-action:hover { background: var(--accent); }
+    .form-box { flex: 1; max-width: 450px; background: white; padding: 45px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+    .info-box { flex: 1.2; }
+    .info-box h1 { font-size: 3rem; color: var(--sidebar-bg); margin-bottom: 25px; line-height: 1.1; font-weight: 800; }
+    .info-box p { font-size: 1.2rem; line-height: 1.7; color: #64748b; }
+
+    footer { background: var(--footer-bg); color: #64748b; padding: 50px 60px; display: flex; justify-content: space-between; border-top: 1px solid #1e293b; }
+    .footer-col h4 { color: white; margin-bottom: 18px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+    .footer-col p { font-size: 0.85rem; line-height: 1.8; }
+
+    .form-group { margin-bottom: 25px; }
+    label { display: block; margin-bottom: 10px; font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; }
+    input { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 1rem; outline: none; transition: 0.2s; }
+    input:focus { border-color: var(--accent); background: #fff; }
+    .btn-main { width: 100%; background: var(--sidebar-bg); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+    .btn-main:hover { background: var(--accent); transform: translateY(-1px); }
   </style>
 </head>
 <body>
-
-  <!-- NAVBAR SINISTRA -->
   <nav>
-    <div class="logo-area">SISTEMA INVENTARIO</div>
-    <button onclick="location.href='loginEcommerce.html'">Accesso Utente</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Catalogo Prodotti</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Gestione Ordine</button>
+    <div class="logo-area">New<span>Cave</span></div>
+    <button onclick="location.href='loginEcommerce.html'">Terminale Accesso</button>
+    <button onclick="location.href='registrazioneEcommerce.html'">Registrazione Nodo</button>
+    <button onclick="location.href='vetrinaEcommerce.html'">Sfoglia Catalogo</button>
+    <button onclick="location.href='carrelloEcommerce.html'">Analisi Ordine</button>
   </nav>
 
-  <!-- CONTENUTO DESTRO -->
-  <div class="main-wrapper">
-    
-    <!-- BOX FORM -->
-    <div class="form-container">
-      <h2>Autenticazione</h2>
-      <div class="form-group">
-        <label>Identificativo Email</label>
-        <input type="email" id="email" placeholder="nome@azienda.it">
+  <div class="right-side-container">
+    <div class="main-content">
+      <div class="form-box">
+        <h2 style="margin-bottom: 30px; font-weight: 700;">Login Operatore</h2>
+        <div class="form-group">
+          <label>Identificativo Personale</label>
+          <input type="email" id="email" placeholder="operatore@newcave.com">
+        </div>
+        <div class="form-group">
+          <label>Password Crittografata</label>
+          <input type="password" id="pass">
+        </div>
+        <button class="btn-main" onclick="faiLogin()">Esegui Autenticazione</button>
+        <p id="msg" style="margin-top: 20px; font-weight: 500;"></p>
       </div>
-      <div class="form-group">
-        <label>Chiave di Accesso</label>
-        <input type="password" id="pass">
+      <div class="info-box">
+        <h1>Benvenuti nel Futuro di NewCave.</h1>
+        <p>In NewCave, trasformiamo la gestione dei dati in un'esperienza fluida e sicura. Siamo appassionati di efficienza e innovazione tecnologica. La nostra piattaforma è progettata per connettere la logistica del magazzino con le necessità del business moderno, garantendo velocità e precisione in ogni singolo byte trasferito.</p>
       </div>
-      <button class="btn-action" onclick="faiLogin()">Esegui Accesso</button>
-      <p id="msg" style="margin-top:15px;"></p>
     </div>
-
-    <!-- DESCRIZIONE DESTRA -->
-    <div class="description-side">
-      <h1>Infrastruttura Digitale per il Commercio B2B.</h1>
-      <p>
-        Benvenuto nel portale di gestione. Questo sistema permette l'interazione diretta con il database prodotti tramite protocollo CSV, garantendo una sincronizzazione immediata tra magazzino e terminale utente. Accedi per operare sui flussi di acquisto e generare reportistica professionale in formato PDF.
-      </p>
-    </div>
-
+    <footer>
+      <div class="footer-col"><h4>NewCave Headquarters</h4><p>Digital District, Area Rho<br>20017 Milano, IT</p></div>
+      <div class="footer-col"><h4>Contatti Sistemi</h4><p>tech-support@newcave.com<br>Protocollo: +39 02 998877</p></div>
+      <div class="footer-col" style="text-align: right;"><h4>Legal</h4><p>© 2026 NewCave Technologies S.p.A.<br>Sistemi di gestione asset certificati.</p></div>
+    </footer>
   </div>
-
   <script>
     function faiLogin() {
       const e = document.getElementById('email').value;
       const p = document.getElementById('pass').value;
       if(e === 'utente@test.it' && p === '1234') {
         localStorage.setItem('utenteLoggato', e);
-        document.getElementById('msg').style.color = "green";
-        document.getElementById('msg').innerHTML = "Accesso autorizzato. Reindirizzamento...";
+        document.getElementById('msg').style.color = "#10b981";
+        document.getElementById('msg').innerHTML = "Accesso autorizzato. Caricamento ambiente...";
         setTimeout(() => location.href = 'vetrinaEcommerce.html', 1000);
       } else {
-        document.getElementById('msg').style.color = "red";
-        document.getElementById('msg').innerHTML = "Errore: Credenziali non riconosciute dal sistema.";
+        document.getElementById('msg').style.color = "#ef4444";
+        document.getElementById('msg').innerHTML = "Credenziali respinte dal server.";
       }
     }
   </script>
