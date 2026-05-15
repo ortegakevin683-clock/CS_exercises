@@ -1,133 +1,81 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carrello — NegozioCSV</title>
-  <!-- Collegamento al foglio di stile condiviso -->
-  <link rel="stylesheet" href="stile.css" />
-  <!-- jsPDF: libreria esterna per generare il PDF dello scontrino -->
+  <meta charset="UTF-8">
+  <title>Carrello - Negozio Moderno</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    /* ... (Navbar e Body uguali agli altri) ... */
+    :root { --primary: #6366f1; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; }
+    nav { background: #0f172a; padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: white; }
+    .logo { flex-grow: 1; font-weight: bold; }
+    nav button { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+
+    .main { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    .item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+    .btn-del { background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+    .btn-del:hover { background: #ef4444; color: white; }
+    .totale { font-size: 1.8rem; font-weight: bold; margin-top: 25px; text-align: right; }
+    .btn-pdf { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+  </style>
 </head>
 <body>
+  <nav>
+    <div class="logo">🛒 NegozioCSV</div>
+    <button onclick="location.href='login.html'">Login</button>
+    <button onclick="location.href='registrazione.html'">Registrazione</button>
+    <button onclick="location.href='vetrina.html'">Vetrina</button>
+    <button onclick="location.href='carrello.html'">Carrello</button>
+  </nav>
 
-  <!-- Segnaposto della navbar: navbar.js la riempirà automaticamente -->
-  <div id="navbar"></div>
-
-  <!-- Contenuto della pagina -->
-  <div class="contenuto">
-    <h2>Il tuo Carrello</h2>
-
-    <!-- Qui verranno inserite le righe del carrello -->
-    <div id="lista-carrello">
-      <p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>
-    </div>
-
-    <!-- Totale e bottone PDF, nascosti se il carrello è vuoto -->
-    <p id="totale-carrello"></p>
-    <button class="btn-primario" onclick="scaricaScontrino()"
-            id="btn-scontrino" style="display:none;">
-      Scarica Scontrino PDF
-    </button>
+  <div class="main">
+    <h1>Il tuo ordine</h1>
+    <div id="lista-carrello"></div>
+    <div class="totale" id="totale">Totale: € 0.00</div>
+    <button class="btn-pdf" onclick="generaPDF()">Scarica Scontrino PDF</button>
   </div>
 
-  <!-- Script condivisi -->
-  <script src="navbar.js"></script>
-  <script src="carrello.js"></script>
-
   <script>
-    // ============================================================
-    // Visualizzazione del carrello
-    //
-    // Questa funzione legge il carrello dal localStorage
-    // e ridisegna tutta la lista nella pagina.
-    // Viene chiamata al caricamento e dopo ogni rimozione.
-    // ============================================================
-
-    function mostraCarrello() {
-      var carrello     = leggiCarrello(); // funzione in carrello.js
-      var lista        = document.getElementById('lista-carrello');
-      var totaleDiv    = document.getElementById('totale-carrello');
-      var btnScontrino = document.getElementById('btn-scontrino');
-
-      // Svuotiamo la lista prima di ridisegnarla
-      lista.innerHTML = '';
-
-      // Se il carrello è vuoto mostriamo il messaggio e usciamo
-      if (carrello.length === 0) {
-        lista.innerHTML = '<p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>';
-        totaleDiv.textContent      = '';
-        btnScontrino.style.display = 'none';
-        return;
-      }
-
-      // Costruiamo una riga per ogni articolo nel carrello
-      var totale = 0;
-
-      for (var i = 0; i < carrello.length; i++) {
-        var articolo  = carrello[i];
-        var subtotale = articolo.prezzo * articolo.quantita;
-        totale += subtotale;
-
-        var riga = document.createElement('div');
-        riga.className = 'riga-carrello';
-        riga.innerHTML =
-          '<span>' + articolo.nome + ' x' + articolo.quantita + '</span>' +
-          '<span>€ ' + subtotale.toFixed(2) + '</span>' +
-          // Passiamo l'indice i alla funzione di rimozione in carrello.js
-          '<button onclick="rimuoviDalCarrello(' + i + ')">Rimuovi</button>';
-
-        lista.appendChild(riga);
-      }
-
-      // Mostriamo il totale e rendiamo visibile il bottone PDF
-      totaleDiv.textContent      = 'Totale: € ' + totale.toFixed(2);
-      btnScontrino.style.display = 'inline-block';
+    function carica() {
+      const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+      const container = document.getElementById('lista-carrello');
+      let t = 0;
+      container.innerHTML = '';
+      carrello.forEach((art, i) => {
+        t += art.prezzo;
+        container.innerHTML += `
+          <div class="item">
+            <span>${art.nome}</span>
+            <span>€ ${art.prezzo.toFixed(2)}</span>
+            <button class="btn-del" onclick="rimuovi(${i})">Rimuovi</button>
+          </div>
+        `;
+      });
+      document.getElementById('totale').textContent = `Totale: € ${t.toFixed(2)}`;
     }
 
-    // ============================================================
-    // Generazione dello scontrino PDF con jsPDF
-    // ============================================================
+    function rimuovi(i) {
+      let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+      carrello.splice(i, 1);
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+      carica();
+    }
 
-    function scaricaScontrino() {
-      var carrello = leggiCarrello(); // funzione in carrello.js
-      var doc      = new window.jspdf.jsPDF();
-
-      // Titolo e data
-      doc.setFontSize(20);
-      doc.text('Scontrino', 20, 20);
-      doc.setFontSize(12);
-      doc.text('Data: ' + new Date().toLocaleDateString('it-IT'), 20, 35);
-      doc.line(20, 40, 190, 40);
-
-      // Riga per ogni articolo
-      var y      = 50;
-      var totale = 0;
-
-      for (var i = 0; i < carrello.length; i++) {
-        var articolo  = carrello[i];
-        var subtotale = articolo.prezzo * articolo.quantita;
-        totale += subtotale;
-
-        doc.text(articolo.nome, 20, y);
-        doc.text('x' + articolo.quantita, 120, y);
-        doc.text('€ ' + subtotale.toFixed(2), 165, y);
+    function generaPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("SCONTRINO NEGOZIO CSV", 10, 10);
+      const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+      let y = 20;
+      carrello.forEach(art => {
+        doc.text(`${art.nome} - € ${art.prezzo.toFixed(2)}`, 10, y);
         y += 10;
-      }
-
-      // Riga finale con il totale
-      doc.line(20, y, 190, y);
-      y += 10;
-      doc.setFontSize(14);
-      doc.text('TOTALE: € ' + totale.toFixed(2), 130, y);
-
-      // Scarichiamo il file
-      doc.save('scontrino.pdf');
+      });
+      doc.save("scontrino.pdf");
     }
 
-    // Quando la pagina si carica, mostriamo subito il carrello
-    window.addEventListener('DOMContentLoaded', mostraCarrello);
+    carica();
   </script>
-
 </body>
 </html>
