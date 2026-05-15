@@ -1,227 +1,108 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login — NegozioCSV</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Negozio Moderno</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #6366f1;
+      --secondary: #a855f7;
+      --bg: #f1f5f9;
+      --text: #1e293b;
     }
- 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-    }
- 
-    /* ========== NAVBAR ========== */
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* NAVBAR */
     nav {
-      background-color: #2c3e50;
-      padding: 12px 20px;
+      background: #0f172a;
+      padding: 15px 30px;
       display: flex;
-      gap: 12px;
       align-items: center;
+      gap: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
- 
-    nav .logo {
+    .logo { color: white; font-weight: bold; margin-right: auto; font-size: 1.2rem; }
+    nav button {
+      background: rgba(255,255,255,0.1);
       color: white;
-      font-size: 16px;
-      font-weight: bold;
-      margin-right: auto;
-      text-decoration: none;
-    }
- 
-    nav a {
-      background-color: #ff7f50;
-      color: white;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.2);
       padding: 8px 16px;
-      cursor: pointer;
-      border-radius: 12px;
-      font-size: 14px;
-      text-decoration: none;
-      transition: background-color 0.2s ease;
-    }
- 
-    nav a:hover {
-      background-color: #e8673a;
-    }
- 
-    nav a.attivo {
-      background-color: #c0392b;
-    }
- 
-    /* ========== CONTENUTO ========== */
-    .contenuto {
-      max-width: 900px;
-      margin: 30px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-    }
- 
-    .contenuto h2 {
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
- 
-    /* ========== FORM ========== */
-    .form-gruppo {
-      margin-bottom: 14px;
-    }
- 
-    .form-gruppo label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
-      color: #555;
-    }
- 
-    .form-gruppo input {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
     }
- 
-    .btn-primario {
-      background-color: #ff7f50;
+    nav button:hover { background: var(--primary); transform: translateY(-2px); }
+
+    /* CARD LOGIN */
+    .container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      animation: slideUp 0.6s ease-out;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { margin-bottom: 25px; text-align: center; color: #0f172a; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; }
+    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; transition: 0.3s; }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+    
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: bold;
       cursor: pointer;
-      border-radius: 12px;
-      font-size: 14px;
-      margin-top: 8px;
-      transition: background-color 0.2s ease;
+      transition: 0.3s;
     }
- 
-    .btn-primario:hover {
-      background-color: #e8673a;
-    }
- 
-    .messaggio {
-      margin-top: 12px;
-      font-size: 14px;
-    }
+    .btn-submit:hover { filter: brightness(1.1); transform: scale(1.02); }
   </style>
 </head>
 <body>
- 
-  <!-- Segnaposto della navbar -->
-  <div id="navbar"></div>
- 
-  <div class="contenuto">
-    <h2>Accedi al tuo account</h2>
- 
-    <div class="form-gruppo">
+  <nav>
+    <div class="logo">🛒 NegozioCSV</div>
+    <button onclick="location.href='login.html'">Login</button>
+    <button onclick="location.href='registrazione.html'">Registrazione</button>
+    <button onclick="location.href='vetrina.html'">Vetrina</button>
+    <button onclick="location.href='carrello.html'">Carrello</button>
+  </nav>
+
+  <div class="container">
+    <h2>Bentornato!</h2>
+    <div class="form-group">
       <label>Email</label>
-      <input type="email" id="login-email" placeholder="tuaemail@esempio.com" />
+      <input type="email" id="email" placeholder="utente@test.it">
     </div>
- 
-    <div class="form-gruppo">
+    <div class="form-group">
       <label>Password</label>
-      <input type="password" id="login-password" placeholder="La tua password" />
+      <input type="password" id="pass" placeholder="1234">
     </div>
- 
-    <button class="btn-primario" onclick="faiLogin()">Entra</button>
- 
-    <p class="messaggio" id="msg-login"></p>
- 
-    <p style="margin-top: 16px; font-size: 14px; color: #555;">
-      Non hai un account?
-      <a href="registrazioneEcommerce.html" style="color: #ff7f50;">Registrati qui</a>
-    </p>
+    <button class="btn-submit" onclick="faiLogin()">Accedi</button>
+    <p id="msg" style="margin-top:15px; text-align:center;"></p>
   </div>
- 
+
   <script>
-    // ============================================================
-    // NAVBAR — costruita dinamicamente e inserita nel div#navbar
-    // ============================================================
-    function costruisciNavbar() {
-      var divNavbar = document.getElementById('navbar');
-      if (!divNavbar) return;
- 
-      divNavbar.innerHTML =
-        '<nav>' +
-          '<a href="loginEcommerce.html" class="logo">🛒 NegozioCSV</a>' +
-          '<a href="loginEcommerce.html" id="link-login">Login</a>' +
-          '<a href="registrazioneEcommerce.html" id="link-registrazione">Registrazione</a>' +
-          '<a href="vetrinaEcommerce.html" id="link-vetrina">Vetrina</a>' +
-          '<a href="carrelloEcommerce.html" id="link-carrello">' +
-            'Carrello (<span id="conta-carrello">0</span>)' +
-          '</a>' +
-        '</nav>';
- 
-      // Evidenziamo il link della pagina corrente
-      document.getElementById('link-login').classList.add('attivo');
- 
-      // Aggiorniamo il contatore del carrello
-      aggiornaContatoreNavbar();
- 
-      // Se c'è un utente loggato mostriamo il saluto
-      var utenteLoggato = localStorage.getItem('utenteLoggato');
-      if (utenteLoggato) {
-        document.getElementById('link-login').textContent = 'Ciao, ' + utenteLoggato;
-      }
-    }
- 
-    // Legge il carrello dal localStorage e aggiorna il numero nella navbar
-    function aggiornaContatoreNavbar() {
-      var contatoreSpan = document.getElementById('conta-carrello');
-      if (!contatoreSpan) return;
- 
-      var datiSalvati    = localStorage.getItem('carrello');
-      var carrello       = datiSalvati ? JSON.parse(datiSalvati) : [];
-      var totaleArticoli = 0;
- 
-      for (var i = 0; i < carrello.length; i++) {
-        totaleArticoli += carrello[i].quantita;
-      }
- 
-      contatoreSpan.textContent = totaleArticoli;
-    }
- 
-    // ============================================================
-    // LOGIN
-    // ============================================================
     function faiLogin() {
-      var email    = document.getElementById('login-email').value;
-      var password = document.getElementById('login-password').value;
-      var msg      = document.getElementById('msg-login');
- 
-      if (email === '' || password === '') {
-        msg.style.color = 'red';
-        msg.textContent = 'Compila tutti i campi!';
-        return;
-      }
- 
-      // Credenziali di test
-      if (email === 'utente@test.it' && password === '1234') {
-        msg.style.color = 'green';
-        msg.textContent = 'Login effettuato! Reindirizzamento...';
- 
-        // Salviamo l'email così la navbar mostra "Ciao, [email]"
-        localStorage.setItem('utenteLoggato', email);
- 
-        setTimeout(function() {
-          window.location.href = 'vetrinaEcommerce.html';
-        }, 1000);
- 
+      const e = document.getElementById('email').value;
+      const p = document.getElementById('pass').value;
+      if(e === 'utente@test.it' && p === '1234') {
+        localStorage.setItem('utenteLoggato', e);
+        document.getElementById('msg').innerHTML = "✅ Login in corso...";
+        setTimeout(() => location.href = 'vetrina.html', 1000);
       } else {
-        msg.style.color = 'red';
-        msg.textContent = 'Email o password sbagliati.';
+        document.getElementById('msg').innerHTML = "❌ Credenziali errate.";
       }
     }
- 
-    // Avviamo la navbar quando la pagina è pronta
-    window.addEventListener('DOMContentLoaded', costruisciNavbar);
   </script>
- 
 </body>
 </html>
- 
