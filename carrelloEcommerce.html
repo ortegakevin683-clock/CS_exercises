@@ -1,84 +1,118 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riepilogo - NewCave Portal</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    /* STILI IDENTICI AI PRECEDENTI PER SIDEBAR E FOOTER */
-    :root { --sidebar-bg: #0f172a; --accent: #3b82f6; --bg-main: #f8fafc; --footer-bg: #020617; --sidebar-width: 260px; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
-    nav { width: var(--sideba<!DOCTYPE html>
-<html lang="it">
-<head>
     <meta charset="UTF-8">
     <title>NewCave - Lo Scrigno</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root { --magma: #ff4d00; --gold: #ffcc00; --dark: #050505; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--dark); color: #fff; display: flex; }
-        nav { width: 260px; background: #000; border-right: 2px solid var(--magma); position: fixed; height: 100vh; display: flex; flex-direction: column; padding: 40px 0; }
-        .logo { font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--magma); margin-bottom: 50px; }
         
-        .container { margin-left: 260px; flex: 1; padding: 60px; max-width: 1000px; }
-        .list-box { background: #111; border: 1px solid #222; border-radius: 12px; padding: 40px; margin-bottom: 40px; }
-        .riga { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #222; font-size: 1.3rem; }
+        body { background: var(--dark); color: #fff; display: flex; min-height: 100vh; }
+
+        /* Sidebar Nav - Fissa come le altre */
+        nav { width: 260px; background: #000; border-right: 2px solid var(--magma); position: fixed; height: 100vh; display: flex; flex-direction: column; padding: 40px 0; z-index: 100; }
+        .logo { font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--magma); text-shadow: 0 0 15px var(--magma); margin-bottom: 50px; }
+        nav button { background: transparent; color: #fff; border: none; padding: 20px; text-align: left; cursor: pointer; text-transform: uppercase; font-weight: bold; border-left: 4px solid transparent; transition: 0.3s; }
+        nav button:hover { background: rgba(255, 77, 0, 0.1); border-left-color: var(--magma); color: var(--gold); }
+
+        /* Contenitore Principale */
+        .container { margin-left: 260px; flex: 1; padding: 60px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top right, #1a0800 0%, #050505 100%); }
         
-        .total-panel { background: #000; border: 2px solid var(--magma); padding: 40px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .total-amount { font-size: 3rem; font-weight: 900; color: var(--gold); }
-        .btn-pdf { background: #fff; color: #000; border: none; padding: 20px 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 8px; }
-        .btn-pdf:hover { background: var(--gold); }
+        .main-wrapper { width: 100%; max-width: 900px; }
+        h1 { color: var(--magma); font-size: 3rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Lista Minerali */
+        .list-box { background: #111; border: 1px solid #333; border-radius: 15px; padding: 30px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .riga { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #222; font-size: 1.4rem; transition: 0.2s; }
+        .riga:last-child { border-bottom: none; }
+        .riga:hover { background: rgba(255,255,255,0.02); padding-left: 10px; }
+        .riga .nome { font-weight: 300; }
+        .riga .prezzo { color: var(--magma); font-weight: 900; }
+
+        /* Pannello Totale */
+        .total-panel { background: #000; border: 2px solid var(--magma); padding: 40px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 20px rgba(255, 77, 0, 0.2); }
+        .total-label { color: #888; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 5px; }
+        .total-amount { font-size: 3.5rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 10px rgba(255, 204, 0, 0.3); }
+
+        .btn-action { background: var(--magma); color: #000; border: none; padding: 20px 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 8px; transition: 0.3s; }
+        .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--magma); }
+        .btn-empty { background: transparent; color: #666; border: 1px solid #333; margin-top: 20px; cursor: pointer; padding: 10px; border-radius: 5px; }
+        .btn-empty:hover { color: #ff0000; border-color: #ff0000; }
     </style>
 </head>
 <body>
+
     <nav>
         <div class="logo">NEWCAVE</div>
-        <button style="color:#fff; background:none; border:none; padding:20px; cursor:pointer;" onclick="location.href='vetrinaEcommerce.html'"><- Torna alla Vetrina</button>
+        <button onclick="location.href='loginEcommerce.html'">Login</button>
+        <button onclick="location.href='vetrinaEcommerce.html'">Collezione</button>
+        <button onclick="location.href='carrelloEcommerce.html'">Lo Scrigno</button>
     </nav>
+
     <div class="container">
-        <h1 style="color: var(--magma); margin-bottom: 40px; font-size: 2.5rem;">IL TUO SCRIGNO</h1>
-        <div id="lista-minerali" class="list-box"></div>
-        
-        <div class="total-panel">
-            <div>
-                <p style="color: #666; text-transform: uppercase;">Investimento Totale</p>
-                <div id="totale-display" class="total-amount">€ 0.00</div>
+        <div class="main-wrapper">
+            <h1>IL TUO SCRIGNO</h1>
+            
+            <div id="lista-minerali" class="list-box">
+                <!-- I minerali appariranno qui -->
             </div>
-            <button class="btn-pdf" onclick="scaricaPDF()">Certificato d'Autenticità</button>
+            
+            <div class="total-panel">
+                <div>
+                    <p class="total-label">Valore Totale</p>
+                    <div id="totale-display" class="total-amount">€ 0.00</div>
+                </div>
+                <button class="btn-action" onclick="stampaRicevuta()">Finalizza Acquisto</button>
+            </div>
+
+            <button class="btn-empty" onclick="svuotaScrigno()">Svuota Scrigno</button>
         </div>
     </div>
 
     <script>
-        function renderizza() {
-            const s = JSON.parse(localStorage.getItem('scrigno')) || [];
-            const div = document.getElementById('lista-minerali');
-            let tot = 0;
-            div.innerHTML = s.length ? '' : '<p style="color:#666">Lo scrigno è vuoto.</p>';
-            
-            s.forEach(m => {
-                tot += parseFloat(m.prezzo);
-                div.innerHTML += `<div class="riga"><span>${m.nome}</span><span style="color:var(--magma)">€ ${parseFloat(m.prezzo).toFixed(2)}</span></div>`;
+        function caricaScrigno() {
+            const scrigno = JSON.parse(localStorage.getItem('scrigno')) || [];
+            const contenitore = document.getElementById('lista-minerali');
+            let totale = 0;
+
+            if (scrigno.length === 0) {
+                contenitore.innerHTML = '<p style="text-align:center; color:#555; padding: 20px;">Lo scrigno è vuoto. Torna in miniera!</p>';
+                document.getElementById('totale-display').innerText = "€ 0.00";
+                return;
+            }
+
+            contenitore.innerHTML = '';
+            scrigno.forEach((item, index) => {
+                totale += parseFloat(item.prezzo);
+                contenitore.innerHTML += `
+                    <div class="riga">
+                        <span class="nome">${item.nome}</span>
+                        <span class="prezzo">€ ${parseFloat(item.prezzo).toFixed(2)}</span>
+                    </div>
+                `;
             });
-            document.getElementById('totale-display').textContent = `€ ${tot.toFixed(2)}`;
+
+            document.getElementById('totale-display').innerText = `€ ${totale.toFixed(2)}`;
         }
 
-        function scaricaPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFillColor(10, 10, 10);
-            doc.rect(0, 0, 210, 297, 'F');
-            doc.setTextColor(255, 77, 0);
-            doc.setFontSize(32);
-            doc.text("NEWCAVE - CERTIFICATO", 20, 40);
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(14);
-            doc.text("Certificazione di possesso legale campioni mineralogici.", 20, 60);
-            doc.save("Certificato_NewCave.pdf");
+        function svuotaScrigno() {
+            if(confirm("Vuoi davvero svuotare la tua collezione?")) {
+                localStorage.removeItem('scrigno');
+                caricaScrigno();
+            }
         }
-        renderizza();
+
+        function stampaRicevuta() {
+            const totale = document.getElementById('totale-display').innerText;
+            if (totale === "€ 0.00") {
+                alert("Lo scrigno è vuoto!");
+                return;
+            }
+            alert("Ordine inviato! Totale: " + totale + "\nRiceverai i tuoi minerali a breve.");
+        }
+
+        // Carica i dati all'apertura
+        caricaScrigno();
     </script>
 </body>
 </html>
