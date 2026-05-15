@@ -10,93 +10,75 @@
     :root { --sidebar-bg: #0f172a; --accent: #3b82f6; --bg-main: #f8fafc; --footer-bg: #020617; --sidebar-width: 260px; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: var(--bg-main); display: flex; min-height: 100vh; }
-    nav { width: var(--sidebar-width); background: var(--sidebar-bg); color: white; position: fixed; height: 100vh; padding: 30px 0; }
-    .logo-area { padding: <!DOCTYPE html>
+    nav { width: var(--sideba<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>NewCave - Il Mio Scrigno</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    :root { --dark: #0a0a0a; --gold: #c5a059; --bg: #161616; --text: #e0e0e0; --sidebar-w: 260px; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Garamond', serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
-    nav { width: var(--sidebar-w); background: var(--dark); border-right: 1px solid #222; display: flex; flex-direction: column; padding: 40px 0; position: fixed; height: 100vh; }
-    .logo-area { padding: 0 25px 50px; font-size: 1.8rem; font-weight: bold; letter-spacing: 4px; color: var(--gold); text-align: center; }
-    nav button { background: transparent; color: #777; border: none; padding: 18px 25px; text-align: left; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; }
-    
-    .right-side-container { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
-    .main-content { flex: 1; padding: 60px; max-width: 900px; }
-    
-    h2 { font-size: 2.5rem; color: var(--gold); margin-bottom: 40px; font-weight: normal; }
-    .scrigno-container { background: #000; border: 1px solid #222; padding: 30px; margin-bottom: 40px; }
-    .item { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
-    .item:last-child { border-bottom: none; }
-    
-    .totale-box { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding: 30px; background: #0a0a0a; border-top: 2px solid var(--gold); }
-    .totale-valore { font-size: 2.2rem; color: var(--gold); font-weight: bold; }
-    
-    .btn-pdf { background: var(--gold); color: black; border: none; padding: 18px 40px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; }
-    footer { background: #000; color: #444; padding: 50px 60px; display: flex; justify-content: space-between; margin-top: auto; border-top: 1px solid #1a1a1a; }
-    .footer-col h4 { color: var(--gold); font-size: 0.7rem; text-transform: uppercase; }
-  </style>
+    <meta charset="UTF-8">
+    <title>NewCave - Lo Scrigno</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root { --magma: #ff4d00; --gold: #ffcc00; --dark: #050505; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--dark); color: #fff; display: flex; }
+        nav { width: 260px; background: #000; border-right: 2px solid var(--magma); position: fixed; height: 100vh; display: flex; flex-direction: column; padding: 40px 0; }
+        .logo { font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--magma); margin-bottom: 50px; }
+        
+        .container { margin-left: 260px; flex: 1; padding: 60px; max-width: 1000px; }
+        .list-box { background: #111; border: 1px solid #222; border-radius: 12px; padding: 40px; margin-bottom: 40px; }
+        .riga { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #222; font-size: 1.3rem; }
+        
+        .total-panel { background: #000; border: 2px solid var(--magma); padding: 40px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .total-amount { font-size: 3rem; font-weight: 900; color: var(--gold); }
+        .btn-pdf { background: #fff; color: #000; border: none; padding: 20px 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 8px; }
+        .btn-pdf:hover { background: var(--gold); }
+    </style>
 </head>
 <body>
-  <nav>
-    <div class="logo-area">NEWCAVE</div>
-    <button onclick="location.href='loginEcommerce.html'">Accesso Membri</button>
-    <button onclick="location.href='registrazioneEcommerce.html'">Nuovo Profilo</button>
-    <button onclick="location.href='vetrinaEcommerce.html'">Collezione Minerali</button>
-    <button onclick="location.href='carrelloEcommerce.html'">Scrigno e Certificati</button>
-  </nav>
-
-  <div class="right-side-container">
-    <div class="main-content">
-      <h2>Scrigno Personale</h2>
-      <div id="lista-carrello" class="scrigno-container">
-        <!-- JS Genera qui -->
-      </div>
-      <div class="totale-box">
-        <div>
-          <p style="color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Valore della Collezione</p>
-          <p class="totale-valore" id="totale">€ 0.00</p>
+    <nav>
+        <div class="logo">NEWCAVE</div>
+        <button style="color:#fff; background:none; border:none; padding:20px; cursor:pointer;" onclick="location.href='vetrinaEcommerce.html'"><- Torna alla Vetrina</button>
+    </nav>
+    <div class="container">
+        <h1 style="color: var(--magma); margin-bottom: 40px; font-size: 2.5rem;">IL TUO SCRIGNO</h1>
+        <div id="lista-minerali" class="list-box"></div>
+        
+        <div class="total-panel">
+            <div>
+                <p style="color: #666; text-transform: uppercase;">Investimento Totale</p>
+                <div id="totale-display" class="total-amount">€ 0.00</div>
+            </div>
+            <button class="btn-pdf" onclick="scaricaPDF()">Certificato d'Autenticità</button>
         </div>
-        <button class="btn-pdf" onclick="generaPDF()">Esporta Certificato Proprietà</button>
-      </div>
     </div>
-    <footer>
-      <div class="footer-col"><h4>NewCave</h4><p>Nerviano (MI)</p></div>
-      <div class="footer-col"><h4>Legal</h4><p>© 2026 Tutti i diritti riservati.</p></div>
-    </footer>
-  </div>
 
-  <script>
-    function carica() {
-      const c = JSON.parse(localStorage.getItem('carrello')) || [];
-      const container = document.getElementById('lista-carrello');
-      let t = 0;
-      container.innerHTML = c.length ? '' : '<p style="color:#666">Lo scrigno è vuoto.</p>';
-      c.forEach(art => {
-        t += art.prezzo;
-        container.innerHTML += `<div class="item"><span>${art.nome}</span><span style="color:var(--gold)">€ ${art.prezzo.toFixed(2)}</span></div>`;
-      });
-      document.getElementById('totale').textContent = `€ ${t.toFixed(2)}`;
-    }
-    function generaPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFillColor(10, 10, 10);
-      doc.rect(0, 0, 210, 297, 'F');
-      doc.setTextColor(197, 160, 89);
-      doc.setFontSize(28);
-      doc.text("NEWCAVE MINERALS", 20, 40);
-      doc.setFontSize(14);
-      doc.text("CERTIFICATO DI AUTENTICITÀ GEOLOGICA", 20, 55);
-      doc.setTextColor(255, 255, 255);
-      doc.text("Si attesta che i campioni elencati sono stati estratti e verificati.", 20, 75);
-      doc.save("Certificato_Minerale_NewCave.pdf");
-    }
-    carica();
-  </script>
+    <script>
+        function renderizza() {
+            const s = JSON.parse(localStorage.getItem('scrigno')) || [];
+            const div = document.getElementById('lista-minerali');
+            let tot = 0;
+            div.innerHTML = s.length ? '' : '<p style="color:#666">Lo scrigno è vuoto.</p>';
+            
+            s.forEach(m => {
+                tot += parseFloat(m.prezzo);
+                div.innerHTML += `<div class="riga"><span>${m.nome}</span><span style="color:var(--magma)">€ ${parseFloat(m.prezzo).toFixed(2)}</span></div>`;
+            });
+            document.getElementById('totale-display').textContent = `€ ${tot.toFixed(2)}`;
+        }
+
+        function scaricaPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFillColor(10, 10, 10);
+            doc.rect(0, 0, 210, 297, 'F');
+            doc.setTextColor(255, 77, 0);
+            doc.setFontSize(32);
+            doc.text("NEWCAVE - CERTIFICATO", 20, 40);
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.text("Certificazione di possesso legale campioni mineralogici.", 20, 60);
+            doc.save("Certificato_NewCave.pdf");
+        }
+        renderizza();
+    </script>
 </body>
 </html>
