@@ -1,300 +1,219 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carrello — NegozioCSV</title>
-  <!-- jsPDF: libreria per generare il PDF dello scontrino -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrazione - Negozio Moderno</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #6366f1;
+      --secondary: #a855f7;
+      --bg: #f1f5f9;
+      --text: #1e293b;
     }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
     }
 
-    /* ========== NAVBAR ========== */
+    /* NAVBAR */
     nav {
-      background-color: #2c3e50;
-      padding: 12px 20px;
+      background: #0f172a;
+      padding: 15px 30px;
       display: flex;
-      gap: 12px;
       align-items: center;
+      gap: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-
-    nav .logo {
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      margin-right: auto;
-      text-decoration: none;
+    .logo { 
+      color: white; 
+      font-weight: bold; 
+      margin-right: auto; 
+      font-size: 1.2rem; 
+      letter-spacing: -0.5px;
     }
-
-    nav a {
-      background-color: #ff7f50;
+    nav button {
+      background: rgba(255,255,255,0.1);
       color: white;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.2);
       padding: 8px 16px;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 12px;
-      font-size: 14px;
-      text-decoration: none;
-      transition: background-color 0.2s ease;
+      transition: all 0.3s ease;
+    }
+    nav button:hover { 
+      background: var(--primary); 
+      transform: translateY(-2px); 
+      border-color: var(--primary);
     }
 
-    nav a:hover {
-      background-color: #e8673a;
-    }
-
-    nav a.attivo {
-      background-color: #c0392b;
-    }
-
-    /* ========== CONTENUTO ========== */
-    .contenuto {
-      max-width: 900px;
-      margin: 30px auto;
+    /* CARD REGISTRAZIONE */
+    .container {
+      max-width: 480px;
+      margin: 60px auto;
       background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+      animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .contenuto h2 {
-      margin-bottom: 20px;
-      color: #2c3e50;
+    @keyframes slideUp { 
+      from { opacity: 0; transform: translateY(40px); } 
+      to { opacity: 1; transform: translateY(0); } 
     }
 
-    .btn-primario {
-      background-color: #ff7f50;
+    h2 { 
+      margin-bottom: 10px; 
+      text-align: center; 
+      color: #0f172a; 
+      font-size: 1.8rem;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    label { 
+      display: block; 
+      margin-bottom: 8px; 
+      font-size: 0.85rem; 
+      font-weight: 600; 
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #475569;
+    }
+    input { 
+      width: 100%; 
+      padding: 14px; 
+      border: 1.5px solid #e2e8f0; 
+      border-radius: 12px; 
+      outline: none; 
+      transition: all 0.3s ease; 
+      font-size: 1rem;
+    }
+    input:focus { 
+      border-color: var(--primary); 
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); 
+    }
+    
+    .btn-register {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       border: none;
-      padding: 10px 20px;
-      cursor: pointer;
+      padding: 16px;
       border-radius: 12px;
-      font-size: 14px;
-      margin-top: 8px;
-      transition: background-color 0.2s ease;
-    }
-
-    .btn-primario:hover {
-      background-color: #e8673a;
-    }
-
-    /* ========== RIGHE CARRELLO ========== */
-    #lista-carrello {
-      margin-bottom: 20px;
-    }
-
-    .riga-carrello {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-
-    .riga-carrello button {
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      padding: 4px 10px;
-      cursor: pointer;
-      border-radius: 12px;
-      font-size: 12px;
-      transition: background-color 0.2s ease;
-    }
-
-    .riga-carrello button:hover {
-      background-color: #c0392b;
-    }
-
-    #totale-carrello {
-      font-size: 18px;
       font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 16px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+    .btn-register:hover { 
+      filter: brightness(1.1); 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    #msg-reg {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+      min-height: 24px;
+    }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    .footer-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <!-- Segnaposto della navbar -->
-  <div id="navbar"></div>
+  <nav>
+    <div class="logo">🛒 NegozioCSV</div>
+    <button onclick="location.href='login.html'">Login</button>
+    <button onclick="location.href='registrazione.html'">Registrazione</button>
+    <button onclick="location.href='vetrina.html'">Vetrina</button>
+    <button onclick="location.href='carrello.html'">Carrello</button>
+  </nav>
 
-  <div class="contenuto">
-    <h2>Il tuo Carrello</h2>
-
-    <div id="lista-carrello">
-      <p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>
+  <div class="container">
+    <h2>Crea Account</h2>
+    <p class="subtitle">Unisciti alla nostra community</p>
+    
+    <div class="form-group">
+      <label>Nome Completo</label>
+      <input type="text" id="reg-nome" placeholder="Es. Mario Rossi">
     </div>
 
-    <p id="totale-carrello"></p>
-    <button class="btn-primario" onclick="scaricaScontrino()"
-            id="btn-scontrino" style="display:none;">
-      Scarica Scontrino PDF
-    </button>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="mario@esempio.it">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Almeno 4 caratteri">
+    </div>
+
+    <button class="btn-register" onclick="faiRegistrazione()">Registrati Ora</button>
+    
+    <p id="msg-reg"></p>
+
+    <div class="footer-link">
+      Hai già un account? <a href="login.html">Accedi qui</a>
+    </div>
   </div>
 
   <script>
-    // ============================================================
-    // NAVBAR — costruita dinamicamente e inserita nel div#navbar
-    // ============================================================
-    function costruisciNavbar() {
-      var divNavbar = document.getElementById('navbar');
-      if (!divNavbar) return;
+    function faiRegistrazione() {
+      const nome = document.getElementById('reg-nome').value;
+      const email = document.getElementById('reg-email').value;
+      const pass = document.getElementById('reg-password').value;
+      const msg = document.getElementById('msg-reg');
 
-      divNavbar.innerHTML =
-        '<nav>' +
-          '<a href="loginEcommerce.html" class="logo">🛒 NegozioCSV</a>' +
-          '<a href="loginEcommerce.html" id="link-login">Login</a>' +
-          '<a href="registrazioneEcommerce.html" id="link-registrazione">Registrazione</a>' +
-          '<a href="vetrinaEcommerce.html" id="link-vetrina">Vetrina</a>' +
-          '<a href="carrelloEcommerce.html" id="link-carrello">' +
-            'Carrello (<span id="conta-carrello">0</span>)' +
-          '</a>' +
-        '</nav>';
-
-      // Evidenziamo il link della pagina corrente
-      document.getElementById('link-carrello').classList.add('attivo');
-
-      // Aggiorniamo il contatore del carrello
-      aggiornaContatoreNavbar();
-
-      // Se c'è un utente loggato mostriamo il saluto
-      var utenteLoggato = localStorage.getItem('utenteLoggato');
-      if (utenteLoggato) {
-        document.getElementById('link-login').textContent = 'Ciao, ' + utenteLoggato;
-      }
-    }
-
-    // Legge il carrello dal localStorage e aggiorna il numero nella navbar
-    function aggiornaContatoreNavbar() {
-      var contatoreSpan = document.getElementById('conta-carrello');
-      if (!contatoreSpan) return;
-
-      var datiSalvati    = localStorage.getItem('carrello');
-      var carrello       = datiSalvati ? JSON.parse(datiSalvati) : [];
-      var totaleArticoli = 0;
-
-      for (var i = 0; i < carrello.length; i++) {
-        totaleArticoli += carrello[i].quantita;
-      }
-
-      contatoreSpan.textContent = totaleArticoli;
-    }
-
-    // ============================================================
-    // CARRELLO — funzioni per leggere e salvare nel localStorage
-    // ============================================================
-
-    // Legge il carrello dal localStorage
-    function leggiCarrello() {
-      var datiSalvati = localStorage.getItem('carrello');
-      return datiSalvati ? JSON.parse(datiSalvati) : [];
-    }
-
-    // Salva il carrello nel localStorage
-    function salvaCarrello(carrello) {
-      localStorage.setItem('carrello', JSON.stringify(carrello));
-    }
-
-    // Rimuove un prodotto tramite il suo indice e ridisegna la lista
-    function rimuoviDalCarrello(indice) {
-      var carrello = leggiCarrello();
-      carrello.splice(indice, 1); // togliamo l'elemento all'indice dato
-      salvaCarrello(carrello);
-      aggiornaContatoreNavbar();
-      mostraCarrello();           // ridisegniamo la lista
-    }
-
-    // ============================================================
-    // Legge il carrello dal localStorage e ridisegna la lista
-    // ============================================================
-    function mostraCarrello() {
-      var carrello     = leggiCarrello();
-      var lista        = document.getElementById('lista-carrello');
-      var totaleDiv    = document.getElementById('totale-carrello');
-      var btnScontrino = document.getElementById('btn-scontrino');
-
-      lista.innerHTML = '';
-
-      // Se il carrello è vuoto mostriamo il messaggio e usciamo
-      if (carrello.length === 0) {
-        lista.innerHTML = '<p style="color:#999; font-style:italic;">Il carrello è vuoto.</p>';
-        totaleDiv.textContent      = '';
-        btnScontrino.style.display = 'none';
+      // Validazione base
+      if (nome === '' || email === '' || pass === '') {
+        msg.style.color = '#ef4444'; // Rosso
+        msg.textContent = '⚠️ Compila tutti i campi!';
         return;
       }
 
-      // Costruiamo una riga per ogni articolo
-      var totale = 0;
-
-      for (var i = 0; i < carrello.length; i++) {
-        var articolo  = carrello[i];
-        var subtotale = articolo.prezzo * articolo.quantita;
-        totale += subtotale;
-
-        var riga = document.createElement('div');
-        riga.className = 'riga-carrello';
-        riga.innerHTML =
-          '<span>' + articolo.nome + ' x' + articolo.quantita + '</span>' +
-          '<span>€ ' + subtotale.toFixed(2) + '</span>' +
-          '<button onclick="rimuoviDalCarrello(' + i + ')">Rimuovi</button>';
-
-        lista.appendChild(riga);
+      if (pass.length < 4) {
+        msg.style.color = '#ef4444';
+        msg.textContent = '⚠️ Password troppo corta (min 4 car.)';
+        return;
       }
 
-      totaleDiv.textContent      = 'Totale: € ' + totale.toFixed(2);
-      btnScontrino.style.display = 'inline-block';
+      // Simulazione successo
+      msg.style.color = '#10b981'; // Verde
+      msg.textContent = '✅ Registrazione completata! Vai al login.';
+      
+      // Opzionale: pulisci i campi dopo 2 secondi
+      setTimeout(() => {
+        document.getElementById('reg-nome').value = '';
+        document.getElementById('reg-email').value = '';
+        document.getElementById('reg-password').value = '';
+        // volendo puoi reindirizzare al login
+        // location.href = 'login.html';
+      }, 2000);
     }
-
-    // ============================================================
-    // Genera lo scontrino PDF con jsPDF
-    // ============================================================
-    function scaricaScontrino() {
-      var carrello = leggiCarrello();
-      var doc      = new window.jspdf.jsPDF();
-
-      doc.setFontSize(20);
-      doc.text('Scontrino', 20, 20);
-      doc.setFontSize(12);
-      doc.text('Data: ' + new Date().toLocaleDateString('it-IT'), 20, 35);
-      doc.line(20, 40, 190, 40);
-
-      var y      = 50;
-      var totale = 0;
-
-      for (var i = 0; i < carrello.length; i++) {
-        var articolo  = carrello[i];
-        var subtotale = articolo.prezzo * articolo.quantita;
-        totale += subtotale;
-
-        doc.text(articolo.nome, 20, y);
-        doc.text('x' + articolo.quantita, 120, y);
-        doc.text('€ ' + subtotale.toFixed(2), 165, y);
-        y += 10;
-      }
-
-      doc.line(20, y, 190, y);
-      y += 10;
-      doc.setFontSize(14);
-      doc.text('TOTALE: € ' + totale.toFixed(2), 130, y);
-
-      doc.save('scontrino.pdf');
-    }
-
-    // Quando la pagina si carica costruiamo navbar e carrello
-    window.addEventListener('DOMContentLoaded', function() {
-      costruisciNavbar();
-      mostraCarrello();
-    });
   </script>
 
 </body>
