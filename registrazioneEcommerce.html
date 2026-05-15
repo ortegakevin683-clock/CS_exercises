@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registrazione — NegozioCSV</title>
+  <title>Vetrina — NegozioCSV</title>
   <style>
     * {
       box-sizing: border-box;
@@ -68,45 +68,93 @@
       color: #2c3e50;
     }
  
-    /* ========== FORM ========== */
-    .form-gruppo {
-      margin-bottom: 14px;
+    /* ========== CARICA CSV ========== */
+    #carica-csv {
+      margin-bottom: 20px;
     }
  
-    .form-gruppo label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
-      color: #555;
+    #carica-csv input[type="file"] {
+      margin-left: 10px;
     }
  
-    .form-gruppo input {
+    /* ========== GRIGLIA PRODOTTI (Flexbox) ========== */
+    #lista-prodotti {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+ 
+    .box-prodotto {
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+      width: calc(33% - 12px);
+      min-width: 200px;
+      flex-grow: 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+ 
+    /* Il box si solleva al passaggio del mouse */
+    .box-prodotto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+ 
+    .box-prodotto img {
       width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #ccc;
+      height: 160px;
+      object-fit: cover;
       border-radius: 8px;
-      font-size: 14px;
+      margin-bottom: 10px;
     }
  
-    .btn-primario {
-      background-color: #ff7f50;
+    .box-prodotto h3 {
+      font-size: 15px;
+      color: #2c3e50;
+      margin-bottom: 4px;
+    }
+ 
+    .box-prodotto .marca {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+ 
+    .box-prodotto .descrizione {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+ 
+    .box-prodotto .prezzo {
+      font-size: 16px;
+      font-weight: bold;
+      color: #27ae60;
+      margin-bottom: 10px;
+    }
+ 
+    .box-prodotto .dettagli {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+ 
+    .btn-carrello {
+      background-color: #e67e22;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 7px 14px;
       cursor: pointer;
       border-radius: 12px;
-      font-size: 14px;
-      margin-top: 8px;
+      font-size: 13px;
+      width: 100%;
       transition: background-color 0.2s ease;
     }
  
-    .btn-primario:hover {
-      background-color: #e8673a;
-    }
- 
-    .messaggio {
-      margin-top: 12px;
-      font-size: 14px;
+    .btn-carrello:hover {
+      background-color: #ca6f1e;
     }
   </style>
 </head>
@@ -116,31 +164,17 @@
   <div id="navbar"></div>
  
   <div class="contenuto">
-    <h2>Crea un account</h2>
+    <h2>Vetrina Prodotti</h2>
  
-    <div class="form-gruppo">
-      <label>Nome</label>
-      <input type="text" id="reg-nome" placeholder="Il tuo nome" />
+    <div id="carica-csv">
+      <label><strong>Carica il file CSV del professore:</strong></label>
+      <input type="file" id="file-csv" accept=".csv" onchange="leggiCSV(this)" />
     </div>
  
-    <div class="form-gruppo">
-      <label>Email</label>
-      <input type="email" id="reg-email" placeholder="tuaemail@esempio.com" />
+    <!-- Qui verranno inseriti i box dei prodotti -->
+    <div id="lista-prodotti">
+      <p style="color:#999; font-style:italic;">Carica un file CSV per vedere i prodotti.</p>
     </div>
- 
-    <div class="form-gruppo">
-      <label>Password</label>
-      <input type="password" id="reg-password" placeholder="Scegli una password (min. 4 caratteri)" />
-    </div>
- 
-    <button class="btn-primario" onclick="faiRegistrazione()">Registrati</button>
- 
-    <p class="messaggio" id="msg-reg"></p>
- 
-    <p style="margin-top: 16px; font-size: 14px; color: #555;">
-      Hai già un account?
-      <a href="loginEcommerce.html" style="color: #ff7f50;">Accedi qui</a>
-    </p>
   </div>
  
   <script>
@@ -163,7 +197,7 @@
         '</nav>';
  
       // Evidenziamo il link della pagina corrente
-      document.getElementById('link-registrazione').classList.add('attivo');
+      document.getElementById('link-vetrina').classList.add('attivo');
  
       // Aggiorniamo il contatore del carrello
       aggiornaContatoreNavbar();
@@ -192,36 +226,130 @@
     }
  
     // ============================================================
-    // REGISTRAZIONE
+    // CARRELLO — funzioni condivise (qui dentro perché non abbiamo file esterni)
     // ============================================================
-    function faiRegistrazione() {
-      var nome     = document.getElementById('reg-nome').value;
-      var email    = document.getElementById('reg-email').value;
-      var password = document.getElementById('reg-password').value;
-      var msg      = document.getElementById('msg-reg');
  
-      // Controlliamo che tutti i campi siano compilati
-      if (nome === '' || email === '' || password === '') {
-        msg.style.color = 'red';
-        msg.textContent = 'Compila tutti i campi!';
+    // Legge il carrello dal localStorage
+    function leggiCarrello() {
+      var datiSalvati = localStorage.getItem('carrello');
+      return datiSalvati ? JSON.parse(datiSalvati) : [];
+    }
+ 
+    // Salva il carrello nel localStorage
+    function salvaCarrello(carrello) {
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+    }
+ 
+    // Aggiunge un prodotto al carrello (o aumenta la quantità se esiste già)
+    function aggiungiAlCarrello(nome, prezzo) {
+      var carrello = leggiCarrello();
+      var trovato  = false;
+ 
+      for (var i = 0; i < carrello.length; i++) {
+        if (carrello[i].nome === nome) {
+          carrello[i].quantita++;
+          trovato = true;
+          break;
+        }
+      }
+ 
+      if (!trovato) {
+        carrello.push({ nome: nome, prezzo: prezzo, quantita: 1 });
+      }
+ 
+      salvaCarrello(carrello);
+      aggiornaContatoreNavbar();
+      alert(nome + ' aggiunto al carrello!');
+    }
+ 
+    // ============================================================
+    // LETTURA CSV con FileReader
+    // ============================================================
+    function leggiCSV(input) {
+      var file = input.files[0];
+      if (!file) return;
+ 
+      var reader = new FileReader();
+ 
+      // Scatta quando il file è stato letto completamente
+      reader.onload = function(evento) {
+        var testo = evento.target.result;
+        var righe = testo.split('\n');
+ 
+        // Saltiamo la prima riga (intestazione) e costruiamo l'array dati
+        var datiRighe = [];
+        for (var i = 1; i < righe.length; i++) {
+          var riga = righe[i].trim();
+          if (riga !== '') {
+            datiRighe.push(riga.split(','));
+          }
+        }
+ 
+        var contenitore = document.getElementById('lista-prodotti');
+        contenitore.innerHTML = '';
+ 
+        // Avviamo la funzione ricorsiva dall'indice 0
+        creaProdottiRicorsivo(datiRighe, 0, contenitore);
+      };
+ 
+      reader.readAsText(file);
+    }
+ 
+    // ============================================================
+    // FUNZIONE RICORSIVA — crea i box prodotti uno alla volta
+    //
+    // Come funziona:
+    //   - CASO BASE: se indice >= righe.length, abbiamo finito → usciamo
+    //   - PASSO RICORSIVO: creiamo il box per la riga "indice",
+    //     poi richiamiamo la stessa funzione con indice + 1
+    // ============================================================
+    function creaProdottiRicorsivo(righe, indice, contenitore) {
+ 
+      // --- CASO BASE: tutte le righe sono state elaborate ---
+      if (indice >= righe.length) {
         return;
       }
  
-      // La password deve avere almeno 4 caratteri
-      if (password.length < 4) {
-        msg.style.color = 'red';
-        msg.textContent = 'La password deve essere di almeno 4 caratteri.';
-        return;
-      }
+      // Leggiamo le colonne della riga corrente
+      var colonne     = righe[indice];
+      var nome        = colonne[0] ? colonne[0].trim() : 'N/D';
+      var marca       = colonne[1] ? colonne[1].trim() : 'N/D';
+      var descrizione = colonne[2] ? colonne[2].trim() : 'N/D';
+      var immagine    = colonne[3] ? colonne[3].trim() : '';
+      var prezzo      = colonne[4] ? colonne[4].trim() : '0';
+      var dimensioni  = colonne[5] ? colonne[5].trim() : 'N/D';
+      var taglio      = colonne[6] ? colonne[6].trim() : 'N/D';
+      var giorni      = colonne[7] ? colonne[7].trim() : 'N/D';
+      var provenienza = colonne[8] ? colonne[8].trim() : 'N/D';
  
-      // Tutto ok
-      msg.style.color = 'green';
-      msg.textContent = 'Registrazione completata! Ora puoi fare il login.';
+      var srcImg = immagine !== ''
+        ? immagine
+        : 'https://via.placeholder.com/300x160?text=No+Immagine';
  
-      // Dopo 2 secondi torniamo al login
-      setTimeout(function() {
-        window.location.href = 'loginEcommerce.html';
-      }, 2000);
+      var box = document.createElement('div');
+      box.className = 'box-prodotto';
+      box.innerHTML =
+        '<img src="' + srcImg + '" alt="' + nome + '" ' +
+             'onerror="this.src=\'https://via.placeholder.com/300x160?text=No+Immagine\'" />' +
+        '<h3>' + nome + '</h3>' +
+        '<p class="marca">' + marca + '</p>' +
+        '<p class="descrizione">' + descrizione + '</p>' +
+        '<p class="prezzo">€ ' + parseFloat(prezzo).toFixed(2) + '</p>' +
+        '<div class="dettagli">' +
+          'Dimensioni: '  + dimensioni  + '<br>' +
+          'Taglio: '      + taglio      + '<br>' +
+          'Giorni: '      + giorni      + '<br>' +
+          'Provenienza: ' + provenienza +
+        '</div>' +
+        '<button class="btn-carrello" ' +
+          'onclick="aggiungiAlCarrello(\'' + nome + '\', ' + parseFloat(prezzo) + ')">' +
+          'Aggiungi al carrello' +
+        '</button>';
+ 
+      contenitore.appendChild(box);
+ 
+      // --- PASSO RICORSIVO: passiamo alla riga successiva ---
+      creaProdottiRicorsivo(righe, indice + 1, contenitore);
     }
  
     // Avviamo la navbar quando la pagina è pronta
