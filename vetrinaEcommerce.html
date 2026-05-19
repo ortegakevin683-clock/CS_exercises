@@ -1,84 +1,703 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>NewCave - Vetrina Minerale</title>
-    <style>
-        :root { --magma: #ff4d00; --gold: #ffcc00; --dark: #050505; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--dark); color: #fff; display: flex; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewExpedetion – Vetrina Minerali</title>
 
-        nav { width: 260px; background: #000; border-right: 2px solid var(--magma); position: fixed; height: 100vh; display: flex; flex-direction: column; padding: 40px 0; }
-        .logo { font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--magma); margin-bottom: 50px; }
-        nav button { background: transparent; color: #fff; border: none; padding: 20px; text-align: left; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
 
-        .container { margin-left: 260px; flex: 1; padding: 60px; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; border-bottom: 1px solid #222; padding-bottom: 20px; }
-        
-        /* Grid */
-        #display-minerali { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
-        .card { background: #111; border-radius: 12px; overflow: hidden; border: 1px solid #222; transition: 0.4s; }
-        .card:hover { border-color: var(--magma); transform: scale(1.03); box-shadow: 0 10px 30px rgba(255, 77, 0, 0.2); }
-        .card img { width: 100%; height: 280px; object-fit: cover; filter: grayscale(20%); transition: 0.4s; }
-        .card:hover img { filter: grayscale(0%); }
-        
-        .card-body { padding: 25px; text-align: center; }
-        .card-body h3 { color: var(--gold); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .card-body p { color: #777; font-size: 0.85rem; margin-bottom: 15px; }
-        .prezzo-tag { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 20px; }
-        
-        .btn-add { width: 100%; background: var(--magma); color: #000; border: none; padding: 15px; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 5px; }
-        
-        input[type="file"] { border: 2px dashed var(--magma); padding: 15px; color: var(--magma); background: #000; border-radius: 8px; }
-    </style>
+  <style>
+    /* ============================================================
+       VARIABILI CSS – stessa palette su tutte le pagine
+    ============================================================ */
+    :root {
+      --oro:         #C9A84C;
+      --oro-chiaro:  #E8C96A;
+      --roccia:      #2C2C2C;
+      --roccia-med:  #4A4A4A;
+      --sabbia:      #F5EFE0;
+      --sabbia-scura:#EAE0CC;
+      --bianco:      #FDFAF4;
+      --errore:      #B94040;
+      --successo:    #3A7D44;
+      --navbar-w:    240px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--sabbia);
+      color: var(--roccia);
+      display: flex;
+      min-height: 100vh;
+      animation: fadeInPagina 0.8s ease both;
+    }
+
+    @keyframes fadeInPagina {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ============================================================
+       NAVBAR VERTICALE (identica alle altre pagine)
+    ============================================================ */
+    .navbar {
+      width: var(--navbar-w);
+      min-height: 100vh;
+      background-color: var(--roccia);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 100;
+    }
+
+    .navbar-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--oro);
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .navbar-sub {
+      font-size: 0.65rem;
+      color: #888;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .navbar-divider {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--oro), transparent);
+      margin-bottom: 40px;
+    }
+
+    .navbar nav {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .navbar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      color: #BBB;
+      text-decoration: none;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .navbar nav a .icon { font-size: 1rem; }
+
+    .navbar nav a:hover {
+      background-color: rgba(201, 168, 76, 0.12);
+      color: var(--oro-chiaro);
+    }
+
+    .navbar nav a.attivo {
+      background-color: rgba(201, 168, 76, 0.18);
+      color: var(--oro);
+      font-weight: 700;
+    }
+
+    .carrello-badge {
+      background: var(--oro);
+      color: var(--roccia);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .navbar-footer {
+      margin-top: auto;
+      font-size: 0.65rem;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ============================================================
+       AREA PRINCIPALE (tutto tranne la navbar)
+    ============================================================ */
+    .contenuto-principale {
+      margin-left: var(--navbar-w);
+      flex: 1;
+      padding: 48px 48px 80px;
+    }
+
+    /* ---- Intestazione della vetrina ---- */
+    .vetrina-header {
+      margin-bottom: 40px;
+    }
+
+    .vetrina-titolo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--roccia);
+      margin-bottom: 6px;
+    }
+
+    .vetrina-titolo span { color: var(--oro); }
+
+    .vetrina-sottotitolo {
+      font-size: 0.95rem;
+      color: var(--roccia-med);
+      margin-top: 10px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .riga-oro {
+      width: 70px;
+      height: 3px;
+      background: var(--oro);
+      margin: 14px 0;
+      border-radius: 2px;
+    }
+
+    /* ---- Stato di caricamento ---- */
+    .stato-caricamento {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--roccia-med);
+      font-size: 1.1rem;
+    }
+
+    .stato-caricamento .spinner {
+      font-size: 2.5rem;
+      /* Animazione rotazione per il simbolo di caricamento */
+      animation: ruota 1.2s linear infinite;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    @keyframes ruota {
+      from { transform: rotate(0deg);   }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ============================================================
+       GRIGLIA DEI PRODOTTI
+    ============================================================ */
+    .griglia-prodotti {
+      display: grid;
+      /* Colonne flessibili: minimo 260px, massimo 1fr */
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    /* ---- Card singolo prodotto ---- */
+    .card-prodotto {
+      background: var(--bianco);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #DDD5C0;
+      display: flex;
+      flex-direction: column;
+      /* Ogni card entra con una piccola animazione */
+      animation: fadeInCard 0.5s ease both;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .card-prodotto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(44, 44, 44, 0.12);
+    }
+
+    /* Contenitore immagine */
+    .card-immagine {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;       /* l'immagine riempie senza deformarsi */
+      background: var(--sabbia-scura);
+      display: block;
+    }
+
+    /* Placeholder se non c'è immagine */
+    .card-immagine-placeholder {
+      width: 100%;
+      height: 190px;
+      background: linear-gradient(135deg, var(--sabbia-scura), var(--sabbia));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+    }
+
+    /* Corpo della card */
+    .card-corpo {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;                 /* fa crescere il corpo per allineare il bottone */
+    }
+
+    /* Nome del minerale */
+    .card-nome {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--roccia);
+      margin-bottom: 4px;
+    }
+
+    /* Marca / provenienza */
+    .card-marca {
+      font-size: 0.75rem;
+      color: var(--oro);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* Descrizione breve */
+    .card-descrizione {
+      font-size: 0.85rem;
+      color: var(--roccia-med);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      /* Limita a 3 righe con puntini */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Dettagli tecnici (dimensioni, taglia, spedizione) */
+    .card-dettagli {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    /* Singolo tag dettaglio */
+    .tag-dettaglio {
+      background: var(--sabbia);
+      border: 1px solid #D5CAB0;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      color: var(--roccia-med);
+    }
+
+    /* Piede della card: prezzo e bottone */
+    .card-piede {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--sabbia-scura);
+    }
+
+    .card-prezzo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--roccia);
+    }
+
+    .card-prezzo span {
+      font-size: 0.8rem;
+      color: var(--roccia-med);
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+    }
+
+    /* Bottone "Aggiungi al carrello" */
+    .btn-carrello {
+      padding: 9px 16px;
+      background: var(--oro);
+      color: var(--roccia);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.22s, transform 0.15s;
+    }
+
+    .btn-carrello:hover {
+      background: var(--oro-chiaro);
+      transform: scale(1.04);
+    }
+
+    /* Stato "aggiunto" del bottone (feedback visivo) */
+    .btn-carrello.aggiunto {
+      background: var(--successo);
+      color: #fff;
+    }
+
+    /* ---- Toast notifica "aggiunto al carrello" ---- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--roccia);
+      color: var(--oro);
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      /* Nascosto di default */
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      border-left: 4px solid var(--oro);
+    }
+
+    .toast.visibile {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- ============================================================
+       NAVBAR VERTICALE
+  ============================================================ -->
+  <nav class="navbar">
+    <div class="navbar-logo">New<br>Expedetion</div>
+    <div class="navbar-sub">Minerali Rari</div>
+    <div class="navbar-divider"></div>
+
     <nav>
-        <div class="logo">NEWCAVE</div>
-        <button onclick="location.href='loginEcommerce.html'">Login</button>
-        <button onclick="location.href='vetrinaEcommerce.html'">Collezione</button>
-        <button onclick="location.href='carrelloEcommerce.html'">Lo Scrigno</button>
+      <a href="registrazioneEcommerce.html">
+        <span class="icon">📋</span> Registrazione
+      </a>
+      <a href="loginEcommerce.html">
+        <span class="icon">🔑</span> Accedi
+      </a>
+      <a href="vetrinaEcommerce.html" class="attivo">
+        <span class="icon">💎</span> Vetrina
+      </a>
+      <a href="carrelloEcommerce.html">
+        <span class="icon">🛒</span> Carrello
+        <span class="carrello-badge" id="badge-carrello">0</span>
+      </a>
     </nav>
-    <div class="container">
-        <div class="top-bar">
-            <h1 style="color: var(--magma); font-size: 2.5rem;">REGISTRO ESTRAZIONI</h1>
-            <input type="file" onchange="processaCSV(this)" accept=".csv">
-        </div>
-        <div id="display-minerali"></div>
+
+    <div class="navbar-footer">© 2025 NewExpedetion</div>
+  </nav>
+
+  <!-- ============================================================
+       CONTENUTO PRINCIPALE
+  ============================================================ -->
+  <main class="contenuto-principale">
+
+    <!-- Intestazione della vetrina -->
+    <div class="vetrina-header">
+      <h1 class="vetrina-titolo">Vetrina <span>Minerali</span></h1>
+      <div class="riga-oro"></div>
+      <p class="vetrina-sottotitolo">
+        Ogni pezzo è estratto a mano da minatori esperti. Sfoglia il catalogo e
+        aggiungi i tesori della Terra al tuo carrello.
+      </p>
     </div>
 
-    <script>
-        function processaCSV(input) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const righe = e.target.result.split('\n').slice(1);
-                const griglia = document.getElementById('display-minerali');
-                griglia.innerHTML = '';
-                
-                righe.forEach(r => {
-                    const c = r.split(',');
-                    if(c.length < 6) return;
-                    griglia.innerHTML += `
-                        <div class="card">
-                            <img src="${c[5].trim()}" onerror="this.src='https://via.placeholder.com/400x300/111/ff4d00?text=Minerale+In+Arrivo'">
-                            <div class="card-body">
-                                <h3>${c[0].trim()}</h3>
-                                <p>Provenienza: ${c[2].trim()} | Peso: ${c[3].trim()}</p>
-                                <div class="prezzo-tag">€ ${parseFloat(c[4]).toFixed(2)}</div>
-                                <button class="btn-add" onclick="salvaInScrigno('${c[0].trim()}', ${c[4]})">Aggiungi allo Scrigno</button>
-                            </div>
-                        </div>`;
-                });
-            };
-            reader.readAsText(input.files[0]);
+    <!-- Stato di caricamento (visibile finché il CSV non è pronto) -->
+    <div class="stato-caricamento" id="stato-caricamento">
+      <div class="spinner">⛏</div>
+      <p>Caricamento minerali in corso...</p>
+    </div>
+
+    <!-- Griglia prodotti – riempita dinamicamente dal JS -->
+    <div class="griglia-prodotti" id="griglia-prodotti"></div>
+
+  </main>
+
+  <!-- Toast notifica -->
+  <div class="toast" id="toast">✓ Aggiunto al carrello!</div>
+
+
+  <!-- ============================================================
+       JAVASCRIPT – Vetrina
+  ============================================================ -->
+  <script>
+    /*
+     * ── PROTEZIONE PAGINA ───────────────────────────────────────
+     * Se l'utente non è loggato, viene rimandato alla registrazione.
+     * Questo controllo avviene PRIMA di caricare qualsiasi prodotto.
+     */
+    var isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn !== "true") {
+      // Non è loggato: reindirizza
+      window.location.href = "registrazioneEcommerce.html";
+    }
+
+    /*
+     * ── AGGIORNA BADGE CARRELLO ──────────────────────────────────
+     */
+    function aggiornaBadgeCarrello() {
+      var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+      document.getElementById("badge-carrello").textContent = carrello.length;
+    }
+
+    aggiornaBadgeCarrello();
+
+    /*
+     * ── MOSTRA IL TOAST ─────────────────────────────────────────
+     * Fa apparire la notifica in basso a destra per 2 secondi.
+     */
+    function mostraToast(messaggio) {
+      var toast = document.getElementById("toast");
+      toast.textContent = "✓ " + messaggio;
+      toast.classList.add("visibile");
+
+      setTimeout(function () {
+        toast.classList.remove("visibile");
+      }, 2000);
+    }
+
+    /*
+     * ── AGGIUNGI AL CARRELLO ─────────────────────────────────────
+     * Riceve l'oggetto prodotto, lo aggiunge all'array nel localStorage
+     * e aggiorna il badge della navbar.
+     */
+    function aggiungiAlCarrello(prodotto, bottone) {
+      // Legge il carrello attuale (o array vuoto se non esiste)
+      var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+
+      // Aggiunge il prodotto
+      carrello.push(prodotto);
+
+      // Salva l'array aggiornato
+      localStorage.setItem("carrello", JSON.stringify(carrello));
+
+      // Aggiorna il badge
+      aggiornaBadgeCarrello();
+
+      // Feedback visivo sul bottone
+      bottone.textContent = "✓ Aggiunto";
+      bottone.classList.add("aggiunto");
+
+      // Dopo 2 secondi il bottone torna normale
+      setTimeout(function () {
+        bottone.textContent = "Aggiungi al carrello";
+        bottone.classList.remove("aggiunto");
+      }, 2000);
+
+      // Mostra la notifica toast
+      mostraToast(prodotto.nome + " aggiunto!");
+    }
+
+    /*
+     * ── ANALIZZA IL CSV ─────────────────────────────────────────
+     * Riceve il testo grezzo del CSV e restituisce un array di oggetti.
+     *
+     * Il CSV deve avere questa prima riga (intestazione):
+     *   nome,marca,descrizione,immagine,prezzo,dimensioni,taglia,spedizione
+     *
+     * Ogni riga successiva è un prodotto.
+     */
+    function parsaCSV(testoCSV) {
+      // Divide il testo in righe; filter(Boolean) rimuove righe vuote
+      var righe  = testoCSV.trim().split("\n").filter(Boolean);
+      var prodotti = [];
+
+      // La prima riga è l'intestazione – la leggiamo per ricavare i nomi colonne
+      var intestazione = righe[0].split(",");
+
+      // Ciclo sulle righe dati (partendo dalla seconda)
+      for (var i = 1; i < righe.length; i++) {
+        var celle  = righe[i].split(",");
+        var oggetto = {};
+
+        // Associa ogni cella alla colonna corrispondente
+        for (var j = 0; j < intestazione.length; j++) {
+          // trim() rimuove spazi/ritorni a capo residui
+          oggetto[intestazione[j].trim()] = celle[j] ? celle[j].trim() : "";
         }
 
-        function salvaInScrigno(nome, prezzo) {
-            let s = JSON.parse(localStorage.getItem('scrigno')) || [];
-            s.push({nome, prezzo});
-            localStorage.setItem('scrigno', JSON.stringify(s));
-            alert("Minerale aggiunto correttamente.");
+        prodotti.push(oggetto);
+      }
+
+      return prodotti;
+    }
+
+    /*
+     * ── CREA LA CARD HTML DI UN PRODOTTO ────────────────────────
+     * Riceve l'oggetto prodotto e restituisce un elemento HTML <div>.
+     */
+    function creaCard(prodotto) {
+      // Crea il contenitore principale della card
+      var card = document.createElement("div");
+      card.className = "card-prodotto";
+
+      // ---- Immagine (o placeholder se non c'è) ----
+      var bloccoImmagine;
+      if (prodotto.immagine && prodotto.immagine !== "") {
+        bloccoImmagine = document.createElement("img");
+        bloccoImmagine.className = "card-immagine";
+        bloccoImmagine.src = prodotto.immagine;
+        bloccoImmagine.alt = prodotto.nome;
+        // Se l'immagine non carica, mostra il placeholder
+        bloccoImmagine.onerror = function () {
+          var placeholder = document.createElement("div");
+          placeholder.className = "card-immagine-placeholder";
+          placeholder.textContent = "💎";
+          card.replaceChild(placeholder, bloccoImmagine);
+        };
+      } else {
+        bloccoImmagine = document.createElement("div");
+        bloccoImmagine.className = "card-immagine-placeholder";
+        bloccoImmagine.textContent = "💎";
+      }
+      card.appendChild(bloccoImmagine);
+
+      // ---- Corpo della card ----
+      var corpo = document.createElement("div");
+      corpo.className = "card-corpo";
+
+      // Nome
+      var nome = document.createElement("div");
+      nome.className = "card-nome";
+      nome.textContent = prodotto.nome;
+      corpo.appendChild(nome);
+
+      // Marca
+      var marca = document.createElement("div");
+      marca.className = "card-marca";
+      marca.textContent = prodotto.marca;
+      corpo.appendChild(marca);
+
+      // Descrizione
+      var desc = document.createElement("div");
+      desc.className = "card-descrizione";
+      desc.textContent = prodotto.descrizione;
+      corpo.appendChild(desc);
+
+      // Tag dettagli
+      var dettagli = document.createElement("div");
+      dettagli.className = "card-dettagli";
+
+      if (prodotto.dimensioni) {
+        var t1 = document.createElement("span");
+        t1.className = "tag-dettaglio";
+        t1.textContent = "📐 " + prodotto.dimensioni;
+        dettagli.appendChild(t1);
+      }
+
+      if (prodotto.taglia) {
+        var t2 = document.createElement("span");
+        t2.className = "tag-dettaglio";
+        t2.textContent = "📏 " + prodotto.taglia;
+        dettagli.appendChild(t2);
+      }
+
+      if (prodotto.spedizione) {
+        var t3 = document.createElement("span");
+        t3.className = "tag-dettaglio";
+        t3.textContent = "🚚 " + prodotto.spedizione;
+        dettagli.appendChild(t3);
+      }
+
+      corpo.appendChild(dettagli);
+
+      // ---- Piede: prezzo + bottone ----
+      var piede = document.createElement("div");
+      piede.className = "card-piede";
+
+      // Prezzo
+      var prezzo = document.createElement("div");
+      prezzo.className = "card-prezzo";
+      prezzo.innerHTML = "€" + prodotto.prezzo + " <span>/ pezzo</span>";
+      piede.appendChild(prezzo);
+
+      // Bottone "Aggiungi al carrello"
+      var bottone = document.createElement("button");
+      bottone.className = "btn-carrello";
+      bottone.textContent = "Aggiungi al carrello";
+
+      // Evento click: aggiunge al carrello passando l'oggetto prodotto
+      bottone.addEventListener("click", function () {
+        aggiungiAlCarrello(prodotto, bottone);
+      });
+
+      piede.appendChild(bottone);
+      corpo.appendChild(piede);
+
+      card.appendChild(corpo);
+      return card;
+    }
+
+    /*
+     * ── CARICA E MOSTRA I PRODOTTI ───────────────────────────────
+     * Usa fetch() per leggere il file prodotti.csv nella stessa cartella.
+     * Poi crea una card per ogni prodotto e la inserisce nella griglia.
+     *
+     * NOTA: fetch() funziona correttamente quando le pagine sono servite
+     * da un server locale (es. Live Server di VS Code) o da un host web.
+     * Aprendo il file direttamente dal browser (file://) potrebbe bloccarsi
+     * per motivi di sicurezza CORS: usa sempre un server locale.
+     */
+    fetch("prodotti.csv")
+      .then(function (risposta) {
+        // Controlla che la risposta sia andata a buon fine
+        if (!risposta.ok) {
+          throw new Error("Impossibile caricare prodotti.csv (status " + risposta.status + ")");
         }
-    </script>
+        // Restituisce il testo del file
+        return risposta.text();
+      })
+      .then(function (testoCSV) {
+        // Nasconde il messaggio di caricamento
+        document.getElementById("stato-caricamento").style.display = "none";
+
+        // Analizza il CSV e ottiene l'array prodotti
+        var prodotti = parsaCSV(testoCSV);
+
+        // Recupera il contenitore della griglia
+        var griglia = document.getElementById("griglia-prodotti");
+
+        if (prodotti.length === 0) {
+          griglia.innerHTML = "<p style='color:var(--roccia-med)'>Nessun prodotto trovato nel CSV.</p>";
+          return;
+        }
+
+        // Crea e aggiunge una card per ogni prodotto
+        for (var i = 0; i < prodotti.length; i++) {
+          var card = creaCard(prodotti[i]);
+          // Ritardo animazione crescente: la 1ª card appare subito, le altre dopo
+          card.style.animationDelay = (i * 0.07) + "s";
+          griglia.appendChild(card);
+        }
+      })
+      .catch(function (errore) {
+        // Gestione errori: mostra un messaggio utile
+        document.getElementById("stato-caricamento").innerHTML =
+          "<p style='color:var(--errore); font-size:1rem;'>⚠ Errore nel caricamento: " +
+          errore.message +
+          "<br><small>Assicurati che <strong>prodotti.csv</strong> sia nella stessa cartella e di usare un server locale.</small></p>";
+      });
+  </script>
+
 </body>
 </html>
