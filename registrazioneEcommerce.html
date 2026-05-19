@@ -1,89 +1,620 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>NewCave - Registrazione Nuovo Membro</title>
-    <style>
-        :root { --magma: #ff4d00; --gold: #ffcc00; --dark: #050505; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--dark); color: #fff; display: flex; min-height: 100vh; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewExpedetion – Registrazione</title>
 
-        /* Sidebar Nav - Identica alle altre per continuità */
-        nav { width: 260px; background: #000; border-right: 2px solid var(--magma); display: flex; flex-direction: column; padding: 40px 0; position: fixed; height: 100vh; box-shadow: 10px 0 30px rgba(255, 77, 0, 0.1); }
-        .logo { font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--magma); text-shadow: 0 0 15px var(--magma); margin-bottom: 50px; }
-        nav button { background: transparent; color: #fff; border: none; padding: 20px; text-align: left; cursor: pointer; text-transform: uppercase; font-weight: bold; border-left: 4px solid transparent; transition: 0.3s; }
-        nav button:hover { background: rgba(255, 77, 0, 0.1); border-left-color: var(--magma); color: var(--gold); }
+  <!-- Google Fonts: Playfair Display per i titoli, Lato per il corpo -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
 
-        /* Area Centrale */
-        .content { margin-left: 260px; flex: 1; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #220a00 0%, #050505 100%); }
-        .auth-card { background: #111; padding: 50px; border-radius: 15px; border: 1px solid #333; width: 100%; max-width: 500px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        h1 { color: var(--magma); font-size: 2.5rem; margin-bottom: 30px; text-align: center; text-transform: uppercase; }
-        
-        .form-group { margin-bottom: 20px; }
-        label { display: block; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; margin-bottom: 8px; letter-spacing: 1px; }
-        input { width: 100%; padding: 15px; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--magma); box-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
-        
-        .btn-fire { width: 100%; background: linear-gradient(45deg, var(--magma), #ff9100); color: #000; border: none; padding: 20px; font-weight: 900; cursor: pointer; border-radius: 8px; text-transform: uppercase; margin-top: 10px; transition: 0.3s; }
-        .btn-fire:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 77, 0, 0.4); }
-        
-        .link-swap { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
-        .link-swap a { color: var(--magma); text-decoration: none; font-weight: bold; }
-    </style>
+  <style>
+    /* ============================================================
+       VARIABILI CSS – palette "Modern Miner"
+       Cambiarle qui si propaga su tutta la pagina.
+    ============================================================ */
+    :root {
+      --oro:         #C9A84C;   /* oro/pirite lucente                  */
+      --oro-chiaro:  #E8C96A;   /* oro hover                           */
+      --roccia:      #2C2C2C;   /* grigio roccia per testi             */
+      --roccia-med:  #4A4A4A;   /* grigio medio                        */
+      --sabbia:      #F5EFE0;   /* sfondo caldo                        */
+      --sabbia-scura:#EAE0CC;   /* sfondo card                         */
+      --bianco:      #FDFAF4;   /* bianco caldo                        */
+      --errore:      #B94040;   /* rosso per gli errori                */
+      --successo:    #3A7D44;   /* verde per il successo               */
+      --navbar-w:    240px;     /* larghezza barra laterale            */
+    }
+
+    /* ---- Reset di base ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--sabbia);
+      color: var(--roccia);
+      display: flex;            /* layout a tre colonne                */
+      min-height: 100vh;
+      /* Animazione di ingresso per l'intera pagina */
+      animation: fadeInPagina 0.8s ease both;
+    }
+
+    /* ============================================================
+       ANIMAZIONE DI INGRESSO – usata su tutte le pagine
+    ============================================================ */
+    @keyframes fadeInPagina {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ============================================================
+       NAVBAR VERTICALE (colonna sinistra)
+    ============================================================ */
+    .navbar {
+      width: var(--navbar-w);
+      min-height: 100vh;
+      background-color: var(--roccia);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+      position: fixed;          /* rimane fissa mentre si scrolla      */
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    /* Logo / nome azienda nella navbar */
+    .navbar-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--oro);
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    /* Sottotitolo piccolo sotto il logo */
+    .navbar-sub {
+      font-size: 0.65rem;
+      color: #888;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    /* Separatore orizzontale decorativo */
+    .navbar-divider {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--oro), transparent);
+      margin-bottom: 40px;
+    }
+
+    /* Lista dei link di navigazione */
+    .navbar nav {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Singolo link nella navbar */
+    .navbar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      color: #BBB;
+      text-decoration: none;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    /* Icona emoji accanto al link */
+    .navbar nav a .icon {
+      font-size: 1rem;
+    }
+
+    /* Effetto hover sui link */
+    .navbar nav a:hover {
+      background-color: rgba(201, 168, 76, 0.12);
+      color: var(--oro-chiaro);
+    }
+
+    /* Classe per la pagina attiva */
+    .navbar nav a.attivo {
+      background-color: rgba(201, 168, 76, 0.18);
+      color: var(--oro);
+      font-weight: 700;
+    }
+
+    /* Piccolo indicatore carrello nella navbar */
+    .carrello-badge {
+      background: var(--oro);
+      color: var(--roccia);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    /* Piede della navbar */
+    .navbar-footer {
+      margin-top: auto;
+      font-size: 0.65rem;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ============================================================
+       CONTENUTO PRINCIPALE (a destra della navbar fissa)
+    ============================================================ */
+    .contenuto-principale {
+      margin-left: var(--navbar-w);  /* sposta a destra della navbar  */
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       COLONNA CENTRALE – Form di registrazione
+    ============================================================ */
+    .colonna-form {
+      flex: 0 0 420px;           /* larghezza fissa per il form       */
+      padding: 60px 40px;
+      background-color: var(--bianco);
+      border-right: 1px solid #DDD5C0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Titolo sopra il form */
+    .form-titolo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--roccia);
+      margin-bottom: 6px;
+    }
+
+    /* Riga dorata decorativa sotto il titolo */
+    .form-titolo-riga {
+      width: 50px;
+      height: 3px;
+      background: var(--oro);
+      margin-bottom: 28px;
+      border-radius: 2px;
+    }
+
+    /* Etichetta di ogni campo */
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--roccia-med);
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+
+    /* Campo di input */
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #D5CAB0;
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--roccia);
+      background: var(--sabbia);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Focus sul campo */
+    .form-input:focus {
+      border-color: var(--oro);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+    }
+
+    /* Messaggio di errore per ogni campo */
+    .msg-errore {
+      font-size: 0.78rem;
+      color: var(--errore);
+      margin-top: 5px;
+      min-height: 16px;       /* evita il "salto" del layout         */
+    }
+
+    /* Messaggio globale (successo o errore) */
+    .msg-globale {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: none;          /* mostrato via JS                     */
+    }
+
+    .msg-globale.successo {
+      background: #DFF2E3;
+      color: var(--successo);
+      border: 1px solid #A8D5B0;
+      display: block;
+    }
+
+    .msg-globale.errore-glob {
+      background: #FAE5E5;
+      color: var(--errore);
+      border: 1px solid #E8B0B0;
+      display: block;
+    }
+
+    /* Bottone di invio del form */
+    .btn-primario {
+      margin-top: 26px;
+      width: 100%;
+      padding: 13px;
+      background: var(--oro);
+      color: var(--roccia);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+    }
+
+    .btn-primario:hover {
+      background: var(--oro-chiaro);
+      box-shadow: 0 4px 14px rgba(201, 168, 76, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-primario:active {
+      transform: translateY(0);
+    }
+
+    /* Link piccolo sotto il bottone (es. "Hai già un account?") */
+    .link-alternativo {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.83rem;
+      color: var(--roccia-med);
+    }
+
+    .link-alternativo a {
+      color: var(--oro);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .link-alternativo a:hover {
+      text-decoration: underline;
+    }
+
+    /* ============================================================
+       COLONNA DESTRA – Descrizione aziendale
+    ============================================================ */
+    .colonna-info {
+      flex: 1;
+      padding: 60px 50px;
+      background: linear-gradient(135deg, var(--sabbia) 0%, var(--sabbia-scura) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cerchio decorativo di sfondo nella colonna destra */
+    .colonna-info::before {
+      content: '⛏';
+      font-size: 280px;
+      position: absolute;
+      right: -40px;
+      bottom: -60px;
+      opacity: 0.05;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    /* Titolone nella colonna info */
+    .info-titolo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      line-height: 1.15;
+      color: var(--roccia);
+      margin-bottom: 6px;
+    }
+
+    /* Accento dorato nel titolo */
+    .info-titolo span {
+      color: var(--oro);
+    }
+
+    /* Riga decorativa */
+    .info-riga {
+      width: 70px;
+      height: 3px;
+      background: var(--oro);
+      margin: 18px 0 24px;
+      border-radius: 2px;
+    }
+
+    /* Testo descrittivo */
+    .info-testo {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: var(--roccia-med);
+      max-width: 460px;
+      margin-bottom: 32px;
+    }
+
+    /* Lista dei benefici */
+    .info-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-lista li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+      color: var(--roccia);
+    }
+
+    /* Icona / bullet dorato */
+    .info-lista li::before {
+      content: '◆';
+      color: var(--oro);
+      font-size: 0.7rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* Citazione / motto aziendale */
+    .info-motto {
+      margin-top: 36px;
+      padding: 16px 20px;
+      border-left: 3px solid var(--oro);
+      background: rgba(201, 168, 76, 0.07);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      font-size: 0.93rem;
+      color: var(--roccia-med);
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- ============================================================
+       NAVBAR VERTICALE
+  ============================================================ -->
+  <nav class="navbar">
+    <!-- Nome azienda -->
+    <div class="navbar-logo">New<br>Expedetion</div>
+    <div class="navbar-sub">Minerali Rari</div>
+    <div class="navbar-divider"></div>
+
+    <!-- Link di navigazione -->
     <nav>
-        <div class="logo">NEWCAVE</div>
-        <button onclick="location.href='loginEcommerce.html'">Login</button>
-        <button onclick="location.href='registrazioneEcommerce.html'">Registrazione</button>
-        <button onclick="location.href='vetrinaEcommerce.html'">Collezione</button>
-        <button onclick="location.href='carrelloEcommerce.html'">Scrigno</button>
+      <a href="registrazioneEcommerce.html" class="attivo">
+        <span class="icon">📋</span> Registrazione
+      </a>
+      <a href="loginEcommerce.html">
+        <span class="icon">🔑</span> Accedi
+      </a>
+      <a href="vetrinaEcommerce.html">
+        <span class="icon">💎</span> Vetrina
+      </a>
+      <a href="carrelloEcommerce.html">
+        <span class="icon">🛒</span> Carrello
+        <!-- Il badge viene aggiornato dal JS -->
+        <span class="carrello-badge" id="badge-carrello">0</span>
+      </a>
     </nav>
 
-    <div class="content">
-        <div class="auth-card">
-            <h1>ISCRIVITI</h1>
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="reg-nome" placeholder="Mario Rossi">
-            </div>
-            <div class="form-group">
-                <label>Email Collezionista</label>
-                <input type="email" id="reg-email" placeholder="esempio@mail.it">
-            </div>
-            <div class="form-group">
-                <label>Crea Chiave d'Accesso</label>
-                <input type="password" id="reg-pass" placeholder="Minimo 8 caratteri">
-            </div>
-            <button class="btn-fire" onclick="validaERegistra()">Crea Profilo Magmatico</button>
-            
-            <div class="link-swap">
-                Hai già un account? <a href="loginEcommerce.html">Accedi qui</a>
-            </div>
-        </div>
-    </div>
+    <div class="navbar-footer">© 2025 NewExpedetion</div>
+  </nav>
 
-    <script>
-        function validaERegistra() {
-            const nome = document.getElementById('reg-nome').value;
-            const email = document.getElementById('reg-email').value;
-            const pass = document.getElementById('reg-pass').value;
+  <!-- ============================================================
+       CONTENUTO PRINCIPALE (tre colonne: già nav | form | info)
+  ============================================================ -->
+  <div class="contenuto-principale">
 
-            if(nome === "" || email === "" || pass === "") {
-                alert("Non lasciare campi vuoti, i minerali richiedono precisione!");
-                return;
-            }
+    <!-- ==================== FORM DI REGISTRAZIONE ==================== -->
+    <section class="colonna-form">
+      <h1 class="form-titolo">Crea Account</h1>
+      <div class="form-titolo-riga"></div>
 
-            if(pass.length < 5) {
-                alert("Password troppo debole per proteggere un caveau!");
-                return;
-            }
+      <!-- Campo Nome -->
+      <label class="form-label" for="nome">Nome</label>
+      <input class="form-input" type="text" id="nome" placeholder="es. Marco" />
+      <span class="msg-errore" id="err-nome"></span>
 
-            // Simulazione salvataggio (puoi implementare un vero database in futuro)
-            localStorage.setItem('userRegistered', email);
-            alert("Registrazione completata con successo, " + nome + "! Ora puoi accedere.");
-            location.href = 'loginEcommerce.html';
-        }
-    </script>
+      <!-- Campo Cognome -->
+      <label class="form-label" for="cognome">Cognome</label>
+      <input class="form-input" type="text" id="cognome" placeholder="es. Rossi" />
+      <span class="msg-errore" id="err-cognome"></span>
+
+      <!-- Campo Email -->
+      <label class="form-label" for="email">Email</label>
+      <input class="form-input" type="email" id="email" placeholder="nome@email.com" />
+      <span class="msg-errore" id="err-email"></span>
+
+      <!-- Campo Password -->
+      <label class="form-label" for="password">Password</label>
+      <input class="form-input" type="password" id="password" placeholder="Minimo 6 caratteri" />
+      <span class="msg-errore" id="err-password"></span>
+
+      <!-- Messaggio globale (successo o errore) -->
+      <div class="msg-globale" id="msg-globale"></div>
+
+      <!-- Bottone di registrazione -->
+      <button class="btn-primario" id="btn-registra">Registrati Ora</button>
+
+      <!-- Link al login -->
+      <p class="link-alternativo">
+        Hai già un account? <a href="loginEcommerce.html">Accedi qui</a>
+      </p>
+    </section>
+
+    <!-- ==================== COLONNA INFO / DESCRIZIONE ==================== -->
+    <section class="colonna-info">
+      <h2 class="info-titolo">
+        Scopri i tesori<br>nascosti della <span>Terra</span>
+      </h2>
+      <div class="info-riga"></div>
+
+      <p class="info-testo">
+        <strong>NewExpedetion</strong> nasce dalla passione di minatori artigiani
+        che da generazioni esplorano le profondità della terra alla ricerca di
+        minerali rari e preziosi. Ogni pezzo è estratto a mano, catalogato con cura
+        e spedito direttamente a collezionisti, gioiellieri e appassionati di tutto il mondo.
+      </p>
+
+      <ul class="info-lista">
+        <li>Accesso esclusivo ai minerali più rari del catalogo</li>
+        <li>Certificato di autenticità digitale per ogni acquisto</li>
+        <li>Spedizione assicurata e tracciata in tutto il mondo</li>
+        <li>Offerte riservate agli iscritti ogni settimana</li>
+        <li>Supporto diretto dall'esperto mineralogico del team</li>
+        <li>Storico degli acquisti e wishlist personale</li>
+      </ul>
+
+      <blockquote class="info-motto">
+        "Ogni minerale racconta milioni di anni di storia. Noi ti aiutiamo a tenerla
+        tra le mani."
+      </blockquote>
+    </section>
+
+  </div><!-- fine contenuto-principale -->
+
+
+  <!-- ============================================================
+       JAVASCRIPT – Logica di registrazione
+  ============================================================ -->
+  <script>
+    /*
+     * ── AGGIORNA BADGE CARRELLO ──────────────────────────────────
+     * Legge l'array del carrello dal localStorage e mostra il conteggio
+     * nel badge della navbar. Viene chiamato subito al caricamento.
+     */
+    function aggiornaBadgeCarrello() {
+      var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+      document.getElementById("badge-carrello").textContent = carrello.length;
+    }
+
+    // Chiamata immediata per aggiornare il badge all'apertura della pagina
+    aggiornaBadgeCarrello();
+
+    /*
+     * ── VALIDAZIONE E REGISTRAZIONE ─────────────────────────────
+     * Quando si clicca il bottone "Registrati Ora" vengono:
+     * 1. Letti i valori dai campi
+     * 2. Controllati uno a uno
+     * 3. Se tutto va bene, salvati nel localStorage e si va al login
+     */
+    document.getElementById("btn-registra").addEventListener("click", function () {
+
+      // Legge i valori dei campi, rimuovendo spazi iniziali/finali
+      var nome     = document.getElementById("nome").value.trim();
+      var cognome  = document.getElementById("cognome").value.trim();
+      var email    = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value;
+
+      // Azzera tutti i messaggi di errore precedenti
+      document.getElementById("err-nome").textContent     = "";
+      document.getElementById("err-cognome").textContent  = "";
+      document.getElementById("err-email").textContent    = "";
+      document.getElementById("err-password").textContent = "";
+      var msgGlobale = document.getElementById("msg-globale");
+      msgGlobale.className = "msg-globale";  // rimuove classi successo/errore
+      msgGlobale.textContent = "";
+
+      // Flag per tenere traccia se ci sono errori
+      var ciSonoErrori = false;
+
+      // ---- Controllo: Nome non vuoto ----
+      if (nome === "") {
+        document.getElementById("err-nome").textContent = "Il nome è obbligatorio.";
+        ciSonoErrori = true;
+      }
+
+      // ---- Controllo: Cognome non vuoto ----
+      if (cognome === "") {
+        document.getElementById("err-cognome").textContent = "Il cognome è obbligatorio.";
+        ciSonoErrori = true;
+      }
+
+      // ---- Controllo: Email non vuota e formato valido ----
+      if (email === "") {
+        document.getElementById("err-email").textContent = "L'email è obbligatoria.";
+        ciSonoErrori = true;
+      } else if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+        // Controllo base: deve contenere @ e un punto
+        document.getElementById("err-email").textContent = "Inserisci un'email valida.";
+        ciSonoErrori = true;
+      }
+
+      // ---- Controllo: Password almeno 6 caratteri ----
+      if (password === "") {
+        document.getElementById("err-password").textContent = "La password è obbligatoria.";
+        ciSonoErrori = true;
+      } else if (password.length < 6) {
+        document.getElementById("err-password").textContent = "La password deve avere almeno 6 caratteri.";
+        ciSonoErrori = true;
+      }
+
+      // Se ci sono errori, ferma tutto e non va avanti
+      if (ciSonoErrori) {
+        return;
+      }
+
+      /*
+       * ── SALVA UTENTE NEL LOCALSTORAGE ───────────────────────
+       * Crea un oggetto con i dati dell'utente e lo salva.
+       * La password viene salvata così com'è (per semplicità didattica;
+       * in un'applicazione reale andrebbe hashata lato server).
+       */
+      var datiUtente = {
+        nome: nome,
+        cognome: cognome,
+        email: email,
+        password: password
+      };
+
+      // JSON.stringify converte l'oggetto in una stringa salvabile
+      localStorage.setItem("utente", JSON.stringify(datiUtente));
+
+      // Mostra messaggio di successo
+      msgGlobale.className = "msg-globale successo";
+      msgGlobale.textContent = "Registrazione completata! Reindirizzamento al login...";
+
+      // Dopo 1.5 secondi reindirizza alla pagina di login
+      setTimeout(function () {
+        window.location.href = "loginEcommerce.html";
+      }, 1500);
+    });
+  </script>
+
 </body>
 </html>
