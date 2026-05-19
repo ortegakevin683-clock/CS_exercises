@@ -375,6 +375,48 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ---- Barra caricamento CSV manuale ---- */
+    .barra-csv {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding: 14px 20px;
+      background: var(--bianco);
+      border: 1.5px dashed #C9A84C;
+      border-radius: 10px;
+    }
+
+    .barra-csv-testo {
+      font-size: 0.88rem;
+      color: var(--roccia-med);
+    }
+
+    /* Il label fa da bottone per l'input file nascosto */
+    .btn-carica-csv {
+      padding: 8px 18px;
+      background: var(--oro);
+      color: var(--roccia);
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.22s;
+    }
+
+    .btn-carica-csv:hover {
+      background: var(--oro-chiaro);
+    }
+
+    .barra-csv-stato {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--successo);
+    }
   </style>
 </head>
 
@@ -420,6 +462,19 @@
         Ogni pezzo è estratto a mano da minatori esperti. Sfoglia il catalogo e
         aggiungi i tesori della Terra al tuo carrello.
       </p>
+    </div>
+
+    <!-- ===== BARRA CARICAMENTO CSV PERSONALIZZATO =====
+         Se vuoi usare il tuo file CSV invece dei prodotti integrati,
+         clicca il bottone e seleziona il file dal tuo computer.
+         Funziona anche senza server, direttamente dal browser!
+    -->
+    <div class="barra-csv">
+      <span class="barra-csv-testo">📂 Hai un tuo file <strong>prodotti.csv</strong>? Caricalo qui:</span>
+      <label class="btn-carica-csv" for="input-csv">Scegli file CSV</label>
+      <!-- L'input è nascosto; il label sopra lo attiva al click -->
+      <input type="file" id="input-csv" accept=".csv" style="display:none;" />
+      <span class="barra-csv-stato" id="barra-csv-stato"></span>
     </div>
 
     <!-- Stato di caricamento (visibile finché il CSV non è pronto) -->
@@ -649,54 +704,209 @@
     }
 
     /*
-     * ── CARICA E MOSTRA I PRODOTTI ───────────────────────────────
-     * Usa fetch() per leggere il file prodotti.csv nella stessa cartella.
-     * Poi crea una card per ogni prodotto e la inserisce nella griglia.
-     *
-     * NOTA: fetch() funziona correttamente quando le pagine sono servite
-     * da un server locale (es. Live Server di VS Code) o da un host web.
-     * Aprendo il file direttamente dal browser (file://) potrebbe bloccarsi
-     * per motivi di sicurezza CORS: usa sempre un server locale.
+     * ── PRODOTTI INTEGRATI (dati di riserva) ────────────────────
+     * Questi prodotti sono scritti direttamente nel codice.
+     * Vengono usati AUTOMATICAMENTE se il file prodotti.csv
+     * non è raggiungibile (es. apertura diretta dal browser).
+     * Puoi modificare questo array per cambiare i prodotti,
+     * oppure caricare un tuo CSV usando il pulsante in pagina.
+     */
+    var PRODOTTI_INTEGRATI = [
+      {
+        nome: "Pepita d'Oro Nativo",
+        marca: "AuriMinera",
+        descrizione: "Pepita di oro nativo estratta a mano nelle miniere della Sierra Nevada. Ogni pezzo è unico e presenta tipiche inclusioni quarzose naturali.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Gold_nugget_%28placer%29_20031115_02.jpg/640px-Gold_nugget_%28placer%29_20031115_02.jpg",
+        prezzo: "340.00",
+        dimensioni: "4 x 3 cm",
+        taglia: "Media",
+        spedizione: "Assicurata"
+      },
+      {
+        nome: "Pirite Cubica Spagnola",
+        marca: "IberoPyrite",
+        descrizione: "Cristalli di pirite con forma cubica perfetta tipica dei giacimenti di Navajún. Brillantezza metallica intensa. Ideale per collezionisti.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Pyrite_60606.jpg/640px-Pyrite_60606.jpg",
+        prezzo: "85.00",
+        dimensioni: "6 x 5 cm",
+        taglia: "Grande",
+        spedizione: "Standard"
+      },
+      {
+        nome: "Quarzo Ialino Brasiliano",
+        marca: "CristalBrasil",
+        descrizione: "Cristallo di quarzo trasparente a punta singola proveniente dalle grotte del Minas Gerais. Purezza ottica eccezionale senza inclusioni visibili.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Quartz_Br%C3%A9sil.jpg/640px-Quartz_Br%C3%A9sil.jpg",
+        prezzo: "45.00",
+        dimensioni: "8 x 2.5 cm",
+        taglia: "Grande",
+        spedizione: "Standard"
+      },
+      {
+        nome: "Ametista Uruguayana",
+        marca: "GemsUruguay",
+        descrizione: "Drusa di ametista con cristalli violacei intensi e uniformi. Proveniente dai famosi giacimenti basaltici dell'Uruguay. Base naturale inclusa.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Amethyst._Magaliesburg%2C_South_Africa.jpg/640px-Amethyst._Magaliesburg%2C_South_Africa.jpg",
+        prezzo: "120.00",
+        dimensioni: "10 x 8 cm",
+        taglia: "XL",
+        spedizione: "Assicurata"
+      },
+      {
+        nome: "Lapislazzuli Afghano",
+        marca: "AfghanBlue",
+        descrizione: "Blocco di lapislazzuli grezzo con intensa colorazione blu reale e inclusioni di pirite dorata. Provenienza certificata dai giacimenti di Sar-e-Sang.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Lapis-lazuli_hg.jpg/640px-Lapis-lazuli_hg.jpg",
+        prezzo: "210.00",
+        dimensioni: "5 x 4 cm",
+        taglia: "Media",
+        spedizione: "Assicurata"
+      },
+      {
+        nome: "Tormalina Paraiba",
+        marca: "GemBrasil",
+        descrizione: "Rara tormalina di colore blu-verde neone tipica del giacimento di Paraíba. Fluorescenza UV intensa. Con certificato gemmologico.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tourmaline-121240.jpg/640px-Tourmaline-121240.jpg",
+        prezzo: "890.00",
+        dimensioni: "1.2 x 0.8 cm",
+        taglia: "Piccola",
+        spedizione: "Espressa"
+      },
+      {
+        nome: "Malachite Congolese",
+        marca: "CongoGems",
+        descrizione: "Nodulo di malachite con bande concentriche verde intenso su verde chiaro. Lucidatura naturale. Giacimento di Lubumbashi.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Malachite_-_Lujuba_mine%2C_Katanga%2C_Congo_%282%29.jpg/640px-Malachite_-_Lujuba_mine%2C_Katanga%2C_Congo_%282%29.jpg",
+        prezzo: "95.00",
+        dimensioni: "7 x 5 cm",
+        taglia: "Grande",
+        spedizione: "Assicurata"
+      },
+      {
+        nome: "Fluorite Arcobaleno",
+        marca: "AlpiMinerals",
+        descrizione: "Cristallo ottaedrico di fluorite con zonature multicolore (viola - verde - incolore). Giacimento delle Alpi Svizzere. Fluorescenza UV spettacolare.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Fluorite_with_Galena_and_Sphalerite.jpg/640px-Fluorite_with_Galena_and_Sphalerite.jpg",
+        prezzo: "75.00",
+        dimensioni: "5 x 5 cm",
+        taglia: "Media",
+        spedizione: "Standard"
+      },
+      {
+        nome: "Ossidiana Arcoiris",
+        marca: "MexicoStone",
+        descrizione: "Ossidiana con effetto arcobaleno (schiller) causato da micro-inclusioni di magnetite. Estratta manualmente in Jalisco. Pezzo non lavorato.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Obsidian_with_golden_sheen.jpg/640px-Obsidian_with_golden_sheen.jpg",
+        prezzo: "55.00",
+        dimensioni: "6 x 4 cm",
+        taglia: "Media",
+        spedizione: "Standard"
+      },
+      {
+        nome: "Rodocrosite Argentina",
+        marca: "AndeanRose",
+        descrizione: "Stalattite di rodocrosite sezionata con pattern a bande rosa-bianche concentriche. Provenienza esclusiva dalla miniera Capillitas di Catamarca.",
+        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Rhodochrosite_-_Capillitas_mine%2C_Argentina.jpg/640px-Rhodochrosite_-_Capillitas_mine%2C_Argentina.jpg",
+        prezzo: "185.00",
+        dimensioni: "4 x 3 cm",
+        taglia: "Media",
+        spedizione: "Assicurata"
+      }
+    ];
+
+    /*
+     * ── MOSTRA I PRODOTTI NELLA GRIGLIA ─────────────────────────
+     * Riceve un array di oggetti prodotto e crea le card.
+     * Viene chiamata sia con i dati integrati sia con quelli del CSV.
+     */
+    function mostraProdotti(prodotti) {
+      // Nasconde il messaggio di caricamento
+      document.getElementById("stato-caricamento").style.display = "none";
+
+      var griglia = document.getElementById("griglia-prodotti");
+      griglia.innerHTML = "";   // pulisce eventuali card precedenti
+
+      if (prodotti.length === 0) {
+        griglia.innerHTML = "<p style='color:var(--roccia-med); padding:20px;'>Nessun prodotto trovato nel CSV.</p>";
+        return;
+      }
+
+      // Crea e aggiunge una card per ogni prodotto con animazione scalata
+      for (var i = 0; i < prodotti.length; i++) {
+        var card = creaCard(prodotti[i]);
+        card.style.animationDelay = (i * 0.07) + "s";
+        griglia.appendChild(card);
+      }
+    }
+
+    /*
+     * ── CARICAMENTO AUTOMATICO ───────────────────────────────────
+     * Prima tenta di caricare prodotti.csv con fetch().
+     * Se il file non esiste o si è in modalità file://, usa automaticamente
+     * i PRODOTTI_INTEGRATI scritti sopra, senza mostrare nessun errore.
      */
     fetch("prodotti.csv")
       .then(function (risposta) {
-        // Controlla che la risposta sia andata a buon fine
         if (!risposta.ok) {
-          throw new Error("Impossibile caricare prodotti.csv (status " + risposta.status + ")");
+          throw new Error("csv_non_trovato");
         }
-        // Restituisce il testo del file
         return risposta.text();
       })
       .then(function (testoCSV) {
-        // Nasconde il messaggio di caricamento
-        document.getElementById("stato-caricamento").style.display = "none";
+        var prodotti = parsaCSV(testoCSV);
+        mostraProdotti(prodotti);
+      })
+      .catch(function () {
+        /*
+         * fetch() ha fallito (nessun server o file non trovato).
+         * Carica silenziosamente i prodotti integrati nel codice.
+         */
+        mostraProdotti(PRODOTTI_INTEGRATI);
+      });
 
-        // Analizza il CSV e ottiene l'array prodotti
+    /*
+     * ── CARICAMENTO MANUALE CSV (FileReader) ─────────────────────
+     * Quando l'utente sceglie un file dal proprio computer tramite
+     * il bottone "Scegli file CSV", questo blocco lo legge.
+     *
+     * FileReader è un'API del browser che legge file locali
+     * senza bisogno di un server. È disponibile su tutti i browser moderni.
+     */
+    document.getElementById("input-csv").addEventListener("change", function (evento) {
+      // Prende il primo file selezionato dall'utente
+      var file = evento.target.files[0];
+
+      // Se non ha scelto nessun file, esci
+      if (!file) { return; }
+
+      // Controlla che sia effettivamente un file CSV (per sicurezza)
+      if (file.name.indexOf(".csv") === -1) {
+        document.getElementById("barra-csv-stato").textContent = "⚠ Seleziona un file .csv";
+        document.getElementById("barra-csv-stato").style.color = "var(--errore)";
+        return;
+      }
+
+      // Crea un nuovo FileReader per leggere il contenuto del file
+      var lettore = new FileReader();
+
+      // Questa funzione viene eseguita automaticamente quando la lettura finisce
+      lettore.onload = function (e) {
+        // e.target.result contiene il testo del file
+        var testoCSV = e.target.result;
         var prodotti = parsaCSV(testoCSV);
 
-        // Recupera il contenitore della griglia
-        var griglia = document.getElementById("griglia-prodotti");
+        // Mostra le card con i prodotti del CSV caricato
+        mostraProdotti(prodotti);
 
-        if (prodotti.length === 0) {
-          griglia.innerHTML = "<p style='color:var(--roccia-med)'>Nessun prodotto trovato nel CSV.</p>";
-          return;
-        }
+        // Aggiorna il testo di stato nella barra
+        var stato = document.getElementById("barra-csv-stato");
+        stato.textContent = "✓ Caricati " + prodotti.length + " prodotti da " + file.name;
+        stato.style.color = "var(--successo)";
+      };
 
-        // Crea e aggiunge una card per ogni prodotto
-        for (var i = 0; i < prodotti.length; i++) {
-          var card = creaCard(prodotti[i]);
-          // Ritardo animazione crescente: la 1ª card appare subito, le altre dopo
-          card.style.animationDelay = (i * 0.07) + "s";
-          griglia.appendChild(card);
-        }
-      })
-      .catch(function (errore) {
-        // Gestione errori: mostra un messaggio utile
-        document.getElementById("stato-caricamento").innerHTML =
-          "<p style='color:var(--errore); font-size:1rem;'>⚠ Errore nel caricamento: " +
-          errore.message +
-          "<br><small>Assicurati che <strong>prodotti.csv</strong> sia nella stessa cartella e di usare un server locale.</small></p>";
-      });
+      // Avvia la lettura del file come testo (codifica UTF-8)
+      lettore.readAsText(file, "UTF-8");
+    });
   </script>
 
 </body>
