@@ -41,7 +41,7 @@
     }
 
     /* ============================================================
-       NAVBAR VERTICALE (identica alle altre pagine)
+       NAVBAR VERTICALE
     ============================================================ */
     .navbar {
       width: var(--navbar-w);
@@ -133,7 +133,7 @@
     }
 
     /* ============================================================
-       AREA PRINCIPALE (tutto tranne la navbar)
+       AREA PRINCIPALE
     ============================================================ */
     .contenuto-principale {
       margin-left: var(--navbar-w);
@@ -141,68 +141,198 @@
       padding: 48px 48px 80px;
     }
 
-    /* ---- Intestazione della vetrina ---- */
     .vetrina-header {
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
 
     .vetrina-titolo {
       font-family: 'Playfair Display', serif;
       font-size: 2.4rem;
       color: var(--roccia);
-      margin-bottom: 6px;
     }
 
     .vetrina-titolo span { color: var(--oro); }
-
-    .vetrina-sottotitolo {
-      font-size: 0.95rem;
-      color: var(--roccia-med);
-      margin-top: 10px;
-      max-width: 600px;
-      line-height: 1.6;
-    }
 
     .riga-oro {
       width: 70px;
       height: 3px;
       background: var(--oro);
-      margin: 14px 0;
+      margin: 14px 0 12px;
       border-radius: 2px;
     }
 
-    /* ---- Stato di caricamento ---- */
-    .stato-caricamento {
-      text-align: center;
-      padding: 60px 0;
+    .vetrina-sottotitolo {
+      font-size: 0.95rem;
       color: var(--roccia-med);
-      font-size: 1.1rem;
-    }
-
-    .stato-caricamento .spinner {
-      font-size: 2.5rem;
-      /* Animazione rotazione per il simbolo di caricamento */
-      animation: ruota 1.2s linear infinite;
-      display: inline-block;
-      margin-bottom: 16px;
-    }
-
-    @keyframes ruota {
-      from { transform: rotate(0deg);   }
-      to   { transform: rotate(360deg); }
+      max-width: 600px;
+      line-height: 1.6;
     }
 
     /* ============================================================
-       GRIGLIA DEI PRODOTTI
+       ZONA DI CARICAMENTO CSV
+       Schermata centrale mostrata all'apertura della pagina.
+       Scompare dopo che l'utente carica il file.
+    ============================================================ */
+    .zona-carica {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--bianco);
+      border: 2px dashed #C9A84C;
+      border-radius: 18px;
+      max-width: 560px;
+      margin: 0 auto;
+      /* Animazione di pulsazione sul bordo dorato per attirare l'attenzione */
+      animation: pulsaBordo 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulsaBordo {
+      0%, 100% { border-color: var(--oro);        box-shadow: 0 0 0   0   rgba(201,168,76,0);    }
+      50%       { border-color: var(--oro-chiaro); box-shadow: 0 0 0 8px  rgba(201,168,76,0.10); }
+    }
+
+    /* Icona grande al centro della zona */
+    .zona-icona {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      /* Piccola animazione di oscillazione */
+      animation: oscillazione 3s ease-in-out infinite;
+    }
+
+    @keyframes oscillazione {
+      0%, 100% { transform: rotate(-5deg); }
+      50%       { transform: rotate(5deg);  }
+    }
+
+    .zona-titolo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--roccia);
+      margin-bottom: 12px;
+    }
+
+    .zona-testo {
+      font-size: 0.93rem;
+      color: var(--roccia-med);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    /*
+     * Il <label> funge da bottone visivo.
+     * Cliccarlo attiva l'<input type="file"> nascosto sotto.
+     * Non usiamo un <button> perché i button non aprono file picker
+     * direttamente; il label collegato all'input sì.
+     */
+    .btn-carica {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--oro);
+      color: var(--roccia);
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+      margin-bottom: 20px;
+    }
+
+    .btn-carica:hover {
+      background: var(--oro-chiaro);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(201,168,76,0.35);
+    }
+
+    /* Messaggio di errore sotto il bottone */
+    .zona-errore {
+      font-size: 0.85rem;
+      color: var(--errore);
+      font-weight: 700;
+      min-height: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* Blocco grigio con la struttura CSV attesa */
+    .csv-hint {
+      background: var(--sabbia-scura);
+      border-radius: 8px;
+      padding: 14px 18px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .csv-hint-titolo {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--roccia-med);
+      margin-bottom: 8px;
+    }
+
+    .csv-hint code {
+      font-size: 0.8rem;
+      color: var(--oro);
+      word-break: break-all;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       BARRA SUPERIORE (visibile dopo il caricamento)
+       Mostra il nome del file caricato e un bottone "Cambia file".
+    ============================================================ */
+    .barra-ricarica {
+      display: none;             /* nascosta di default; mostrata via JS */
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 12px 18px;
+      background: var(--bianco);
+      border: 1px solid #DDD5C0;
+      border-radius: 10px;
+      margin-bottom: 28px;
+    }
+
+    .barra-info {
+      font-size: 0.88rem;
+      color: var(--successo);
+      font-weight: 700;
+      flex: 1;
+    }
+
+    /* Label che funge da bottone "Cambia file" */
+    .btn-cambia {
+      padding: 7px 16px;
+      border: 1.5px solid var(--oro);
+      color: var(--oro);
+      border-radius: 6px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-cambia:hover {
+      background: var(--oro);
+      color: var(--roccia);
+    }
+
+    /* ============================================================
+       GRIGLIA PRODOTTI
     ============================================================ */
     .griglia-prodotti {
-      display: grid;
-      /* Colonne flessibili: minimo 260px, massimo 1fr */
+      display: none;             /* nascosta di default; mostrata via JS */
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 28px;
     }
 
-    /* ---- Card singolo prodotto ---- */
     .card-prodotto {
       background: var(--bianco);
       border-radius: 14px;
@@ -210,7 +340,6 @@
       border: 1px solid #DDD5C0;
       display: flex;
       flex-direction: column;
-      /* Ogni card entra con una piccola animazione */
       animation: fadeInCard 0.5s ease both;
       transition: transform 0.25s, box-shadow 0.25s;
     }
@@ -222,19 +351,17 @@
 
     .card-prodotto:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(44, 44, 44, 0.12);
+      box-shadow: 0 12px 30px rgba(44,44,44,0.12);
     }
 
-    /* Contenitore immagine */
     .card-immagine {
       width: 100%;
       height: 190px;
-      object-fit: cover;       /* l'immagine riempie senza deformarsi */
+      object-fit: cover;
       background: var(--sabbia-scura);
       display: block;
     }
 
-    /* Placeholder se non c'è immagine */
     .card-immagine-placeholder {
       width: 100%;
       height: 190px;
@@ -245,25 +372,22 @@
       font-size: 3.5rem;
     }
 
-    /* Corpo della card */
     .card-corpo {
       padding: 20px;
       display: flex;
       flex-direction: column;
-      flex: 1;                 /* fa crescere il corpo per allineare il bottone */
+      flex: 1;
     }
 
-    /* Nome del minerale */
     .card-nome {
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--roccia);
       margin-bottom: 4px;
     }
 
-    /* Marca / provenienza */
     .card-marca {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--oro);
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -271,20 +395,17 @@
       margin-bottom: 10px;
     }
 
-    /* Descrizione breve */
     .card-descrizione {
       font-size: 0.85rem;
       color: var(--roccia-med);
       line-height: 1.55;
       margin-bottom: 14px;
-      /* Limita a 3 righe con puntini */
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    /* Dettagli tecnici (dimensioni, taglia, spedizione) */
     .card-dettagli {
       display: flex;
       flex-wrap: wrap;
@@ -292,7 +413,6 @@
       margin-bottom: 16px;
     }
 
-    /* Singolo tag dettaglio */
     .tag-dettaglio {
       background: var(--sabbia);
       border: 1px solid #D5CAB0;
@@ -302,7 +422,6 @@
       color: var(--roccia-med);
     }
 
-    /* Piede della card: prezzo e bottone */
     .card-piede {
       display: flex;
       align-items: center;
@@ -322,10 +441,8 @@
       font-size: 0.8rem;
       color: var(--roccia-med);
       font-family: 'Lato', sans-serif;
-      font-weight: 400;
     }
 
-    /* Bottone "Aggiungi al carrello" */
     .btn-carrello {
       padding: 9px 16px;
       background: var(--oro);
@@ -335,7 +452,6 @@
       font-family: 'Lato', sans-serif;
       font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
       cursor: pointer;
       transition: background 0.22s, transform 0.15s;
     }
@@ -345,13 +461,12 @@
       transform: scale(1.04);
     }
 
-    /* Stato "aggiunto" del bottone (feedback visivo) */
     .btn-carrello.aggiunto {
       background: var(--successo);
       color: #fff;
     }
 
-    /* ---- Toast notifica "aggiunto al carrello" ---- */
+    /* ---- Toast notifica ---- */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -362,7 +477,6 @@
       border-radius: 8px;
       font-size: 0.9rem;
       font-weight: 700;
-      /* Nascosto di default */
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.3s, transform 0.3s;
@@ -374,48 +488,6 @@
     .toast.visibile {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    /* ---- Barra caricamento CSV manuale ---- */
-    .barra-csv {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 32px;
-      padding: 14px 20px;
-      background: var(--bianco);
-      border: 1.5px dashed #C9A84C;
-      border-radius: 10px;
-    }
-
-    .barra-csv-testo {
-      font-size: 0.88rem;
-      color: var(--roccia-med);
-    }
-
-    /* Il label fa da bottone per l'input file nascosto */
-    .btn-carica-csv {
-      padding: 8px 18px;
-      background: var(--oro);
-      color: var(--roccia);
-      border-radius: 6px;
-      font-family: 'Lato', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: background 0.22s;
-    }
-
-    .btn-carica-csv:hover {
-      background: var(--oro-chiaro);
-    }
-
-    .barra-csv-stato {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--successo);
     }
   </style>
 </head>
@@ -454,56 +526,94 @@
   ============================================================ -->
   <main class="contenuto-principale">
 
-    <!-- Intestazione della vetrina -->
+    <!-- Intestazione -->
     <div class="vetrina-header">
       <h1 class="vetrina-titolo">Vetrina <span>Minerali</span></h1>
       <div class="riga-oro"></div>
       <p class="vetrina-sottotitolo">
-        Ogni pezzo è estratto a mano da minatori esperti. Sfoglia il catalogo e
-        aggiungi i tesori della Terra al tuo carrello.
+        Ogni pezzo è estratto a mano da minatori esperti. Carica il catalogo CSV
+        e sfoglia i tesori della Terra.
       </p>
     </div>
 
-    <!-- ===== BARRA CARICAMENTO CSV PERSONALIZZATO =====
-         Se vuoi usare il tuo file CSV invece dei prodotti integrati,
-         clicca il bottone e seleziona il file dal tuo computer.
-         Funziona anche senza server, direttamente dal browser!
+    <!--
+      ══════════════════════════════════════════════════════════════
+      ZONA DI CARICAMENTO CSV
+      ══════════════════════════════════════════════════════════════
+      Questa schermata è visibile all'apertura della pagina.
+      Il JS la nasconde e mostra la griglia prodotti dopo il caricamento.
+
+      Come funziona il caricamento senza server:
+        1. L'utente clicca il label dorato
+        2. Il browser apre la finestra di selezione file
+        3. FileReader legge il file dal disco (zero server richiesto)
+        4. Il testo CSV viene analizzato e le card vengono create
     -->
-    <div class="barra-csv">
-      <span class="barra-csv-testo">📂 Hai un tuo file <strong>prodotti.csv</strong>? Caricalo qui:</span>
-      <label class="btn-carica-csv" for="input-csv">Scegli file CSV</label>
-      <!-- L'input è nascosto; il label sopra lo attiva al click -->
+    <div class="zona-carica" id="zona-carica">
+
+      <div class="zona-icona">⛏</div>
+
+      <h2 class="zona-titolo">Carica il catalogo prodotti</h2>
+
+      <p class="zona-testo">
+        Seleziona il tuo file <strong>prodotti.csv</strong> dal computer.<br>
+        Funziona direttamente nel browser, <strong>senza server</strong>.
+      </p>
+
+      <!--
+        Il <label> è collegato all'<input> tramite l'attributo "for"/"id".
+        Cliccarlo apre automaticamente la finestra di selezione file del sistema.
+        L'input è nascosto (display:none) perché non si può stilizzare.
+      -->
+      <label class="btn-carica" for="input-csv">
+        📂 &nbsp; Scegli prodotti.csv
+      </label>
       <input type="file" id="input-csv" accept=".csv" style="display:none;" />
-      <span class="barra-csv-stato" id="barra-csv-stato"></span>
+
+      <!-- Messaggio di errore (mostrato via JS se il file non va bene) -->
+      <p class="zona-errore" id="zona-errore"></p>
+
+      <!-- Promemoria sulla struttura del CSV -->
+      <div class="csv-hint">
+        <div class="csv-hint-titolo">Struttura colonne richiesta nel CSV:</div>
+        <code>nome, marca, descrizione, immagine, prezzo, dimensioni, taglia, spedizione</code>
+      </div>
+
+    </div><!-- fine zona-carica -->
+
+    <!--
+      ══════════════════════════════════════════════════════════════
+      BARRA SUPERIORE – visibile solo dopo il caricamento del CSV
+      Mostra il nome del file e quanti prodotti sono stati trovati.
+      Il bottone "Cambia file" permette di caricare un altro CSV.
+      ══════════════════════════════════════════════════════════════
+    -->
+    <div class="barra-ricarica" id="barra-ricarica">
+      <span class="barra-info" id="barra-info">✓ File caricato</span>
+      <!-- Secondo input file per il bottone "Cambia file" -->
+      <label class="btn-cambia" for="input-csv-2">🔄 Cambia file</label>
+      <input type="file" id="input-csv-2" accept=".csv" style="display:none;" />
     </div>
 
-    <!-- Stato di caricamento (visibile finché il CSV non è pronto) -->
-    <div class="stato-caricamento" id="stato-caricamento">
-      <div class="spinner">⛏</div>
-      <p>Caricamento minerali in corso...</p>
-    </div>
-
-    <!-- Griglia prodotti – riempita dinamicamente dal JS -->
+    <!-- Griglia prodotti – nascosta finché non arriva il CSV -->
     <div class="griglia-prodotti" id="griglia-prodotti"></div>
 
   </main>
 
-  <!-- Toast notifica -->
-  <div class="toast" id="toast">✓ Aggiunto al carrello!</div>
+  <!-- Toast notifica aggiunta al carrello -->
+  <div class="toast" id="toast"></div>
 
 
   <!-- ============================================================
-       JAVASCRIPT – Vetrina
+       JAVASCRIPT – Vetrina (solo CSV esterno via FileReader)
   ============================================================ -->
   <script>
     /*
      * ── PROTEZIONE PAGINA ───────────────────────────────────────
      * Se l'utente non è loggato, viene rimandato alla registrazione.
-     * Questo controllo avviene PRIMA di caricare qualsiasi prodotto.
      */
     var isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn !== "true") {
-      // Non è loggato: reindirizza
       window.location.href = "registrazioneEcommerce.html";
     }
 
@@ -519,76 +629,77 @@
 
     /*
      * ── MOSTRA IL TOAST ─────────────────────────────────────────
-     * Fa apparire la notifica in basso a destra per 2 secondi.
+     * Fa apparire brevemente la notifica in basso a destra.
      */
     function mostraToast(messaggio) {
       var toast = document.getElementById("toast");
       toast.textContent = "✓ " + messaggio;
       toast.classList.add("visibile");
-
       setTimeout(function () {
         toast.classList.remove("visibile");
-      }, 2000);
+      }, 2200);
     }
 
     /*
      * ── AGGIUNGI AL CARRELLO ─────────────────────────────────────
-     * Riceve l'oggetto prodotto, lo aggiunge all'array nel localStorage
-     * e aggiorna il badge della navbar.
+     * Salva il prodotto nell'array "carrello" nel localStorage
+     * e aggiorna il badge nella navbar.
      */
     function aggiungiAlCarrello(prodotto, bottone) {
-      // Legge il carrello attuale (o array vuoto se non esiste)
       var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
-
-      // Aggiunge il prodotto
       carrello.push(prodotto);
-
-      // Salva l'array aggiornato
       localStorage.setItem("carrello", JSON.stringify(carrello));
-
-      // Aggiorna il badge
       aggiornaBadgeCarrello();
 
-      // Feedback visivo sul bottone
       bottone.textContent = "✓ Aggiunto";
       bottone.classList.add("aggiunto");
-
-      // Dopo 2 secondi il bottone torna normale
       setTimeout(function () {
         bottone.textContent = "Aggiungi al carrello";
         bottone.classList.remove("aggiunto");
       }, 2000);
 
-      // Mostra la notifica toast
       mostraToast(prodotto.nome + " aggiunto!");
     }
 
     /*
-     * ── ANALIZZA IL CSV ─────────────────────────────────────────
-     * Riceve il testo grezzo del CSV e restituisce un array di oggetti.
+     * ── ANALIZZA IL TESTO CSV ───────────────────────────────────
+     * Trasforma il testo grezzo del file CSV in un array di oggetti JS.
      *
-     * Il CSV deve avere questa prima riga (intestazione):
-     *   nome,marca,descrizione,immagine,prezzo,dimensioni,taglia,spedizione
+     * Esempio di file CSV:
+     *   nome,marca,prezzo
+     *   Oro Nativo,AuriMinera,340.00
+     *   Pirite,IberoPyrite,85.00
      *
-     * Ogni riga successiva è un prodotto.
+     * Risultato restituito:
+     *   [
+     *     { nome: "Oro Nativo", marca: "AuriMinera", prezzo: "340.00" },
+     *     { nome: "Pirite",     marca: "IberoPyrite", prezzo: "85.00" }
+     *   ]
      */
     function parsaCSV(testoCSV) {
-      // Divide il testo in righe; filter(Boolean) rimuove righe vuote
-      var righe  = testoCSV.trim().split("\n").filter(Boolean);
+      /* split("\n") divide il testo riga per riga.
+         filter(Boolean) rimuove le righe vuote. */
+      var righe    = testoCSV.trim().split("\n").filter(Boolean);
       var prodotti = [];
 
-      // La prima riga è l'intestazione – la leggiamo per ricavare i nomi colonne
+      /* Servono almeno 2 righe: una di intestazione + una di dati */
+      if (righe.length < 2) {
+        return prodotti;
+      }
+
+      /* La prima riga è l'intestazione: contiene i nomi delle colonne */
       var intestazione = righe[0].split(",");
 
-      // Ciclo sulle righe dati (partendo dalla seconda)
+      /* Ogni riga successiva è un prodotto */
       for (var i = 1; i < righe.length; i++) {
-        var celle  = righe[i].split(",");
+        var celle   = righe[i].split(",");
         var oggetto = {};
 
-        // Associa ogni cella alla colonna corrispondente
+        /* Associa ogni valore al nome della colonna corrispondente */
         for (var j = 0; j < intestazione.length; j++) {
-          // trim() rimuove spazi/ritorni a capo residui
-          oggetto[intestazione[j].trim()] = celle[j] ? celle[j].trim() : "";
+          var chiave  = intestazione[j].trim();
+          var valore  = celle[j] ? celle[j].trim() : "";
+          oggetto[chiave] = valore;
         }
 
         prodotti.push(oggetto);
@@ -598,240 +709,155 @@
     }
 
     /*
-     * ── CREA LA CARD HTML DI UN PRODOTTO ────────────────────────
-     * Riceve l'oggetto prodotto e restituisce un elemento HTML <div>.
+     * ── CREA LA CARD HTML DI UN SINGOLO PRODOTTO ────────────────
+     * Costruisce l'intera card in JavaScript creando elementi HTML
+     * uno per uno con createElement e appendChild.
+     *
+     * Parametro: oggetto prodotto con le proprietà del CSV
+     * Restituisce: un elemento <div> completo da inserire nella griglia
      */
     function creaCard(prodotto) {
-      // Crea il contenitore principale della card
       var card = document.createElement("div");
       card.className = "card-prodotto";
 
-      // ---- Immagine (o placeholder se non c'è) ----
+      /* ---- Immagine (o placeholder emoji se manca) ---- */
       var bloccoImmagine;
       if (prodotto.immagine && prodotto.immagine !== "") {
         bloccoImmagine = document.createElement("img");
         bloccoImmagine.className = "card-immagine";
-        bloccoImmagine.src = prodotto.immagine;
-        bloccoImmagine.alt = prodotto.nome;
-        // Se l'immagine non carica, mostra il placeholder
+        bloccoImmagine.src       = prodotto.immagine;
+        bloccoImmagine.alt       = prodotto.nome;
+        /* Se l'URL dell'immagine non carica, mostra il placeholder */
         bloccoImmagine.onerror = function () {
-          var placeholder = document.createElement("div");
-          placeholder.className = "card-immagine-placeholder";
-          placeholder.textContent = "💎";
-          card.replaceChild(placeholder, bloccoImmagine);
+          var ph = document.createElement("div");
+          ph.className   = "card-immagine-placeholder";
+          ph.textContent = "💎";
+          card.replaceChild(ph, bloccoImmagine);
         };
       } else {
         bloccoImmagine = document.createElement("div");
-        bloccoImmagine.className = "card-immagine-placeholder";
+        bloccoImmagine.className   = "card-immagine-placeholder";
         bloccoImmagine.textContent = "💎";
       }
       card.appendChild(bloccoImmagine);
 
-      // ---- Corpo della card ----
+      /* ---- Corpo della card ---- */
       var corpo = document.createElement("div");
       corpo.className = "card-corpo";
 
-      // Nome
+      /* Nome del minerale */
       var nome = document.createElement("div");
-      nome.className = "card-nome";
-      nome.textContent = prodotto.nome;
+      nome.className   = "card-nome";
+      nome.textContent = prodotto.nome || "Senza nome";
       corpo.appendChild(nome);
 
-      // Marca
+      /* Marca / provenienza */
       var marca = document.createElement("div");
-      marca.className = "card-marca";
-      marca.textContent = prodotto.marca;
+      marca.className   = "card-marca";
+      marca.textContent = prodotto.marca || "";
       corpo.appendChild(marca);
 
-      // Descrizione
+      /* Descrizione */
       var desc = document.createElement("div");
-      desc.className = "card-descrizione";
-      desc.textContent = prodotto.descrizione;
+      desc.className   = "card-descrizione";
+      desc.textContent = prodotto.descrizione || "";
       corpo.appendChild(desc);
 
-      // Tag dettagli
+      /* Tag dettagli tecnici */
       var dettagli = document.createElement("div");
       dettagli.className = "card-dettagli";
 
       if (prodotto.dimensioni) {
         var t1 = document.createElement("span");
-        t1.className = "tag-dettaglio";
+        t1.className   = "tag-dettaglio";
         t1.textContent = "📐 " + prodotto.dimensioni;
         dettagli.appendChild(t1);
       }
-
       if (prodotto.taglia) {
         var t2 = document.createElement("span");
-        t2.className = "tag-dettaglio";
+        t2.className   = "tag-dettaglio";
         t2.textContent = "📏 " + prodotto.taglia;
         dettagli.appendChild(t2);
       }
-
       if (prodotto.spedizione) {
         var t3 = document.createElement("span");
-        t3.className = "tag-dettaglio";
+        t3.className   = "tag-dettaglio";
         t3.textContent = "🚚 " + prodotto.spedizione;
         dettagli.appendChild(t3);
       }
-
       corpo.appendChild(dettagli);
 
-      // ---- Piede: prezzo + bottone ----
+      /* ---- Piede: prezzo + bottone ---- */
       var piede = document.createElement("div");
       piede.className = "card-piede";
 
-      // Prezzo
       var prezzo = document.createElement("div");
       prezzo.className = "card-prezzo";
-      prezzo.innerHTML = "€" + prodotto.prezzo + " <span>/ pezzo</span>";
+      prezzo.innerHTML = "€" + (prodotto.prezzo || "0") + " <span>/ pezzo</span>";
       piede.appendChild(prezzo);
 
-      // Bottone "Aggiungi al carrello"
       var bottone = document.createElement("button");
-      bottone.className = "btn-carrello";
+      bottone.className   = "btn-carrello";
       bottone.textContent = "Aggiungi al carrello";
 
-      // Evento click: aggiunge al carrello passando l'oggetto prodotto
-      bottone.addEventListener("click", function () {
-        aggiungiAlCarrello(prodotto, bottone);
-      });
+      /*
+       * Attenzione: usiamo una funzione esterna per "congelare"
+       * i valori correnti di prodotto e bottone dentro il listener.
+       * Senza questo trucco, tutti i bottoni farebbero riferimento
+       * all'ultimo prodotto del ciclo for.
+       */
+      (function (p, b) {
+        b.addEventListener("click", function () {
+          aggiungiAlCarrello(p, b);
+        });
+      })(prodotto, bottone);
 
       piede.appendChild(bottone);
       corpo.appendChild(piede);
-
       card.appendChild(corpo);
+
       return card;
     }
 
     /*
-     * ── PRODOTTI INTEGRATI (dati di riserva) ────────────────────
-     * Questi prodotti sono scritti direttamente nel codice.
-     * Vengono usati AUTOMATICAMENTE se il file prodotti.csv
-     * non è raggiungibile (es. apertura diretta dal browser).
-     * Puoi modificare questo array per cambiare i prodotti,
-     * oppure caricare un tuo CSV usando il pulsante in pagina.
-     */
-    var PRODOTTI_INTEGRATI = [
-      {
-        nome: "Pepita d'Oro Nativo",
-        marca: "AuriMinera",
-        descrizione: "Pepita di oro nativo estratta a mano nelle miniere della Sierra Nevada. Ogni pezzo è unico e presenta tipiche inclusioni quarzose naturali.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Gold_nugget_%28placer%29_20031115_02.jpg/640px-Gold_nugget_%28placer%29_20031115_02.jpg",
-        prezzo: "340.00",
-        dimensioni: "4 x 3 cm",
-        taglia: "Media",
-        spedizione: "Assicurata"
-      },
-      {
-        nome: "Pirite Cubica Spagnola",
-        marca: "IberoPyrite",
-        descrizione: "Cristalli di pirite con forma cubica perfetta tipica dei giacimenti di Navajún. Brillantezza metallica intensa. Ideale per collezionisti.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Pyrite_60606.jpg/640px-Pyrite_60606.jpg",
-        prezzo: "85.00",
-        dimensioni: "6 x 5 cm",
-        taglia: "Grande",
-        spedizione: "Standard"
-      },
-      {
-        nome: "Quarzo Ialino Brasiliano",
-        marca: "CristalBrasil",
-        descrizione: "Cristallo di quarzo trasparente a punta singola proveniente dalle grotte del Minas Gerais. Purezza ottica eccezionale senza inclusioni visibili.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Quartz_Br%C3%A9sil.jpg/640px-Quartz_Br%C3%A9sil.jpg",
-        prezzo: "45.00",
-        dimensioni: "8 x 2.5 cm",
-        taglia: "Grande",
-        spedizione: "Standard"
-      },
-      {
-        nome: "Ametista Uruguayana",
-        marca: "GemsUruguay",
-        descrizione: "Drusa di ametista con cristalli violacei intensi e uniformi. Proveniente dai famosi giacimenti basaltici dell'Uruguay. Base naturale inclusa.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Amethyst._Magaliesburg%2C_South_Africa.jpg/640px-Amethyst._Magaliesburg%2C_South_Africa.jpg",
-        prezzo: "120.00",
-        dimensioni: "10 x 8 cm",
-        taglia: "XL",
-        spedizione: "Assicurata"
-      },
-      {
-        nome: "Lapislazzuli Afghano",
-        marca: "AfghanBlue",
-        descrizione: "Blocco di lapislazzuli grezzo con intensa colorazione blu reale e inclusioni di pirite dorata. Provenienza certificata dai giacimenti di Sar-e-Sang.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Lapis-lazuli_hg.jpg/640px-Lapis-lazuli_hg.jpg",
-        prezzo: "210.00",
-        dimensioni: "5 x 4 cm",
-        taglia: "Media",
-        spedizione: "Assicurata"
-      },
-      {
-        nome: "Tormalina Paraiba",
-        marca: "GemBrasil",
-        descrizione: "Rara tormalina di colore blu-verde neone tipica del giacimento di Paraíba. Fluorescenza UV intensa. Con certificato gemmologico.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tourmaline-121240.jpg/640px-Tourmaline-121240.jpg",
-        prezzo: "890.00",
-        dimensioni: "1.2 x 0.8 cm",
-        taglia: "Piccola",
-        spedizione: "Espressa"
-      },
-      {
-        nome: "Malachite Congolese",
-        marca: "CongoGems",
-        descrizione: "Nodulo di malachite con bande concentriche verde intenso su verde chiaro. Lucidatura naturale. Giacimento di Lubumbashi.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Malachite_-_Lujuba_mine%2C_Katanga%2C_Congo_%282%29.jpg/640px-Malachite_-_Lujuba_mine%2C_Katanga%2C_Congo_%282%29.jpg",
-        prezzo: "95.00",
-        dimensioni: "7 x 5 cm",
-        taglia: "Grande",
-        spedizione: "Assicurata"
-      },
-      {
-        nome: "Fluorite Arcobaleno",
-        marca: "AlpiMinerals",
-        descrizione: "Cristallo ottaedrico di fluorite con zonature multicolore (viola - verde - incolore). Giacimento delle Alpi Svizzere. Fluorescenza UV spettacolare.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Fluorite_with_Galena_and_Sphalerite.jpg/640px-Fluorite_with_Galena_and_Sphalerite.jpg",
-        prezzo: "75.00",
-        dimensioni: "5 x 5 cm",
-        taglia: "Media",
-        spedizione: "Standard"
-      },
-      {
-        nome: "Ossidiana Arcoiris",
-        marca: "MexicoStone",
-        descrizione: "Ossidiana con effetto arcobaleno (schiller) causato da micro-inclusioni di magnetite. Estratta manualmente in Jalisco. Pezzo non lavorato.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Obsidian_with_golden_sheen.jpg/640px-Obsidian_with_golden_sheen.jpg",
-        prezzo: "55.00",
-        dimensioni: "6 x 4 cm",
-        taglia: "Media",
-        spedizione: "Standard"
-      },
-      {
-        nome: "Rodocrosite Argentina",
-        marca: "AndeanRose",
-        descrizione: "Stalattite di rodocrosite sezionata con pattern a bande rosa-bianche concentriche. Provenienza esclusiva dalla miniera Capillitas di Catamarca.",
-        immagine: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Rhodochrosite_-_Capillitas_mine%2C_Argentina.jpg/640px-Rhodochrosite_-_Capillitas_mine%2C_Argentina.jpg",
-        prezzo: "185.00",
-        dimensioni: "4 x 3 cm",
-        taglia: "Media",
-        spedizione: "Assicurata"
-      }
-    ];
-
-    /*
      * ── MOSTRA I PRODOTTI NELLA GRIGLIA ─────────────────────────
-     * Riceve un array di oggetti prodotto e crea le card.
-     * Viene chiamata sia con i dati integrati sia con quelli del CSV.
+     * Chiamata dopo che FileReader ha letto il CSV con successo.
+     *
+     * Passi:
+     *  1. Nasconde la zona di caricamento iniziale
+     *  2. Mostra la barra con il nome del file e il numero di prodotti
+     *  3. Crea e inserisce le card nella griglia
+     *
+     * Parametri:
+     *  - prodotti : array di oggetti ottenuto da parsaCSV()
+     *  - nomeFile : stringa con il nome del file selezionato
      */
-    function mostraProdotti(prodotti) {
-      // Nasconde il messaggio di caricamento
-      document.getElementById("stato-caricamento").style.display = "none";
+    function mostraProdotti(prodotti, nomeFile) {
 
+      /* Nasconde la schermata di invito al caricamento */
+      document.getElementById("zona-carica").style.display = "none";
+
+      /* Mostra e aggiorna la barra informativa */
+      var barraRicarica = document.getElementById("barra-ricarica");
+      barraRicarica.style.display = "flex";
+      document.getElementById("barra-info").textContent =
+        "✓ " + nomeFile + " – " + prodotti.length + " prodotto/i caricato/i";
+
+      /* Mostra la griglia e pulisce le card precedenti */
       var griglia = document.getElementById("griglia-prodotti");
-      griglia.innerHTML = "";   // pulisce eventuali card precedenti
+      griglia.style.display = "grid";
+      griglia.innerHTML     = "";
 
+      /* Caso CSV vuoto o solo intestazione */
       if (prodotti.length === 0) {
-        griglia.innerHTML = "<p style='color:var(--roccia-med); padding:20px;'>Nessun prodotto trovato nel CSV.</p>";
+        griglia.innerHTML =
+          "<p style='color:var(--roccia-med); padding:20px; grid-column:1/-1;'>" +
+          "Nessun prodotto trovato. Controlla che il CSV abbia almeno una riga di dati " +
+          "sotto la riga di intestazione.</p>";
         return;
       }
 
-      // Crea e aggiunge una card per ogni prodotto con animazione scalata
+      /* Crea e aggiunge ogni card con un ritardo di animazione crescente */
       for (var i = 0; i < prodotti.length; i++) {
         var card = creaCard(prodotti[i]);
         card.style.animationDelay = (i * 0.07) + "s";
@@ -840,73 +866,78 @@
     }
 
     /*
-     * ── CARICAMENTO AUTOMATICO ───────────────────────────────────
-     * Prima tenta di caricare prodotti.csv con fetch().
-     * Se il file non esiste o si è in modalità file://, usa automaticamente
-     * i PRODOTTI_INTEGRATI scritti sopra, senza mostrare nessun errore.
+     * ── LEGGE UN FILE CSV CON FILEREADER ────────────────────────
+     * FileReader è un'API nativa del browser (nessuna libreria esterna).
+     * Legge file dal disco locale dell'utente in modo asincrono.
+     *
+     * Questa funzione accetta l'id di un <input type="file">
+     * e gli aggiunge un listener per l'evento "change"
+     * (scatta quando l'utente seleziona un file).
+     *
+     * Flusso:
+     *  evento "change"
+     *    → prende il file dall'input
+     *    → controlla che sia un .csv
+     *    → crea FileReader
+     *    → FileReader.readAsText() avvia la lettura
+     *    → FileReader.onload scatta quando la lettura finisce
+     *    → chiama parsaCSV() e poi mostraProdotti()
      */
-    fetch("prodotti.csv")
-      .then(function (risposta) {
-        if (!risposta.ok) {
-          throw new Error("csv_non_trovato");
+    function collegaInputCSV(idInput) {
+      var inputElemento = document.getElementById(idInput);
+
+      inputElemento.addEventListener("change", function (evento) {
+
+        /* Prende il primo file scelto dall'utente */
+        var file = evento.target.files[0];
+
+        /* Sicurezza: nessun file selezionato → esci */
+        if (!file) { return; }
+
+        /* Controllo estensione: deve essere .csv */
+        if (file.name.toLowerCase().indexOf(".csv") === -1) {
+          document.getElementById("zona-errore").textContent =
+            "⚠ Il file non è un .csv – seleziona il file corretto.";
+          return;
         }
-        return risposta.text();
-      })
-      .then(function (testoCSV) {
-        var prodotti = parsaCSV(testoCSV);
-        mostraProdotti(prodotti);
-      })
-      .catch(function () {
+
+        /* Pulisce eventuali errori precedenti */
+        document.getElementById("zona-errore").textContent = "";
+
         /*
-         * fetch() ha fallito (nessun server o file non trovato).
-         * Carica silenziosamente i prodotti integrati nel codice.
+         * Crea un nuovo oggetto FileReader.
+         * È il meccanismo del browser per leggere file locali.
          */
-        mostraProdotti(PRODOTTI_INTEGRATI);
+        var lettore = new FileReader();
+
+        /*
+         * onload viene eseguito automaticamente dal browser
+         * quando FileReader ha finito di leggere il file.
+         * e.target.result contiene l'intero testo del file.
+         */
+        lettore.onload = function (e) {
+          var testoCSV = e.target.result;
+          var prodotti = parsaCSV(testoCSV);
+          mostraProdotti(prodotti, file.name);
+        };
+
+        /*
+         * readAsText avvia la lettura del file come testo.
+         * "UTF-8" garantisce che i caratteri speciali (accenti ecc.)
+         * vengano letti correttamente.
+         */
+        lettore.readAsText(file, "UTF-8");
       });
+    }
 
     /*
-     * ── CARICAMENTO MANUALE CSV (FileReader) ─────────────────────
-     * Quando l'utente sceglie un file dal proprio computer tramite
-     * il bottone "Scegli file CSV", questo blocco lo legge.
-     *
-     * FileReader è un'API del browser che legge file locali
-     * senza bisogno di un server. È disponibile su tutti i browser moderni.
+     * Collega la logica di lettura CSV a entrambi gli input presenti
+     * nella pagina: quello nella schermata iniziale e quello
+     * nel bottone "Cambia file" che appare dopo il primo caricamento.
      */
-    document.getElementById("input-csv").addEventListener("change", function (evento) {
-      // Prende il primo file selezionato dall'utente
-      var file = evento.target.files[0];
+    collegaInputCSV("input-csv");
+    collegaInputCSV("input-csv-2");
 
-      // Se non ha scelto nessun file, esci
-      if (!file) { return; }
-
-      // Controlla che sia effettivamente un file CSV (per sicurezza)
-      if (file.name.indexOf(".csv") === -1) {
-        document.getElementById("barra-csv-stato").textContent = "⚠ Seleziona un file .csv";
-        document.getElementById("barra-csv-stato").style.color = "var(--errore)";
-        return;
-      }
-
-      // Crea un nuovo FileReader per leggere il contenuto del file
-      var lettore = new FileReader();
-
-      // Questa funzione viene eseguita automaticamente quando la lettura finisce
-      lettore.onload = function (e) {
-        // e.target.result contiene il testo del file
-        var testoCSV = e.target.result;
-        var prodotti = parsaCSV(testoCSV);
-
-        // Mostra le card con i prodotti del CSV caricato
-        mostraProdotti(prodotti);
-
-        // Aggiorna il testo di stato nella barra
-        var stato = document.getElementById("barra-csv-stato");
-        stato.textContent = "✓ Caricati " + prodotti.length + " prodotti da " + file.name;
-        stato.style.color = "var(--successo)";
-      };
-
-      // Avvia la lettura del file come testo (codifica UTF-8)
-      lettore.readAsText(file, "UTF-8");
-    });
   </script>
 
 </body>
