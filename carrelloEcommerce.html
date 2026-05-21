@@ -4,19 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NewExpedetion – Carrello</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-
-  <!-- ====================================================
-       jsPDF – libreria per generare PDF direttamente nel browser.
-       Caricata da CDN: non serve installare nulla.
-  ==================================================== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <style>
-    /* ============================================================
-       VARIABILI CSS – stessa palette su tutte le pagine
-    ============================================================ */
     :root {
       --oro:         #C9A84C;
       --oro-chiaro:  #E8C96A;
@@ -29,9 +19,7 @@
       --successo:    #3A7D44;
       --navbar-w:    240px;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Lato', sans-serif;
       background-color: var(--sabbia);
@@ -40,15 +28,10 @@
       min-height: 100vh;
       animation: fadeInPagina 0.8s ease both;
     }
-
     @keyframes fadeInPagina {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0);    }
     }
-
-    /* ============================================================
-       NAVBAR VERTICALE (identica alle altre pagine)
-    ============================================================ */
     .navbar {
       width: var(--navbar-w);
       min-height: 100vh;
@@ -61,7 +44,6 @@
       top: 0; left: 0;
       z-index: 100;
     }
-
     .navbar-logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
@@ -71,7 +53,6 @@
       margin-bottom: 8px;
       line-height: 1.2;
     }
-
     .navbar-sub {
       font-size: 0.65rem;
       color: #888;
@@ -80,21 +61,18 @@
       margin-bottom: 40px;
       text-align: center;
     }
-
     .navbar-divider {
       width: 60%;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--oro), transparent);
       margin-bottom: 40px;
     }
-
     .navbar nav {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .navbar nav a {
       display: flex;
       align-items: center;
@@ -107,20 +85,16 @@
       border-radius: 6px;
       transition: background 0.25s, color 0.25s;
     }
-
     .navbar nav a .icon { font-size: 1rem; }
-
     .navbar nav a:hover {
       background-color: rgba(201, 168, 76, 0.12);
       color: var(--oro-chiaro);
     }
-
     .navbar nav a.attivo {
       background-color: rgba(201, 168, 76, 0.18);
       color: var(--oro);
       font-weight: 700;
     }
-
     .carrello-badge {
       background: var(--oro);
       color: var(--roccia);
@@ -130,17 +104,12 @@
       border-radius: 20px;
       margin-left: auto;
     }
-
     .navbar-footer {
       margin-top: auto;
       font-size: 0.65rem;
       color: #555;
       text-align: center;
     }
-
-    /* ============================================================
-       LAYOUT PRINCIPALE: due colonne (lista | riepilogo)
-    ============================================================ */
     .contenuto-principale {
       margin-left: var(--navbar-w);
       display: flex;
@@ -149,23 +118,18 @@
       align-items: flex-start;
       gap: 0;
     }
-
-    /* ---- Colonna sinistra: lista prodotti nel carrello ---- */
     .colonna-lista {
       flex: 1;
       padding: 48px 40px 80px;
       border-right: 1px solid #DDD5C0;
     }
-
     .pagina-titolo {
       font-family: 'Playfair Display', serif;
       font-size: 2.2rem;
       color: var(--roccia);
       margin-bottom: 6px;
     }
-
     .pagina-titolo span { color: var(--oro); }
-
     .riga-oro {
       width: 60px;
       height: 3px;
@@ -173,26 +137,20 @@
       margin: 12px 0 30px;
       border-radius: 2px;
     }
-
-    /* Messaggio carrello vuoto */
     .carrello-vuoto {
       text-align: center;
       padding: 60px 0;
       color: var(--roccia-med);
     }
-
     .carrello-vuoto .icona-vuota {
       font-size: 4rem;
       margin-bottom: 16px;
       display: block;
     }
-
     .carrello-vuoto p {
       font-size: 1.05rem;
       margin-bottom: 20px;
     }
-
-    /* Link tornare alla vetrina */
     .btn-secondario {
       display: inline-block;
       padding: 11px 24px;
@@ -207,13 +165,10 @@
       text-decoration: none;
       transition: background 0.22s, color 0.22s;
     }
-
     .btn-secondario:hover {
       background: var(--oro);
       color: var(--roccia);
     }
-
-    /* ---- Riga prodotto nel carrello ---- */
     .riga-prodotto {
       display: flex;
       align-items: center;
@@ -225,31 +180,24 @@
       margin-bottom: 12px;
       animation: fadeInCard 0.4s ease both;
     }
-
     @keyframes fadeInCard {
       from { opacity: 0; transform: translateX(-10px); }
       to   { opacity: 1; transform: translateX(0);     }
     }
-
-    /* Emoji / icona prodotto */
     .riga-icona {
       font-size: 2.2rem;
       flex-shrink: 0;
       width: 50px;
       text-align: center;
     }
-
-    /* Info testo della riga */
     .riga-info {
       flex: 1;
     }
-
     .riga-nome {
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
       color: var(--roccia);
     }
-
     .riga-marca {
       font-size: 0.75rem;
       color: var(--oro);
@@ -257,16 +205,12 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-
-    /* Prezzo nella riga */
     .riga-prezzo {
       font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
       color: var(--roccia);
       flex-shrink: 0;
     }
-
-    /* Bottone rimuovi */
     .btn-rimuovi {
       background: none;
       border: 1px solid #D5CAB0;
@@ -278,15 +222,10 @@
       transition: border-color 0.2s, color 0.2s;
       flex-shrink: 0;
     }
-
     .btn-rimuovi:hover {
       border-color: var(--errore);
       color: var(--errore);
     }
-
-    /* ============================================================
-       COLONNA DESTRA: riepilogo totale + azioni
-    ============================================================ */
     .colonna-riepilogo {
       width: 320px;
       flex-shrink: 0;
@@ -295,22 +234,18 @@
       top: 0;
       align-self: flex-start;
     }
-
     .riepilogo-titolo {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       color: var(--roccia);
       margin-bottom: 4px;
     }
-
     .riepilogo-divider {
       width: 100%;
       height: 1px;
       background: #DDD5C0;
       margin: 16px 0;
     }
-
-    /* Riga del riepilogo (voce + valore) */
     .riepilogo-riga {
       display: flex;
       justify-content: space-between;
@@ -318,8 +253,6 @@
       color: var(--roccia-med);
       margin-bottom: 10px;
     }
-
-    /* Riga del totale finale – più grande */
     .riepilogo-totale {
       display: flex;
       justify-content: space-between;
@@ -328,20 +261,16 @@
       padding-top: 14px;
       border-top: 2px solid var(--roccia);
     }
-
     .totale-etichetta {
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem;
       color: var(--roccia);
     }
-
     .totale-valore {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
       color: var(--oro);
     }
-
-    /* Card del riepilogo */
     .riepilogo-card {
       background: var(--bianco);
       border: 1px solid #DDD5C0;
@@ -349,8 +278,6 @@
       padding: 24px;
       margin-bottom: 16px;
     }
-
-    /* Bottone principale: scarica PDF */
     .btn-pdf {
       width: 100%;
       padding: 14px;
@@ -371,14 +298,11 @@
       gap: 10px;
       margin-bottom: 10px;
     }
-
     .btn-pdf:hover {
       background: var(--oro-chiaro);
       box-shadow: 0 4px 14px rgba(201, 168, 76, 0.35);
       transform: translateY(-2px);
     }
-
-    /* Bottone svuota carrello */
     .btn-svuota {
       width: 100%;
       padding: 11px;
@@ -392,13 +316,10 @@
       transition: border-color 0.2s, color 0.2s;
       letter-spacing: 0.5px;
     }
-
     .btn-svuota:hover {
       border-color: var(--errore);
       color: var(--errore);
     }
-
-    /* Piccolo testo sicurezza */
     .sicurezza-testo {
       margin-top: 14px;
       font-size: 0.75rem;
@@ -408,17 +329,11 @@
     }
   </style>
 </head>
-
 <body>
-
-  <!-- ============================================================
-       NAVBAR VERTICALE
-  ============================================================ -->
   <nav class="navbar">
     <div class="navbar-logo">New<br>Expedetion</div>
     <div class="navbar-sub">Minerali Rari</div>
     <div class="navbar-divider"></div>
-
     <nav>
       <a href="registrazioneEcommerce.html">
         <span class="icon">📋</span> Registrazione
@@ -434,30 +349,17 @@
         <span class="carrello-badge" id="badge-carrello">0</span>
       </a>
     </nav>
-
     <div class="navbar-footer">© 2025 NewExpedetion</div>
   </nav>
-
-  <!-- ============================================================
-       CONTENUTO PRINCIPALE
-  ============================================================ -->
   <div class="contenuto-principale">
-
-    <!-- ==================== LISTA CARRELLO ==================== -->
     <section class="colonna-lista">
       <h1 class="pagina-titolo">Il tuo <span>Carrello</span></h1>
       <div class="riga-oro"></div>
-
-      <!-- Questo div viene riempito dal JS -->
       <div id="lista-carrello"></div>
     </section>
-
-    <!-- ==================== RIEPILOGO TOTALE ==================== -->
     <aside class="colonna-riepilogo">
       <h2 class="riepilogo-titolo">Riepilogo</h2>
       <div class="riepilogo-divider"></div>
-
-      <!-- Card riepilogo valori -->
       <div class="riepilogo-card">
         <div class="riepilogo-riga">
           <span>Articoli</span>
@@ -471,96 +373,47 @@
           <span>Spedizione</span>
           <span>Calcolata al checkout</span>
         </div>
-
         <div class="riepilogo-totale">
           <span class="totale-etichetta">Totale</span>
           <span class="totale-valore" id="riepilogo-totale">€ 0,00</span>
         </div>
       </div>
-
-      <!-- Bottone scarica PDF -->
       <button class="btn-pdf" id="btn-pdf">
         <span>📄</span> Scarica Scontrino PDF
       </button>
-
-      <!-- Bottone svuota carrello -->
       <button class="btn-svuota" id="btn-svuota">Svuota carrello</button>
-
-      <!-- Testo di garanzia -->
       <p class="sicurezza-testo">
         🔒 Transazione sicura<br>
         Certificati di autenticità inclusi
       </p>
     </aside>
-
-  </div><!-- fine contenuto-principale -->
-
-
-  <!-- ============================================================
-       JAVASCRIPT – Logica carrello e generazione PDF
-  ============================================================ -->
+  </div>
   <script>
-    /*
-     * ── PROTEZIONE PAGINA ───────────────────────────────────────
-     * Controlla subito se l'utente è loggato.
-     * Se non lo è, viene rimandato alla registrazione.
-     */
     var isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn !== "true") {
       window.location.href = "registrazioneEcommerce.html";
     }
-
-    /*
-     * ── RECUPERA DATI UTENTE ─────────────────────────────────────
-     * Legge il nome dell'utente per usarlo nello scontrino PDF.
-     */
     var datiUtente = JSON.parse(localStorage.getItem("utente")) || { nome: "Ospite", cognome: "" };
-
-    /*
-     * ── AGGIORNA BADGE CARRELLO ──────────────────────────────────
-     */
     function aggiornaBadgeCarrello() {
       var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
       document.getElementById("badge-carrello").textContent = carrello.length;
     }
-
-    /*
-     * ── FORMATTA UN NUMERO COME VALUTA EURO ─────────────────────
-     * Es: 125.5 → "125,50"
-     */
     function formattaEuro(numero) {
       return parseFloat(numero).toFixed(2).replace(".", ",");
     }
-
-    /*
-     * ── CALCOLA E AGGIORNA IL RIEPILOGO ─────────────────────────
-     * Legge l'array del carrello, somma i prezzi e aggiorna i
-     * valori nella colonna di destra.
-     */
     function aggiornaTotale(carrello) {
       var totale = 0;
-
-      // Somma i prezzi (parseFloat converte la stringa in numero)
       for (var i = 0; i < carrello.length; i++) {
         totale = totale + parseFloat(carrello[i].prezzo || 0);
       }
-
       document.getElementById("riepilogo-articoli").textContent  = carrello.length;
       document.getElementById("riepilogo-subtotale").textContent = "€ " + formattaEuro(totale);
       document.getElementById("riepilogo-totale").textContent    = "€ " + formattaEuro(totale);
     }
-
-    /*
-     * ── DISEGNA LA LISTA CARRELLO ────────────────────────────────
-     * Svuota il div e ricrea tutte le righe dal localStorage.
-     * Viene chiamata all'avvio e dopo ogni modifica.
-     */
     function disegnaCarrello() {
       var carrello      = JSON.parse(localStorage.getItem("carrello")) || [];
       var contenitore   = document.getElementById("lista-carrello");
-      contenitore.innerHTML = "";  // pulisce il contenuto precedente
-
-      // ---- Carrello vuoto: mostra il messaggio ----
+      contenitore.innerHTML = "";
       if (carrello.length === 0) {
         contenitore.innerHTML =
           '<div class="carrello-vuoto">' +
@@ -568,78 +421,53 @@
           '  <p>Il tuo carrello è vuoto.</p>' +
           '  <a href="vetrinaEcommerce.html" class="btn-secondario">Vai alla Vetrina</a>' +
           '</div>';
-
         aggiornaTotale([]);
         aggiornaBadgeCarrello();
         return;
       }
-
-      // ---- Crea una riga per ogni prodotto ----
       for (var i = 0; i < carrello.length; i++) {
-        // Usiamo una funzione per "catturare" l'indice corretto (evita problemi con i loop)
         (function (indice) {
           var prodotto = carrello[indice];
-
           var riga = document.createElement("div");
           riga.className = "riga-prodotto";
           riga.style.animationDelay = (indice * 0.06) + "s";
-
-          // Icona/emoji
           var icona = document.createElement("div");
           icona.className = "riga-icona";
-          icona.textContent = "💎";  // icona generica per i minerali
+          icona.textContent = "💎"; 
           riga.appendChild(icona);
-
-          // Info
           var info = document.createElement("div");
           info.className = "riga-info";
-
           var nome = document.createElement("div");
           nome.className = "riga-nome";
           nome.textContent = prodotto.nome || "Prodotto senza nome";
           info.appendChild(nome);
-
           var marca = document.createElement("div");
           marca.className = "riga-marca";
           marca.textContent = prodotto.marca || "";
           info.appendChild(marca);
-
           riga.appendChild(info);
-
-          // Prezzo
           var prezzo = document.createElement("div");
           prezzo.className = "riga-prezzo";
           prezzo.textContent = "€ " + formattaEuro(prodotto.prezzo || 0);
           riga.appendChild(prezzo);
-
-          // Bottone rimuovi
           var btnRimuovi = document.createElement("button");
           btnRimuovi.className = "btn-rimuovi";
           btnRimuovi.textContent = "✕ Rimuovi";
-
-          // Al click rimuove l'elemento all'indice corretto
           btnRimuovi.addEventListener("click", function () {
             var carrelloAggiornato = JSON.parse(localStorage.getItem("carrello")) || [];
-            carrelloAggiornato.splice(indice, 1);  // rimuove 1 elemento all'indice
+            carrelloAggiornato.splice(indice, 1);
             localStorage.setItem("carrello", JSON.stringify(carrelloAggiornato));
-            disegnaCarrello();  // ridisegna tutto
+            disegnaCarrello();
           });
 
           riga.appendChild(btnRimuovi);
           contenitore.appendChild(riga);
 
-        })(i);  // auto-invoca la funzione con l'indice attuale
+        })(i);
       }
-
-      // Aggiorna il totale e il badge
       aggiornaTotale(carrello);
       aggiornaBadgeCarrello();
     }
-
-    /*
-     * ── SVUOTA CARRELLO ──────────────────────────────────────────
-     * Rimuove l'array carrello dal localStorage e ridisegna.
-     */
     document.getElementById("btn-svuota").addEventListener("click", function () {
       var conferma = window.confirm("Sei sicuro di voler svuotare il carrello?");
       if (conferma) {
@@ -647,153 +475,89 @@
         disegnaCarrello();
       }
     });
-
-    /*
-     * ── GENERA LO SCONTRINO PDF ─────────────────────────────────
-     * Usa la libreria jsPDF (caricata dal CDN in cima alla pagina).
-     *
-     * Struttura dello scontrino:
-     *   - Intestazione azienda
-     *   - Data e ora
-     *   - Operatore (utente loggato)
-     *   - Riga separatrice
-     *   - Lista minerali con prezzi
-     *   - Riga separatrice
-     *   - Totale
-     *   - Piede di cortesia
-     */
     document.getElementById("btn-pdf").addEventListener("click", function () {
-
       var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
-
       if (carrello.length === 0) {
         alert("Il carrello è vuoto! Aggiungi qualche minerale prima di scaricare lo scontrino.");
         return;
       }
-
-      /*
-       * Accede alla classe jsPDF dall'oggetto globale window.jspdf.
-       * jsPDF in modalità UMD espone il costruttore in questo modo.
-       */
       var jsPDF = window.jspdf.jsPDF;
-
-      // Crea un nuovo documento PDF in formato A6 (piccolo, come uno scontrino)
       var doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
-        format: "a6"          // 105 x 148 mm – formato scontrino
+        format: "a6"         
       });
-
-      // Imposta il font Courier (stile macchina scontrino)
       doc.setFont("Courier", "normal");
-
-      // Posizione Y corrente (cresce man mano che aggiungiamo righe)
       var y = 12;
-      // Larghezza utile della pagina A6 (lasciamo 10mm di margine per lato)
       var larghezza = 85;
-
-      // Funzione helper: aggiunge una riga di testo e incrementa y
       function aggiungiRiga(testo, dimensione, grassetto) {
         doc.setFontSize(dimensione || 9);
         doc.setFont("Courier", grassetto ? "bold" : "normal");
         doc.text(testo, 10, y);
         y = y + (dimensione ? dimensione * 0.5 : 5);
       }
-
-      // Funzione helper: aggiunge una riga di "asterischi" come separatore
       function aggiungiSeparatore() {
         aggiungiRiga("* * * * * * * * * * * * * * * * * * *", 8);
         y = y + 1;
       }
-
-      // ---- INTESTAZIONE AZIENDA ----
       doc.setFontSize(13);
       doc.setFont("Courier", "bold");
-      // textAlign "center" richiede la coordinata x del centro pagina (52.5mm per A6)
       doc.text("NEW EXPEDETION", 52.5, y, { align: "center" });
       y = y + 6;
-
       doc.setFontSize(8);
       doc.setFont("Courier", "normal");
       doc.text("Minerali Rari Estratti a Mano", 52.5, y, { align: "center" });
       y = y + 4;
       doc.text("www.newexpedetion.com", 52.5, y, { align: "center" });
       y = y + 6;
-
       aggiungiSeparatore();
-
-      // ---- DATA E ORA ----
       var ora = new Date();
-      // Formatta la data come GG/MM/AAAA HH:MM
       var dataFormattata =
         String(ora.getDate()).padStart(2, "0") + "/" +
         String(ora.getMonth() + 1).padStart(2, "0") + "/" +
         ora.getFullYear();
-
       var oraFormattata =
         String(ora.getHours()).padStart(2, "0") + ":" +
         String(ora.getMinutes()).padStart(2, "0");
-
       aggiungiRiga("Data:      " + dataFormattata, 8.5);
       aggiungiRiga("Ora:       " + oraFormattata, 8.5);
-
-      // ---- OPERATORE (utente loggato) ----
       var nomeOperatore = datiUtente.nome + " " + datiUtente.cognome;
       aggiungiRiga("Operatore: " + nomeOperatore.trim(), 8.5);
       y = y + 2;
-
       aggiungiSeparatore();
-
-      // ---- INTESTAZIONE COLONNE ----
       doc.setFontSize(8.5);
       doc.setFont("Courier", "bold");
       doc.text("ARTICOLO", 10, y);
       doc.text("PREZZO", 85, y, { align: "right" });
       y = y + 5;
       aggiungiSeparatore();
-
-      // ---- LISTA MINERALI ----
       var totale = 0;
-
       for (var i = 0; i < carrello.length; i++) {
         var prodotto = carrello[i];
         var prezzo   = parseFloat(prodotto.prezzo || 0);
         totale       = totale + prezzo;
-
         doc.setFontSize(8.5);
         doc.setFont("Courier", "normal");
-
-        // Nome del prodotto (troncato a 22 caratteri se troppo lungo)
         var nomeProdotto = prodotto.nome || "Prodotto";
         if (nomeProdotto.length > 22) {
           nomeProdotto = nomeProdotto.substring(0, 22) + "...";
         }
         doc.text(nomeProdotto, 10, y);
-
-        // Prezzo allineato a destra
         doc.text("EU " + formattaEuro(prezzo), 85, y, { align: "right" });
         y = y + 5;
       }
-
       y = y + 2;
       aggiungiSeparatore();
-
-      // ---- TOTALE FINALE ----
       doc.setFontSize(10);
       doc.setFont("Courier", "bold");
       doc.text("TOTALE", 10, y);
       doc.text("EU " + formattaEuro(totale), 85, y, { align: "right" });
       y = y + 6;
-
-      // Numero articoli
       doc.setFontSize(8);
       doc.setFont("Courier", "normal");
       doc.text("Articoli: " + carrello.length, 10, y);
       y = y + 6;
-
       aggiungiSeparatore();
-
-      // ---- PIEDE DI CORTESIA ----
       doc.setFontSize(8);
       doc.text("Grazie per il tuo acquisto!", 52.5, y, { align: "center" });
       y = y + 4;
@@ -802,16 +566,10 @@
       doc.text("di autenticita' allegato.", 52.5, y, { align: "center" });
       y = y + 6;
       doc.text("* NewExpedetion - Minerali Rari *", 52.5, y, { align: "center" });
-
-      // ---- SCARICA IL PDF ----
-      // Il nome del file include la data per distinguere scontrini diversi
       var nomeFile = "scontrino_newexpedetion_" + dataFormattata.replace(/\//g, "-") + ".pdf";
       doc.save(nomeFile);
     });
-
-    // ---- Avvia il disegno del carrello al caricamento della pagina ----
     disegnaCarrello();
   </script>
-
 </body>
 </html>
