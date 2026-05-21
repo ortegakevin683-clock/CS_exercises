@@ -4,13 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NewExpedetion – Vetrina Minerali</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-
   <style>
-    /* ============================================================
-       VARIABILI CSS – stessa palette su tutte le pagine
-    ============================================================ */
     :root {
       --oro:         #C9A84C;
       --oro-chiaro:  #E8C96A;
@@ -23,9 +18,7 @@
       --successo:    #3A7D44;
       --navbar-w:    240px;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Lato', sans-serif;
       background-color: var(--sabbia);
@@ -34,15 +27,10 @@
       min-height: 100vh;
       animation: fadeInPagina 0.8s ease both;
     }
-
     @keyframes fadeInPagina {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0);    }
     }
-
-    /* ============================================================
-       NAVBAR VERTICALE
-    ============================================================ */
     .navbar {
       width: var(--navbar-w);
       min-height: 100vh;
@@ -55,7 +43,6 @@
       top: 0; left: 0;
       z-index: 100;
     }
-
     .navbar-logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
@@ -65,7 +52,6 @@
       margin-bottom: 8px;
       line-height: 1.2;
     }
-
     .navbar-sub {
       font-size: 0.65rem;
       color: #888;
@@ -74,21 +60,18 @@
       margin-bottom: 40px;
       text-align: center;
     }
-
     .navbar-divider {
       width: 60%;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--oro), transparent);
       margin-bottom: 40px;
     }
-
     .navbar nav {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .navbar nav a {
       display: flex;
       align-items: center;
@@ -101,20 +84,17 @@
       border-radius: 6px;
       transition: background 0.25s, color 0.25s;
     }
-
     .navbar nav a .icon { font-size: 1rem; }
 
     .navbar nav a:hover {
       background-color: rgba(201, 168, 76, 0.12);
       color: var(--oro-chiaro);
     }
-
     .navbar nav a.attivo {
       background-color: rgba(201, 168, 76, 0.18);
       color: var(--oro);
       font-weight: 700;
     }
-
     .carrello-badge {
       background: var(--oro);
       color: var(--roccia);
@@ -124,35 +104,26 @@
       border-radius: 20px;
       margin-left: auto;
     }
-
     .navbar-footer {
       margin-top: auto;
       font-size: 0.65rem;
       color: #555;
       text-align: center;
     }
-
-    /* ============================================================
-       AREA PRINCIPALE
-    ============================================================ */
     .contenuto-principale {
       margin-left: var(--navbar-w);
       flex: 1;
       padding: 48px 48px 80px;
     }
-
     .vetrina-header {
       margin-bottom: 36px;
     }
-
     .vetrina-titolo {
       font-family: 'Playfair Display', serif;
       font-size: 2.4rem;
       color: var(--roccia);
     }
-
     .vetrina-titolo span { color: var(--oro); }
-
     .riga-oro {
       width: 70px;
       height: 3px;
@@ -160,19 +131,12 @@
       margin: 14px 0 12px;
       border-radius: 2px;
     }
-
     .vetrina-sottotitolo {
       font-size: 0.95rem;
       color: var(--roccia-med);
       max-width: 600px;
       line-height: 1.6;
     }
-
-    /* ============================================================
-       ZONA DI CARICAMENTO CSV
-       Schermata centrale mostrata all'apertura della pagina.
-       Scompare dopo che l'utente carica il file.
-    ============================================================ */
     .zona-carica {
       display: flex;
       flex-direction: column;
@@ -184,48 +148,33 @@
       border-radius: 18px;
       max-width: 560px;
       margin: 0 auto;
-      /* Animazione di pulsazione sul bordo dorato per attirare l'attenzione */
       animation: pulsaBordo 2.5s ease-in-out infinite;
     }
-
     @keyframes pulsaBordo {
       0%, 100% { border-color: var(--oro);        box-shadow: 0 0 0   0   rgba(201,168,76,0);    }
       50%       { border-color: var(--oro-chiaro); box-shadow: 0 0 0 8px  rgba(201,168,76,0.10); }
     }
-
-    /* Icona grande al centro della zona */
     .zona-icona {
       font-size: 4rem;
       margin-bottom: 20px;
-      /* Piccola animazione di oscillazione */
       animation: oscillazione 3s ease-in-out infinite;
     }
-
     @keyframes oscillazione {
       0%, 100% { transform: rotate(-5deg); }
       50%       { transform: rotate(5deg);  }
     }
-
     .zona-titolo {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
       color: var(--roccia);
       margin-bottom: 12px;
     }
-
     .zona-testo {
       font-size: 0.93rem;
       color: var(--roccia-med);
       line-height: 1.7;
       margin-bottom: 28px;
     }
-
-    /*
-     * Il <label> funge da bottone visivo.
-     * Cliccarlo attiva l'<input type="file"> nascosto sotto.
-     * Non usiamo un <button> perché i button non aprono file picker
-     * direttamente; il label collegato all'input sì.
-     */
     .btn-carica {
       display: inline-block;
       padding: 14px 32px;
@@ -241,14 +190,11 @@
       transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
       margin-bottom: 20px;
     }
-
     .btn-carica:hover {
       background: var(--oro-chiaro);
       transform: translateY(-2px);
       box-shadow: 0 6px 18px rgba(201,168,76,0.35);
     }
-
-    /* Messaggio di errore sotto il bottone */
     .zona-errore {
       font-size: 0.85rem;
       color: var(--errore);
@@ -256,8 +202,6 @@
       min-height: 20px;
       margin-bottom: 20px;
     }
-
-    /* Blocco grigio con la struttura CSV attesa */
     .csv-hint {
       background: var(--sabbia-scura);
       border-radius: 8px;
@@ -265,7 +209,6 @@
       text-align: left;
       width: 100%;
     }
-
     .csv-hint-titolo {
       font-size: 0.75rem;
       font-weight: 700;
@@ -274,20 +217,14 @@
       color: var(--roccia-med);
       margin-bottom: 8px;
     }
-
     .csv-hint code {
       font-size: 0.8rem;
       color: var(--oro);
       word-break: break-all;
       line-height: 1.6;
     }
-
-    /* ============================================================
-       BARRA SUPERIORE (visibile dopo il caricamento)
-       Mostra il nome del file caricato e un bottone "Cambia file".
-    ============================================================ */
     .barra-ricarica {
-      display: none;             /* nascosta di default; mostrata via JS */
+      display: none;
       align-items: center;
       flex-wrap: wrap;
       gap: 14px;
@@ -297,15 +234,12 @@
       border-radius: 10px;
       margin-bottom: 28px;
     }
-
     .barra-info {
       font-size: 0.88rem;
       color: var(--successo);
       font-weight: 700;
       flex: 1;
     }
-
-    /* Label che funge da bottone "Cambia file" */
     .btn-cambia {
       padding: 7px 16px;
       border: 1.5px solid var(--oro);
@@ -318,21 +252,15 @@
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
     }
-
     .btn-cambia:hover {
       background: var(--oro);
       color: var(--roccia);
     }
-
-    /* ============================================================
-       GRIGLIA PRODOTTI
-    ============================================================ */
     .griglia-prodotti {
-      display: none;             /* nascosta di default; mostrata via JS */
+      display: none;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 28px;
     }
-
     .card-prodotto {
       background: var(--bianco);
       border-radius: 14px;
@@ -343,17 +271,14 @@
       animation: fadeInCard 0.5s ease both;
       transition: transform 0.25s, box-shadow 0.25s;
     }
-
     @keyframes fadeInCard {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0);    }
     }
-
     .card-prodotto:hover {
       transform: translateY(-5px);
       box-shadow: 0 12px 30px rgba(44,44,44,0.12);
     }
-
     .card-immagine {
       width: 100%;
       height: 190px;
@@ -361,7 +286,6 @@
       background: var(--sabbia-scura);
       display: block;
     }
-
     .card-immagine-placeholder {
       width: 100%;
       height: 190px;
@@ -371,21 +295,18 @@
       justify-content: center;
       font-size: 3.5rem;
     }
-
     .card-corpo {
       padding: 20px;
       display: flex;
       flex-direction: column;
       flex: 1;
-    }
-
+    
     .card-nome {
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem;
       color: var(--roccia);
       margin-bottom: 4px;
     }
-
     .card-marca {
       font-size: 0.72rem;
       color: var(--oro);
@@ -394,7 +315,6 @@
       text-transform: uppercase;
       margin-bottom: 10px;
     }
-
     .card-descrizione {
       font-size: 0.85rem;
       color: var(--roccia-med);
@@ -405,14 +325,12 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
     .card-dettagli {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       margin-bottom: 16px;
     }
-
     .tag-dettaglio {
       background: var(--sabbia);
       border: 1px solid #D5CAB0;
@@ -421,7 +339,6 @@
       font-size: 0.72rem;
       color: var(--roccia-med);
     }
-
     .card-piede {
       display: flex;
       align-items: center;
@@ -430,19 +347,16 @@
       padding-top: 14px;
       border-top: 1px solid var(--sabbia-scura);
     }
-
     .card-prezzo {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       color: var(--roccia);
     }
-
     .card-prezzo span {
       font-size: 0.8rem;
       color: var(--roccia-med);
       font-family: 'Lato', sans-serif;
     }
-
     .btn-carrello {
       padding: 9px 16px;
       background: var(--oro);
@@ -455,18 +369,14 @@
       cursor: pointer;
       transition: background 0.22s, transform 0.15s;
     }
-
     .btn-carrello:hover {
       background: var(--oro-chiaro);
       transform: scale(1.04);
     }
-
     .btn-carrello.aggiunto {
       background: var(--successo);
       color: #fff;
     }
-
-    /* ---- Toast notifica ---- */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -484,7 +394,6 @@
       z-index: 999;
       border-left: 4px solid var(--oro);
     }
-
     .toast.visibile {
       opacity: 1;
       transform: translateY(0);
@@ -493,15 +402,10 @@
 </head>
 
 <body>
-
-  <!-- ============================================================
-       NAVBAR VERTICALE
-  ============================================================ -->
   <nav class="navbar">
     <div class="navbar-logo">New<br>Expedetion</div>
     <div class="navbar-sub">Minerali Rari</div>
     <div class="navbar-divider"></div>
-
     <nav>
       <a href="registrazioneEcommerce.html">
         <span class="icon">📋</span> Registrazione
@@ -517,16 +421,9 @@
         <span class="carrello-badge" id="badge-carrello">0</span>
       </a>
     </nav>
-
     <div class="navbar-footer">© 2025 NewExpedetion</div>
   </nav>
-
-  <!-- ============================================================
-       CONTENUTO PRINCIPALE
-  ============================================================ -->
   <main class="contenuto-principale">
-
-    <!-- Intestazione -->
     <div class="vetrina-header">
       <h1 class="vetrina-titolo">Vetrina <span>Minerali</span></h1>
       <div class="riga-oro"></div>
@@ -535,20 +432,6 @@
         e sfoglia i tesori della Terra.
       </p>
     </div>
-
-    <!--
-      ══════════════════════════════════════════════════════════════
-      ZONA DI CARICAMENTO CSV
-      ══════════════════════════════════════════════════════════════
-      Questa schermata è visibile all'apertura della pagina.
-      Il JS la nasconde e mostra la griglia prodotti dopo il caricamento.
-
-      Come funziona il caricamento senza server:
-        1. L'utente clicca il label dorato
-        2. Il browser apre la finestra di selezione file
-        3. FileReader legge il file dal disco (zero server richiesto)
-        4. Il testo CSV viene analizzato e le card vengono create
-    -->
     <div class="zona-carica" id="zona-carica">
 
       <div class="zona-icona">⛏</div>
@@ -559,78 +442,34 @@
         Seleziona il tuo file <strong>prodotti.csv</strong> dal computer.<br>
         Funziona direttamente nel browser, <strong>senza server</strong>.
       </p>
-
-      <!--
-        Il <label> è collegato all'<input> tramite l'attributo "for"/"id".
-        Cliccarlo apre automaticamente la finestra di selezione file del sistema.
-        L'input è nascosto (display:none) perché non si può stilizzare.
-      -->
       <label class="btn-carica" for="input-csv">
         📂 &nbsp; Scegli prodotti.csv
       </label>
       <input type="file" id="input-csv" accept=".csv" style="display:none;" />
-
-      <!-- Messaggio di errore (mostrato via JS se il file non va bene) -->
       <p class="zona-errore" id="zona-errore"></p>
-
-      <!-- Promemoria sulla struttura del CSV -->
       <div class="csv-hint">
         <div class="csv-hint-titolo">Struttura colonne richiesta nel CSV:</div>
         <code>nome, marca, descrizione, immagine, prezzo, dimensioni, taglia, spedizione</code>
       </div>
-
-    </div><!-- fine zona-carica -->
-
-    <!--
-      ══════════════════════════════════════════════════════════════
-      BARRA SUPERIORE – visibile solo dopo il caricamento del CSV
-      Mostra il nome del file e quanti prodotti sono stati trovati.
-      Il bottone "Cambia file" permette di caricare un altro CSV.
-      ══════════════════════════════════════════════════════════════
-    -->
+    </div>
     <div class="barra-ricarica" id="barra-ricarica">
       <span class="barra-info" id="barra-info">✓ File caricato</span>
-      <!-- Secondo input file per il bottone "Cambia file" -->
       <label class="btn-cambia" for="input-csv-2">🔄 Cambia file</label>
       <input type="file" id="input-csv-2" accept=".csv" style="display:none;" />
     </div>
-
-    <!-- Griglia prodotti – nascosta finché non arriva il CSV -->
     <div class="griglia-prodotti" id="griglia-prodotti"></div>
-
   </main>
-
-  <!-- Toast notifica aggiunta al carrello -->
   <div class="toast" id="toast"></div>
-
-
-  <!-- ============================================================
-       JAVASCRIPT – Vetrina (solo CSV esterno via FileReader)
-  ============================================================ -->
   <script>
-    /*
-     * ── PROTEZIONE PAGINA ───────────────────────────────────────
-     * Se l'utente non è loggato, viene rimandato alla registrazione.
-     */
     var isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn !== "true") {
       window.location.href = "registrazioneEcommerce.html";
     }
-
-    /*
-     * ── AGGIORNA BADGE CARRELLO ──────────────────────────────────
-     */
     function aggiornaBadgeCarrello() {
       var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
       document.getElementById("badge-carrello").textContent = carrello.length;
     }
-
     aggiornaBadgeCarrello();
-
-    /*
-     * ── MOSTRA IL TOAST ─────────────────────────────────────────
-     * Fa apparire brevemente la notifica in basso a destra.
-     */
     function mostraToast(messaggio) {
       var toast = document.getElementById("toast");
       toast.textContent = "✓ " + messaggio;
@@ -639,95 +478,47 @@
         toast.classList.remove("visibile");
       }, 2200);
     }
-
-    /*
-     * ── AGGIUNGI AL CARRELLO ─────────────────────────────────────
-     * Salva il prodotto nell'array "carrello" nel localStorage
-     * e aggiorna il badge nella navbar.
-     */
     function aggiungiAlCarrello(prodotto, bottone) {
       var carrello = JSON.parse(localStorage.getItem("carrello")) || [];
       carrello.push(prodotto);
       localStorage.setItem("carrello", JSON.stringify(carrello));
       aggiornaBadgeCarrello();
-
       bottone.textContent = "✓ Aggiunto";
       bottone.classList.add("aggiunto");
       setTimeout(function () {
         bottone.textContent = "Aggiungi al carrello";
         bottone.classList.remove("aggiunto");
       }, 2000);
-
       mostraToast(prodotto.nome + " aggiunto!");
     }
-
-    /*
-     * ── ANALIZZA IL TESTO CSV ───────────────────────────────────
-     * Trasforma il testo grezzo del file CSV in un array di oggetti JS.
-     *
-     * Esempio di file CSV:
-     *   nome,marca,prezzo
-     *   Oro Nativo,AuriMinera,340.00
-     *   Pirite,IberoPyrite,85.00
-     *
-     * Risultato restituito:
-     *   [
-     *     { nome: "Oro Nativo", marca: "AuriMinera", prezzo: "340.00" },
-     *     { nome: "Pirite",     marca: "IberoPyrite", prezzo: "85.00" }
-     *   ]
-     */
     function parsaCSV(testoCSV) {
-      /* split("\n") divide il testo riga per riga.
-         filter(Boolean) rimuove le righe vuote. */
       var righe    = testoCSV.trim().split("\n").filter(Boolean);
       var prodotti = [];
-
-      /* Servono almeno 2 righe: una di intestazione + una di dati */
       if (righe.length < 2) {
         return prodotti;
       }
-
-      /* La prima riga è l'intestazione: contiene i nomi delle colonne */
       var intestazione = righe[0].split(",");
-
-      /* Ogni riga successiva è un prodotto */
       for (var i = 1; i < righe.length; i++) {
         var celle   = righe[i].split(",");
         var oggetto = {};
-
-        /* Associa ogni valore al nome della colonna corrispondente */
         for (var j = 0; j < intestazione.length; j++) {
           var chiave  = intestazione[j].trim();
           var valore  = celle[j] ? celle[j].trim() : "";
           oggetto[chiave] = valore;
         }
-
         prodotti.push(oggetto);
       }
-
       return prodotti;
     }
-
-    /*
-     * ── CREA LA CARD HTML DI UN SINGOLO PRODOTTO ────────────────
-     * Costruisce l'intera card in JavaScript creando elementi HTML
-     * uno per uno con createElement e appendChild.
-     *
-     * Parametro: oggetto prodotto con le proprietà del CSV
-     * Restituisce: un elemento <div> completo da inserire nella griglia
-     */
     function creaCard(prodotto) {
       var card = document.createElement("div");
       card.className = "card-prodotto";
-
-      /* ---- Immagine (o placeholder emoji se manca) ---- */
       var bloccoImmagine;
       if (prodotto.immagine && prodotto.immagine !== "") {
         bloccoImmagine = document.createElement("img");
         bloccoImmagine.className = "card-immagine";
         bloccoImmagine.src       = prodotto.immagine;
         bloccoImmagine.alt       = prodotto.nome;
-        /* Se l'URL dell'immagine non carica, mostra il placeholder */
         bloccoImmagine.onerror = function () {
           var ph = document.createElement("div");
           ph.className   = "card-immagine-placeholder";
@@ -740,33 +531,22 @@
         bloccoImmagine.textContent = "💎";
       }
       card.appendChild(bloccoImmagine);
-
-      /* ---- Corpo della card ---- */
       var corpo = document.createElement("div");
       corpo.className = "card-corpo";
-
-      /* Nome del minerale */
       var nome = document.createElement("div");
       nome.className   = "card-nome";
       nome.textContent = prodotto.nome || "Senza nome";
       corpo.appendChild(nome);
-
-      /* Marca / provenienza */
       var marca = document.createElement("div");
       marca.className   = "card-marca";
       marca.textContent = prodotto.marca || "";
       corpo.appendChild(marca);
-
-      /* Descrizione */
       var desc = document.createElement("div");
       desc.className   = "card-descrizione";
       desc.textContent = prodotto.descrizione || "";
       corpo.appendChild(desc);
-
-      /* Tag dettagli tecnici */
       var dettagli = document.createElement("div");
       dettagli.className = "card-dettagli";
-
       if (prodotto.dimensioni) {
         var t1 = document.createElement("span");
         t1.className   = "tag-dettaglio";
@@ -786,69 +566,35 @@
         dettagli.appendChild(t3);
       }
       corpo.appendChild(dettagli);
-
-      /* ---- Piede: prezzo + bottone ---- */
       var piede = document.createElement("div");
       piede.className = "card-piede";
-
       var prezzo = document.createElement("div");
       prezzo.className = "card-prezzo";
       prezzo.innerHTML = "€" + (prodotto.prezzo || "0") + " <span>/ pezzo</span>";
       piede.appendChild(prezzo);
-
       var bottone = document.createElement("button");
       bottone.className   = "btn-carrello";
       bottone.textContent = "Aggiungi al carrello";
-
-      /*
-       * Attenzione: usiamo una funzione esterna per "congelare"
-       * i valori correnti di prodotto e bottone dentro il listener.
-       * Senza questo trucco, tutti i bottoni farebbero riferimento
-       * all'ultimo prodotto del ciclo for.
-       */
       (function (p, b) {
         b.addEventListener("click", function () {
           aggiungiAlCarrello(p, b);
         });
       })(prodotto, bottone);
-
       piede.appendChild(bottone);
       corpo.appendChild(piede);
       card.appendChild(corpo);
 
       return card;
     }
-
-    /*
-     * ── MOSTRA I PRODOTTI NELLA GRIGLIA ─────────────────────────
-     * Chiamata dopo che FileReader ha letto il CSV con successo.
-     *
-     * Passi:
-     *  1. Nasconde la zona di caricamento iniziale
-     *  2. Mostra la barra con il nome del file e il numero di prodotti
-     *  3. Crea e inserisce le card nella griglia
-     *
-     * Parametri:
-     *  - prodotti : array di oggetti ottenuto da parsaCSV()
-     *  - nomeFile : stringa con il nome del file selezionato
-     */
     function mostraProdotti(prodotti, nomeFile) {
-
-      /* Nasconde la schermata di invito al caricamento */
       document.getElementById("zona-carica").style.display = "none";
-
-      /* Mostra e aggiorna la barra informativa */
       var barraRicarica = document.getElementById("barra-ricarica");
       barraRicarica.style.display = "flex";
       document.getElementById("barra-info").textContent =
         "✓ " + nomeFile + " – " + prodotti.length + " prodotto/i caricato/i";
-
-      /* Mostra la griglia e pulisce le card precedenti */
       var griglia = document.getElementById("griglia-prodotti");
       griglia.style.display = "grid";
       griglia.innerHTML     = "";
-
-      /* Caso CSV vuoto o solo intestazione */
       if (prodotti.length === 0) {
         griglia.innerHTML =
           "<p style='color:var(--roccia-med); padding:20px; grid-column:1/-1;'>" +
@@ -856,89 +602,35 @@
           "sotto la riga di intestazione.</p>";
         return;
       }
-
-      /* Crea e aggiunge ogni card con un ritardo di animazione crescente */
       for (var i = 0; i < prodotti.length; i++) {
         var card = creaCard(prodotti[i]);
         card.style.animationDelay = (i * 0.07) + "s";
         griglia.appendChild(card);
       }
     }
-
-    /*
-     * ── LEGGE UN FILE CSV CON FILEREADER ────────────────────────
-     * FileReader è un'API nativa del browser (nessuna libreria esterna).
-     * Legge file dal disco locale dell'utente in modo asincrono.
-     *
-     * Questa funzione accetta l'id di un <input type="file">
-     * e gli aggiunge un listener per l'evento "change"
-     * (scatta quando l'utente seleziona un file).
-     *
-     * Flusso:
-     *  evento "change"
-     *    → prende il file dall'input
-     *    → controlla che sia un .csv
-     *    → crea FileReader
-     *    → FileReader.readAsText() avvia la lettura
-     *    → FileReader.onload scatta quando la lettura finisce
-     *    → chiama parsaCSV() e poi mostraProdotti()
-     */
     function collegaInputCSV(idInput) {
       var inputElemento = document.getElementById(idInput);
 
       inputElemento.addEventListener("change", function (evento) {
-
-        /* Prende il primo file scelto dall'utente */
         var file = evento.target.files[0];
-
-        /* Sicurezza: nessun file selezionato → esci */
         if (!file) { return; }
-
-        /* Controllo estensione: deve essere .csv */
         if (file.name.toLowerCase().indexOf(".csv") === -1) {
           document.getElementById("zona-errore").textContent =
             "⚠ Il file non è un .csv – seleziona il file corretto.";
           return;
         }
-
-        /* Pulisce eventuali errori precedenti */
         document.getElementById("zona-errore").textContent = "";
-
-        /*
-         * Crea un nuovo oggetto FileReader.
-         * È il meccanismo del browser per leggere file locali.
-         */
         var lettore = new FileReader();
-
-        /*
-         * onload viene eseguito automaticamente dal browser
-         * quando FileReader ha finito di leggere il file.
-         * e.target.result contiene l'intero testo del file.
-         */
         lettore.onload = function (e) {
           var testoCSV = e.target.result;
           var prodotti = parsaCSV(testoCSV);
           mostraProdotti(prodotti, file.name);
         };
-
-        /*
-         * readAsText avvia la lettura del file come testo.
-         * "UTF-8" garantisce che i caratteri speciali (accenti ecc.)
-         * vengano letti correttamente.
-         */
         lettore.readAsText(file, "UTF-8");
       });
     }
-
-    /*
-     * Collega la logica di lettura CSV a entrambi gli input presenti
-     * nella pagina: quello nella schermata iniziale e quello
-     * nel bottone "Cambia file" che appare dopo il primo caricamento.
-     */
     collegaInputCSV("input-csv");
     collegaInputCSV("input-csv-2");
-
   </script>
-
 </body>
 </html>
